@@ -1,1573 +1,469 @@
-import React, { useState, useEffect, useRef } from "react"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shahab Fotouhian - Portfolio</title>
+    <!-- Use the Inter font for a modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Custom scroll-snap for a nice scrolling effect */
+        .scroll-snap-y {
+            scroll-snap-type: y mandatory;
+        }
+        .snap-start {
+            scroll-snap-align: start;
+        }
+        /* Style for the underline on nav links */
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: transform 0.3s ease;
+            transform: scaleX(1);
+        }
+        .nav-link::after {
+            transform: scaleX(0);
+        }
+        .dark .nav-link.active::after {
+            background-color: #e9c46a;
+        }
+        .light .nav-link.active::after {
+            background-color: #2a9d8f;
+        }
 
-// A new component for the video pop-up modal
-const VideoModal = ({ video, onClose, isDark, themeColors }) => {
-    // If no video is selected, don't show the modal
-    if (!video) return null
+        /* Custom shadow and color for light mode */
+        .light .card-gradient {
+            background: linear-gradient(145deg, #ffffff, #f5f5f4);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
 
-    return (
-        // Modal overlay
-        <div
-            style={{
-                position: "fixed",
-                top: 0,
-                left: 0,
-                width: "100%",
-                height: "100%",
-                backgroundColor: isDark
-                    ? "rgba(0, 0, 0, 0.9)"
-                    : "rgba(0, 0, 0, 0.7)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                zIndex: 1000, // Ensure it's on top of everything
-                padding: "1rem",
-                boxSizing: "border-box",
-            }}
-            onClick={onClose} // Close modal when clicking the backdrop
-        >
-            {/* Modal content container */}
-            <div
-                style={{
-                    position: "relative",
-                    width: "100%",
-                    maxWidth: "900px",
-                    borderRadius: "0.75rem",
-                    overflow: "hidden",
-                    backgroundColor: themeColors.bg,
-                    boxShadow: `0 8px 30px ${isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.3)"}`,
-                }}
-                onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
-            >
-                {/* Close button */}
-                <button
-                    onClick={onClose}
-                    style={{
-                        position: "absolute",
-                        top: "0.5rem",
-                        right: "0.5rem",
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
-                        color: "white",
-                        borderRadius: "50%",
-                        border: "none",
-                        width: "30px",
-                        height: "30px",
-                        fontSize: "1.2rem",
-                        cursor: "pointer",
-                        zIndex: 1010,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: 0,
-                    }}
-                >
-                    &times;
+        /* Custom shadow and color for dark mode */
+        .dark .card-gradient {
+            background: linear-gradient(145deg, #292524, #1c1917);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-stone-900 text-stone-100 transition-all duration-300 dark">
+    <!-- Video Modal - Initially hidden -->
+    <div id="video-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 backdrop-blur-md bg-black bg-opacity-80" onclick="closeModal()"></div>
+        <div class="relative z-[101] w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl scale-95 opacity-0 transition-all duration-300 transform">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-[102] text-white text-3xl font-bold bg-black/50 rounded-full w-10 h-10 flex items-center justify-center" aria-label="Close video player">&times;</button>
+            <div class="relative" style="padding-top: 56.25%;">
+                <iframe id="youtube-player" class="absolute top-0 left-0 w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 z-50 w-full p-4 md:p-6 bg-transparent">
+        <div class="container mx-auto flex items-center justify-between">
+            <a href="#" class="text-xl font-bold rounded-lg p-2 bg-black bg-opacity-30 backdrop-blur-md">SF.</a>
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-6 rounded-full px-6 py-2 bg-black bg-opacity-30 backdrop-blur-md">
+                    <a href="#home" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('home')">Home</a>
+                    <a href="#about" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('about')">About</a>
+                    <a href="#skills" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('skills')">Skills</a>
+                    <a href="#expertise" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('expertise')">Expertise</a>
+                    <a href="#projects" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('projects')">Projects</a>
+                    <a href="#contact" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('contact')">Contact</a>
+                </div>
+                <button id="lang-toggle" class="bg-black bg-opacity-30 backdrop-blur-md text-sm md:text-base px-3 py-1 md:px-4 md:py-2 rounded-full font-semibold">EN</button>
+                <button id="theme-toggle" class="text-xl md:text-2xl bg-black bg-opacity-30 backdrop-blur-md p-2 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 </button>
-                {/* Video container with a fixed aspect ratio */}
-                <div
-                    style={{
-                        position: "relative",
-                        paddingBottom: "56.25%", // 16:9 aspect ratio
-                        height: 0,
-                    }}
-                >
-                    <iframe
-                        src={`${video.embedUrl}?autoplay=1`}
-                        title={video.title}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                        style={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: "100%",
-                            height: "100%",
-                        }}
-                    ></iframe>
-                </div>
             </div>
         </div>
-    )
-}
+    </nav>
 
-// Main React Component for the Portfolio Website
-export default function App() {
-    const [isDark, setIsDark] = useState(true)
-    const [lang, setLang] = useState("en")
-    const [activeSection, setActiveSection] = useState("home")
-    // New state to hold the style of the nav indicator
-    const [indicatorStyle, setIndicatorStyle] = useState({})
-    // New state for the video modal
-    const [showModal, setShowModal] = useState(false)
-    const [activeVideo, setActiveVideo] = useState(null)
-    // State to control how many projects are visible, starting with 4
-    const [visibleCount, setVisibleCount] = useState(4)
-    // Ref to measure the projects grid height
-    const projectsGridRef = useRef(null)
+    <!-- Main Content Sections -->
+    <main class="scroll-snap-y">
+        <!-- Home Section -->
+        <section id="home" class="snap-start relative flex items-center justify-center min-h-screen text-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div class="w-full h-full bg-cover bg-center" style="background-image: url(https://placehold.co/1920x1080/264653/e9c46a?text=Hero+Video)"></div>
+            </div>
+            <div class="relative z-10 p-4 md:p-8 bg-black bg-opacity-40 backdrop-blur-sm rounded-xl max-w-lg md:max-w-xl">
+                <h1 class="text-4xl md:text-6xl font-bold">Hello, I'm Shahab.</h1>
+                <p class="mt-4 text-lg md:text-2xl font-light">A freelance Motion Designer & UI/UX Designer based in Berlin.</p>
+                <a href="#contact" class="mt-6 inline-block text-lg md:text-xl font-semibold px-6 py-3 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">Get in Touch</a>
+            </div>
+            <div class="absolute bottom-8 text-center text-sm md:text-base font-light opacity-75 animate-bounce">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                <span class="scroll-hint">Scroll down for more</span>
+            </div>
+        </section>
 
-    const navRefs = {
-        home: useRef(null),
-        about: useRef(null),
-        skills: useRef(null),
-        expertise: useRef(null),
-        projects: useRef(null),
-        contact: useRef(null),
-    }
+        <!-- About Section -->
+        <section id="about" class="snap-start py-16 md:py-24 card-gradient">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">About Me</h2>
+                <div class="max-w-3xl mx-auto text-lg md:text-xl leading-relaxed text-center">
+                    <p>I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.</p>
+                </div>
+            </div>
+        </section>
 
-    // Function to handle opening the video modal
-    const handleVideoClick = (video) => {
-        setActiveVideo(video)
-        setShowModal(true)
-    }
+        <!-- Skills Section -->
+        <section id="skills" class="snap-start py-16 md:py-24 bg-stone-900 text-stone-100">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Skills & Expertise</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                    <!-- UI/UX Skills Card -->
+                    <div class="card-gradient p-6 md:p-8 rounded-xl shadow-lg border border-white/5 dark:border-stone-700/50">
+                        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-center">UI/UX Design</h3>
+                        <ul class="list-disc list-inside space-y-2 text-base md:text-lg">
+                            <li>User Research & Analysis</li>
+                            <li>Wireframing & Prototyping</li>
+                            <li>Usability Testing</li>
+                            <li>Figma & Adobe XD</li>
+                            <li>Interaction Design</li>
+                        </ul>
+                    </div>
 
-    // Function to handle closing the video modal
-    const handleCloseModal = () => {
-        setShowModal(false)
-        setActiveVideo(null) // Clear the active video
-    }
+                    <!-- Motion Design Skills Card -->
+                    <div class="card-gradient p-6 md:p-8 rounded-xl shadow-lg border border-white/5 dark:border-stone-700/50">
+                        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-center">Motion Design</h3>
+                        <ul class="list-disc list-inside space-y-2 text-base md:text-lg">
+                            <li>2D/3D Animation</li>
+                            <li>Video Editing & Compositing</li>
+                            <li>Visual Effects (VFX)</li>
+                            <li>After Effects & Cinema 4D</li>
+                            <li>Storyboarding & Concepts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    // Function to toggle between showing more or less projects
-    const toggleProjects = () => {
-        if (visibleCount === 4) {
-            setVisibleCount(portfolioVideos.length)
-        } else {
-            setVisibleCount(4)
+        <!-- Expertise Section -->
+        <section id="expertise" class="snap-start py-16 md:py-24 card-gradient">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Expertise</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                    <!-- UI/UX Design Item -->
+                    <div class="text-center p-6 md:p-8 rounded-xl bg-white/5 dark:bg-stone-800/50 shadow-md transition-shadow hover:shadow-xl">
+                        <div class="w-16 h-16 mx-auto mb-4 p-3 rounded-full bg-yellow-400/20 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#e9c46a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10"><path d="M17 21h-2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2zM7 21H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2z"/></svg>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-semibold mb-2">UI/UX Design</h3>
+                        <p class="text-sm md:text-base opacity-80">Crafting intuitive and engaging user interfaces that provide seamless experiences. From user flows to interactive prototypes, I focus on creating designs that are both beautiful and functional.</p>
+                    </div>
+                    <!-- Motion Design Item -->
+                    <div class="text-center p-6 md:p-8 rounded-xl bg-white/5 dark:bg-stone-800/50 shadow-md transition-shadow hover:shadow-xl">
+                        <div class="w-16 h-16 mx-auto mb-4 p-3 rounded-full bg-yellow-400/20 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#e9c46a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-semibold mb-2">Motion Design</h3>
+                        <p class="text-sm md:text-base opacity-80">Adding life and dynamic energy to brands and stories through animation. My expertise spans from logo animations and explainers to character animation and visual effects.</p>
+                    </div>
+                    <!-- Webflow Development Item -->
+                    <div class="text-center p-6 md:p-8 rounded-xl bg-white/5 dark:bg-stone-800/50 shadow-md transition-shadow hover:shadow-xl">
+                        <div class="w-16 h-16 mx-auto mb-4 p-3 rounded-full bg-yellow-400/20 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#e9c46a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10"><path d="M10 17L4 12 10 7"/></svg>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-semibold mb-2">Webflow Development</h3>
+                        <p class="text-sm md:text-base opacity-80">Turning design visions into reality with clean, responsive, and functional websites. Using Webflow, I build custom sites that are easy to manage and perform flawlessly on any device.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="snap-start py-16 md:py-24 bg-stone-900 text-stone-100">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">My projects</h2>
+                <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+                    <!-- Project Cards will be injected here by JavaScript -->
+                </div>
+                <div class="text-center mt-12">
+                    <button id="show-more-btn" class="inline-flex items-center text-lg md:text-xl font-semibold px-6 py-3 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">
+                        Show More Videos
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                    </button>
+                    <button id="show-less-btn" class="hidden inline-flex items-center text-lg md:text-xl font-semibold px-6 py-3 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">
+                        Show Less Videos
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2 transform rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="snap-start py-16 md:py-24 card-gradient">
+            <div class="container mx-auto px-4 md:px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Let's Talk</h2>
+                <p class="text-lg md:text-xl font-light mb-8">Interested in a collaboration? Feel free to reach out!</p>
+                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+                    <a href="mailto:s.fotouhian@gmail.com" class="inline-block text-lg md:text-xl font-semibold px-8 py-4 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">Let's Connect</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 md:py-12 text-center bg-stone-900 text-stone-100">
+        <p class="text-sm md:text-base opacity-75">Designed and Developed by Shahab Fotouhian</p>
+        <div class="mt-4 flex flex-col items-center">
+            <a href="tel:+4917634425050" class="text-sm md:text-base opacity-75 hover:underline">+49 176 34 42 5050</a>
+            <a href="mailto:s.fotouhian@gmail.com" class="text-sm md:text-base opacity-75 hover:underline">s.fotouhian@gmail.com</a>
+        </div>
+        <div class="flex justify-center space-x-6 mt-4 opacity-75">
+            <a href="https://www.behance.net/shahabfotouhian" target="_blank" rel="noopener noreferrer" aria-label="Behance" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 22.028v-2.18h-1.64c-2.31 0-3.37-.92-3.37-2.92v-2.22h5.68c.55 0 1.05-.18 1.45-.52.4-.34.61-.83.61-1.42s-.21-1.08-.61-1.42a2.38 2.38 0 00-1.45-.52h-5.68v-2.24c0-2.35 1.08-3.4 3.39-3.4h1.62V3.972h-1.62c-2.78 0-4.63 1.3-4.63 4.09v2.24H5.98c-1.39 0-2.25.92-2.25 2.58s.86 2.58 2.25 2.58h5.68v2.22c0 2.21-1.85 3.55-4.65 3.55H3.72V22.028z"/></svg></a>
+            <a href="https://www.linkedin.com/in/shahab-fotouhian/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 21v-8a4 4 0 0 1 8 0v8a4 4 0 0 1-8 0zM12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg></a>
+            <a href="https://www.instagram.com/shahab.studio/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.784 3.016a5.523 5.523 0 011.233 1.233c.52.52.926 1.108 1.233 1.764a5.523 5.523 0 010 6.642 5.523 5.523 0 01-1.233 1.764 5.523 5.523 0 01-1.764 1.233 5.523 5.523 0 01-6.642 0 5.523 5.523 0 01-1.764-1.233 5.523 5.523 0 01-1.233-1.764 5.523 5.523 0 010-6.642 5.523 5.523 0 011.233-1.764 5.523 5.523 0 011.764-1.233 5.523 5.523 0 016.642 0z"/></svg></a>
+        </div>
+    </footer>
+
+    <script>
+        // Data for all projects
+        const projectsData = [
+            { id: "project-1", title: "Digital Nomad", youtubeId: "dQw4w9WgXcQ" },
+            { id: "project-2", title: "City Explorer", youtubeId: "2n9M_C60EGA" },
+            { id: "project-3", title: "Aura Meditation", youtubeId: "c34t_4_g-iM" },
+            { id: "project-4", title: "Synthwave Visuals", youtubeId: "y1T1B4_nE30" },
+            { id: "project-5", title: "Abstract Flow", youtubeId: "V_J7T8zFfWk" },
+            { id: "project-6", title: "Product Showcase", youtubeId: "Fj1-s5z7E60" },
+            { id: "project-7", title: "Coffee App UI", youtubeId: "T8L04L-1t9w" },
+            { id: "project-8", title: "Corporate Explainer", youtubeId: "k-f5qM0vN2s" },
+            { id: "project-9", title: "Fitness App", youtubeId: "5423fA-uXbQ" },
+            { id: "project-10", title: "Space Exploration", youtubeId: "e9fP6p727vQ" },
+            { id: "project-11", title: "E-commerce Website", youtubeId: "6m7aU4K0534" },
+            { id: "project-12", title: "Data Visualization", youtubeId: "p573D5P3D8s" },
+            { id: "project-13", title: "Gaming UI", youtubeId: "9bZkp7q19f0" },
+            { id: "project-14", title: "Character Animation", youtubeId: "y8I5Hq2z6X4" },
+            { id: "project-15", title: "Brand Film", youtubeId: "j6Jp60wYtT8" },
+            { id: "project-16", title: "Iconography Set", youtubeId: "b85z7r0B96c" },
+        ];
+
+        // Constants and state
+        const themeToggle = document.getElementById('theme-toggle');
+        const langToggle = document.getElementById('lang-toggle');
+        const projectsGrid = document.getElementById('projects-grid');
+        const showMoreBtn = document.getElementById('show-more-btn');
+        const showLessBtn = document.getElementById('show-less-btn');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const modal = document.getElementById('video-modal');
+        const player = document.getElementById('youtube-player');
+        const sections = document.querySelectorAll('section');
+
+        const content = {
+            en: {
+                homeTitle: "Hello, I'm Shahab.",
+                homeSubtitle: "A freelance Motion Designer & UI/UX Designer based in Berlin.",
+                homeCta: "Get in Touch",
+                aboutTitle: "About Me",
+                aboutText: "I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.",
+                skillsTitle: "Skills & Expertise",
+                uiuxTitle: "UI/UX Design",
+                motionTitle: "Motion Design",
+                expertiseTitle: "Expertise",
+                contactTitle: "Let's Talk",
+                contactSubtitle: "Interested in a collaboration? Feel free to reach out!",
+                contactButton: "Let's Connect",
+                navHome: "Home",
+                navAbout: "About",
+                navSkills: "Skills",
+                navExpertise: "Expertise",
+                navProjects: "Projects",
+                navContact: "Contact",
+                footerText: "Designed and Developed by Shahab Fotouhian",
+                showMore: "Show More Videos",
+                showLess: "Show Less Videos",
+                scrollHint: "Scroll down for more"
+            },
+            de: {
+                homeTitle: "Hallo, ich bin Shahab.",
+                homeSubtitle: "Ein freiberuflicher Motion Designer & UI/UX Designer in Berlin.",
+                homeCta: "Kontakt aufnehmen",
+                aboutTitle: "Über mich",
+                aboutText: "Ich bin darauf spezialisiert, fesselnde visuelle Geschichten durch Animation und Video zu schaffen. Mit umfassender Erfahrung in Motion Graphics und einer solider Grundlage in der Videoproduktion erwecke ich Konzepte mit Kreativität und technischer Präzision zum Leben.",
+                skillsTitle: "Fähigkeiten & Expertise",
+                uiuxTitle: "UI/UX Design",
+                motionTitle: "Motion Design",
+                expertiseTitle: "Fachgebiete",
+                contactTitle: "Lassen Sie uns in Kontakt treten",
+                contactSubtitle: "Interessiert an einer Zusammenarbeit? Zögere nicht, mich zu kontaktieren!",
+                contactButton: "Verbinden wir uns",
+                navHome: "Startseite",
+                navAbout: "Über mich",
+                navSkills: "Fähigkeiten",
+                navExpertise: "Expertise",
+                navProjects: "Projekte",
+                navContact: "Kontakt",
+                footerText: "Entworfen und entwickelt von Shahab Fotouhian",
+                showMore: "Mehr Videos anzeigen",
+                showLess: "Weniger Videos anzeigen",
+                scrollHint: "Nach unten scrollen"
+            }
+        };
+
+        let currentLang = 'en';
+        let isDark = true;
+        let visibleProjectsCount = 4;
+
+        // Functions
+        function updateContent() {
+            const currentContent = content[currentLang];
+            // Update all elements with dynamic content
+            document.querySelector('#home h1').textContent = currentContent.homeTitle;
+            document.querySelector('#home p').textContent = currentContent.homeSubtitle;
+            document.querySelector('#home a').textContent = currentContent.homeCta;
+            document.querySelector('#about h2').textContent = currentContent.aboutTitle;
+            document.querySelector('#about p').textContent = currentContent.aboutText;
+            document.querySelector('#skills h2').textContent = currentContent.skillsTitle;
+            document.querySelector('#skills h3').textContent = currentContent.uiuxTitle;
+            document.querySelector('#skills .card-gradient:last-child h3').textContent = currentContent.motionTitle;
+            document.querySelector('#expertise h2').textContent = currentContent.expertiseTitle;
+            document.querySelector('#contact h2').textContent = currentContent.contactTitle;
+            document.querySelector('#contact p').textContent = currentContent.contactSubtitle;
+            document.querySelector('#contact a').textContent = currentContent.contactButton;
+            document.querySelector('footer p').textContent = currentContent.footerText;
+            document.querySelector('.scroll-hint').textContent = currentContent.scrollHint;
+            document.querySelector('#show-more-btn').textContent = currentContent.showMore;
+            document.querySelector('#show-less-btn').textContent = currentContent.showLess;
+
+            // Update nav links
+            const navMap = { home: 'navHome', about: 'navAbout', skills: 'navSkills', expertise: 'navExpertise', projects: 'navProjects', contact: 'navContact' };
+            navLinks.forEach(link => {
+                const sectionId = link.getAttribute('href').substring(1);
+                link.textContent = currentContent[navMap[sectionId]];
+            });
+
+            // Update language toggle button text
+            langToggle.textContent = currentLang.toUpperCase();
         }
-    }
+        
+        function updateTheme() {
+            if (isDark) {
+                document.body.classList.remove('light');
+                document.body.classList.add('dark');
+                themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>';
+                document.querySelector('#home > div:nth-child(1) > div:nth-child(1)').style.backgroundImage = `url(https://placehold.co/1920x1080/264653/e9c46a?text=Hero+Video)`;
+            } else {
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+                themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>';
+                document.querySelector('#home > div:nth-child(1) > div:nth-child(1)').style.backgroundImage = `url(https://placehold.co/1920x1080/e9c46a/2a9d8f?text=Hero+Video)`;
+            }
+        }
 
-    // Effect to handle the scrolling and update the active section
-    useEffect(() => {
-        const handleScroll = () => {
-            const sections = [
-                "home",
-                "about",
-                "skills",
-                "expertise",
-                "projects",
-                "contact",
-            ]
-            let currentSection = ""
+        function renderProjects() {
+            projectsGrid.innerHTML = ''; // Clear existing projects
+            const projectsToRender = projectsData.slice(0, visibleProjectsCount);
+            projectsToRender.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = `card-gradient p-4 md:p-6 rounded-2xl shadow-lg border border-white/5 dark:border-stone-700/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl cursor-pointer`;
+                projectCard.setAttribute('data-youtube-id', project.youtubeId);
+                projectCard.innerHTML = `
+                    <div class="aspect-video w-full rounded-xl overflow-hidden mb-4 relative group">
+                        <img src="https://img.youtube.com/vi/${project.youtubeId}/hqdefault.jpg" alt="Thumbnail for ${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold text-center">${project.title}</h3>
+                `;
+                projectCard.addEventListener('click', () => openModal(project.youtubeId));
+                projectsGrid.appendChild(projectCard);
+            });
 
-            for (const sectionId of sections) {
-                const section = document.getElementById(sectionId)
-                if (section) {
-                    const rect = section.getBoundingClientRect()
-                    // Check if the top of the section is within the top 50% of the viewport
-                    if (
-                        rect.top <= window.innerHeight / 2 &&
-                        rect.bottom > window.innerHeight / 2
-                    ) {
-                        currentSection = sectionId
-                        break
-                    }
+            // Update button visibility
+            if (visibleProjectsCount < projectsData.length) {
+                showMoreBtn.classList.remove('hidden');
+                showLessBtn.classList.add('hidden');
+            } else {
+                showMoreBtn.classList.add('hidden');
+                showLessBtn.classList.remove('hidden');
+            }
+        }
+        
+        function openModal(youtubeId) {
+            player.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
+            modal.style.display = 'flex';
+            // Trigger transition
+            setTimeout(() => {
+                modal.querySelector('div:nth-child(2)').classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+        
+        function closeModal() {
+            modal.querySelector('div:nth-child(2)').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                player.src = ''; // Stop the video
+            }, 300);
+        }
+
+        function setActiveSection(sectionId) {
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
                 }
-            }
-
-            // Fallback for when the user is at the very top of the page
-            if (!currentSection && window.scrollY < window.innerHeight / 2) {
-                currentSection = "home"
-            }
-
-            if (currentSection) {
-                setActiveSection(currentSection)
-            }
+            });
         }
 
-        window.addEventListener("scroll", handleScroll)
-        // Clean up the event listener when the component unmounts
-        return () => window.removeEventListener("scroll", handleScroll)
-    }, [])
+        // Event listeners
+        themeToggle.addEventListener('click', () => {
+            isDark = !isDark;
+            updateTheme();
+        });
 
-    // Effect to update the indicator's position and size whenever activeSection or lang changes
-    useEffect(() => {
-        const activeRef = navRefs[activeSection].current
-        if (!activeRef) return {}
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'de' : 'en';
+            updateContent();
+        });
 
-        // Set the new style for the indicator
-        setIndicatorStyle({
-            width: activeRef.offsetWidth,
-            height: activeRef.offsetHeight,
-            left: activeRef.offsetLeft,
-            top: activeRef.offsetTop,
-            opacity: 1,
-            transform: "scale(1)",
-        })
-    }, [activeSection, lang]) // Add lang to the dependency array
+        showMoreBtn.addEventListener('click', () => {
+            visibleProjectsCount = projectsData.length;
+            renderProjects();
+        });
+        
+        showLessBtn.addEventListener('click', () => {
+            visibleProjectsCount = 4;
+            renderProjects();
+        });
 
-    // Content for both languages
-    const content = {
-        en: {
-            nav: {
-                home: "Home",
-                about: "About Me",
-                skills: "Skills",
-                expertise: "Expertise",
-                projects: "Projects",
-                contact: "Contact",
-            },
-            hero: {
-                title: "Shahab Fotouhian",
-                subtitle: "Motion Designer & Video Producer",
-                text: "I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.",
-            },
-            about: {
-                title: "About Me",
-                p1: "With a background in Civil Engineering and a passion for visual communication, my career took a creative turn into the world of motion design. For over six years at Verklickern GmbH, I honed my skills in everything from 2D animation and interactive graphics to professional video production and post-production.",
-                p2: "I am certified as a Motion Designer and hold a SCRUM Master certification, reflecting my commitment to both artistic excellence and effective project management. Fluent in Farsi, English, and German, I thrive in international, collaborative environments.",
-                placeholder: "[Placeholder for your photo]",
-            },
-            skills: {
-                title: "Skills",
-                motionGraphics: "Motion Graphics",
-                motionGraphicsDesc:
-                    "Creating dynamic visual effects and animated content.",
-                videoProduction: "Video Production",
-                videoProductionDesc:
-                    "Filming, drone piloting, and on-set management.",
-                storyboarding: "Storyboarding",
-                storyboardingDesc:
-                    "Visualizing concepts and planning narratives.",
-                projectManagement: "Project Management",
-                projectManagementDesc: "Agile methodologies and SCRUM.",
-                creativeDirection: "Creative Direction",
-                creativeDirectionDesc:
-                    "Leading projects from concept to completion.",
-                postProduction: "Post-Production",
-                postProductionDesc: "Editing, color grading, and sound design.",
-            },
-            expertise: {
-                title: "Expertise",
-                afterEffects: "Adobe After Effects",
-                afterEffectsDesc:
-                    "Advanced motion graphics, VFX, and compositing.",
-                premierePro: "Adobe Premiere Pro",
-                premiereProDesc:
-                    "Professional video editing and color correction.",
-                illustrator: "Adobe Illustrator",
-                illustratorDesc:
-                    "Vector graphics and illustration for animation.",
-                photoshop: "Adobe Photoshop",
-                photoshopDesc:
-                    "Image manipulation, compositing, and digital painting.",
-                audition: "Adobe Audition",
-                auditionDesc: "Audio editing and sound design.",
-                cinema4d: "Maxon Cinema 4D",
-                cinema4dDesc: "3D modeling and animation.",
-                davinciResolve: "DaVinci Resolve",
-                davinciResolveDesc: "High-end color grading and finishing.",
-                blender: "Blender",
-                blenderDesc: "3D modeling, sculpting, and rendering.",
-                figma: "Figma",
-                figmaDesc: "UI/UX design and interactive prototyping.",
-                substancePainter: "Substance Painter",
-                substancePainterDesc:
-                    "3D texture painting and material creation.",
-                zbrush: "ZBrush",
-                zbrushDesc: "Digital sculpting.",
-                lightroom: "Adobe Lightroom",
-                lightroomDesc: "Image editing and photo management.",
-            },
-            projects: {
-                title: "My Projects",
-                showMore: "Show more projects",
-                showLess: "Show less projects",
-            },
-            contact: {
-                title: "Let's Connect",
-                text: "I am always open to new projects and collaborations. Feel free to get in touch!",
-                button: "View Full Portfolio",
-            },
-        },
-        de: {
-            nav: {
-                home: "Startseite",
-                about: "Über mich",
-                skills: "Fähigkeiten",
-                expertise: "Kompetenzen",
-                projects: "Projekte",
-                contact: "Kontakt",
-            },
-            hero: {
-                title: "Shahab Fotouhian",
-                subtitle: "Motion Designer & Videoproduzent",
-                text: "Ich bin darauf spezialisiert, fesselnde visuelle Geschichten durch Animation und Video zu schaffen. Mit umfassender Erfahrung in Motion Graphics und einer solider Grundlage in der Videoproduktion erwecke ich Konzepte mit Kreativität und technischer Präzision zum Leben.",
-            },
-            about: {
-                title: "Über mich",
-                p1: "Mit einem Hintergrund im Bauingenieurwesen und einer Leidenschaft für visuelle Kommunikation hat meine Karriere eine kreative Wende in die Welt des Motion Designs genommen. In über sechs Jahren der Verklickern GmbH habe ich meine Fähigkeiten in allen Bereichen, von 2D-Animation und interaktiven Grafiken bis hin zu professioneller Videoproduktion und Postproduktion, verfeinert.",
-                p2: "Ich bin als Motion Designer zertifiziert und verfüge über eine SCRUM Master-Zertifizierung, was mein Engagement für künstlerische Exzellenz und effektives Projektmanagement widerspiegelt. Fließend in Persisch, Englisch und Deutsch, fühle ich mich in internationalen, kollaborativen Umgebungen wohl.",
-                placeholder: "[Platzhalter für Ihr Foto]",
-            },
-            skills: {
-                title: "Fähigkeiten",
-                motionGraphics: "Motion Graphics",
-                motionGraphicsDesc:
-                    "Erstellung von dynamischen visuellen Effekten und animierten Inhalten.",
-                videoProduction: "Videoproduktion",
-                videoProductionDesc:
-                    "Filmen, Drohnen-Steuerung und On-Set-Management.",
-                storyboarding: "Storyboard-Erstellung",
-                storyboardingDesc:
-                    "Visualisierung von Konzepten und Planung von Erzählungen.",
-                projectManagement: "Projektmanagement",
-                projectManagementDesc: "Agile Methodologien und SCRUM.",
-                creativeDirection: "Kreative Leitung",
-                creativeDirectionDesc:
-                    "Führung von Projekten vom Konzept bis zur Fertigstellung.",
-                postProduction: "Postproduktion",
-                postProductionDesc: "Schnitt, Farbkorrektur und Sounddesign.",
-            },
-            expertise: {
-                title: "Kompetenzen",
-                afterEffects: "Adobe After Effects",
-                afterEffectsDesc:
-                    "Fortgeschrittene Motion Graphics, VFX und Compositing.",
-                premierePro: "Adobe Premiere Pro",
-                premiereProDesc:
-                    "Professioneller Videoschnitt und Farbkorrektur.",
-                illustrator: "Adobe Illustrator",
-                illustratorDesc:
-                    "Vektorgrafiken und Illustrationen für Animationen.",
-                photoshop: "Adobe Photoshop",
-                photoshopDesc:
-                    "Bildbearbeitung, Compositing und digitales Malen.",
-                audition: "Adobe Audition",
-                auditionDesc: "Audiobearbeitung und Sounddesign.",
-                cinema4d: "Maxon Cinema 4D",
-                cinema4dDesc: "3D-Modellierung und Animation.",
-                davinciResolve: "DaVinci Resolve",
-                davinciResolveDesc: "Hochwertige Farbkorrektur und Finishing.",
-                blender: "Blender",
-                blenderDesc: "3D-Modellierung, Sculpting und Rendering.",
-                figma: "Figma",
-                figmaDesc: "UI/UX-Design und interaktives Prototyping.",
-                substancePainter: "Substance Painter",
-                substancePainterDesc:
-                    "3D-Texturbemalung und Materialerstellung.",
-                zbrush: "ZBrush",
-                zbrushDesc: "Digitales Sculpting.",
-                lightroom: "Adobe Lightroom",
-                lightroomDesc: "Image editing and photo management.",
-            },
-            projects: {
-                title: "My Projects",
-                showMore: "Show more projects",
-                showLess: "Show less projects",
-            },
-            contact: {
-                title: "Let's Connect",
-                text: "I am always open to new projects and collaborations. Feel free to get in touch!",
-                button: "View Full Portfolio",
-            },
-        },
-    }
+        // Initial setup on page load
+        window.addEventListener('load', () => {
+            updateContent();
+            updateTheme();
+            renderProjects();
+            setActiveSection('home');
+        });
 
-    // Placeholder data for your portfolio videos
-    const portfolioVideos = [
-        {
-            title: "Project 1",
-            url: "https://youtu.be/O8RsvUra8JE",
-            embedUrl: "https://www.youtube.com/embed/O8RsvUra8JE",
-        },
-        {
-            title: "Project 2",
-            url: "https://youtu.be/AAKkb9oXCss",
-            embedUrl: "https://www.youtube.com/embed/AAKkb9oXCss",
-        },
-        {
-            title: "Project 3",
-            url: "https://youtu.be/y4LTPeOgeS0",
-            embedUrl: "https://www.youtube.com/embed/y4LTPeOgeS0",
-        },
-        {
-            title: "Project 4",
-            url: "https://youtu.be/wI8QYzj-phk",
-            embedUrl: "https://www.youtube.com/embed/wI8QYzj-phk",
-        },
-        {
-            title: "Project 5",
-            url: "https://youtu.be/lOnX6pUKkbA",
-            embedUrl: "https://www.youtube.com/embed/lOnX6pUKkbA",
-        },
-        {
-            title: "Project 6",
-            url: "https://youtu.be/wJIEdg1CGns",
-            embedUrl: "https://www.youtube.com/embed/wJIEdg1CGns",
-        },
-        {
-            title: "Project 7",
-            url: "https://youtu.be/nq-nnNSeQbo",
-            embedUrl: "https://www.youtube.com/embed/nq-nnNSeQbo",
-        },
-        {
-            title: "Project 8",
-            url: "https://youtu.be/rrMwJjRxb9E",
-            embedUrl: "https://www.youtube.com/embed/rrMwJjRxb9E",
-        },
-        {
-            title: "Project 9",
-            url: "https://youtu.be/j-AUGz2xvLU",
-            embedUrl: "https://www.youtube.com/embed/j-AUGz2xvLU",
-        },
-        {
-            title: "Project 10",
-            url: "https://youtu.be/3K6otI9MAko",
-            embedUrl: "https://www.youtube.com/embed/3K6otI9MAko",
-        },
-        {
-            title: "Project 11",
-            url: "https://youtu.be/xWCdD5Cz3Q8",
-            embedUrl: "https://www.youtube.com/embed/xWCdD5Cz3Q8",
-        },
-        {
-            title: "Project 12",
-            url: "https://youtu.be/dmPcSstXA4I",
-            embedUrl: "https://www.youtube.com/embed/dmPcSstXA4I",
-        },
-        {
-            title: "Project 13",
-            url: "https://youtu.be/3HvT7U71cpA",
-            embedUrl: "https://www.youtube.com/embed/3HvT7U71cpA",
-        },
-        {
-            title: "Project 14",
-            url: "https://youtu.be/brM7I-4KY0g",
-            embedUrl: "https://www.youtube.com/embed/brM7I-4KY0g",
-        },
-        {
-            title: "Project 15",
-            url: "https://youtu.be/UPBK_LGcslQ",
-            embedUrl: "https://www.youtube.com/embed/UPBK_LGcslQ",
-        },
-        {
-            title: "Project 16",
-            url: "https://youtu.be/7o9G9ZfWRw4",
-            embedUrl: "https://www.youtube.com/embed/7o9G9ZfWRw4",
-        },
-        {
-            title: "Project 17",
-            url: "https://youtu.be/Kzz9EvZynwc",
-            embedUrl: "https://www.youtube.com/embed/Kzz9EvZynwc",
-        },
-        {
-            title: "Project 18",
-            url: "https://youtu.be/7aokYsmPVkg",
-            embedUrl: "https://www.youtube.com/embed/7aokYsmPVkg",
-        },
-        {
-            title: "Project 19",
-            url: "https://youtu.be/pCm0wXebzMk",
-            embedUrl: "https://www.youtube.com/embed/pCm0wXebzMk",
-        },
-        {
-            title: "Project 20",
-            url: "https://youtu.be/yn_64XKkw6c",
-            embedUrl: "https://www.youtube.com/embed/yn_64XKkw6c",
-        },
-        {
-            title: "Project 21",
-            url: "https://youtu.be/gddztaVql3Q",
-            embedUrl: "https://www.youtube.com/embed/gddztaVql3Q",
-        },
-        {
-            title: "Project 22",
-            url: "https://youtu.be/a0xRb27LRKs",
-            embedUrl: "https://www.youtube.com/embed/a0xRb27LRKs",
-        },
-    ]
+        // Set active nav link on scroll
+        let activeSectionId = 'home';
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    activeSectionId = entry.target.id;
+                    setActiveSection(activeSectionId);
+                }
+            });
+        }, { rootMargin: '-50% 0px -50% 0px' });
 
-    // Define colors for both modes
-    const themeColors = isDark
-        ? {
-              bg: "#333333",
-              text: "#cbd5e1",
-              textSecondary: "#94a3b8",
-              // Changed the textAccent color from cyan to the navigation bar's orange
-              textAccent: "#f94706",
-              sectionBg: "#1e1e1e",
-              border: "#334155",
-              accent1: "#f94706", // Also updated other accents for consistency
-              accent2: "#f97316",
-              accent3: "#ffbe6b",
-              buttonBg: "#f94706",
-              buttonText: "#000000",
-              buttonHover: "#ffbe6b",
-              navBg: "#333333", // New nav background color
-              navText: "#B3B3B3", // New nav text color
-              navActiveText: "#ffffff", // New nav active text color
-              navShadow: "0 4px 6px rgba(255, 255, 255, 0.05)",
-              thumbShadow: "0 0 10px rgba(255, 255, 255, 0.15)", // Thin blurred shadow for dark mode
-              buttonShadow: "0 4px 6px rgba(255, 255, 255, 0.05)", // New button shadow for dark mode
-          }
-        : {
-              bg: "#E7E7E7",
-              text: "#1e293b",
-              textSecondary: "#475569",
-              // Changed the textAccent color from cyan to a bright orange for light mode
-              textAccent: "#f97316",
-              sectionBg: "#f1f5f9",
-              border: "#e2e8f0",
-              accent1: "#f97316",
-              accent2: "#f97316",
-              accent3: "#fbbf24",
-              buttonBg: "#f97316",
-              buttonText: "#ffffff",
-              buttonHover: "#ea580c",
-              navBg: "#ffffff", // New nav background color
-              navText: "#1e293b", // New nav text color
-              navActiveText: "#1e293b", // Active text is the same as normal in light mode
-              navShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-              thumbShadow: "0 0 10px rgba(0, 0, 0, 0.15)", // Thin blurred shadow for light mode
-              buttonShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // New button shadow for light mode
-          }
-
-    // New SVG icons for theme toggle (Moon and Star)
-    const MoonIcon = () => (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{ width: "20px", height: "20px", color: "#ffbe6b" }}
-        >
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-    )
-
-    const SunIcon = () => (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{ width: "20px", height: "20px", color: "#fbbf24" }}
-        >
-            <circle cx="12" cy="12" r="5" />
-            <line x1="12" y1="1" x2="12" y2="3" />
-            <line x1="12" y1="21" x2="12" y2="23" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="1" y1="12" x2="3" y2="12" />
-            <line x1="21" y1="12" x2="23" y2="12" />
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-        </svg>
-    )
-
-    // Play button SVG icon
-    const PlayIcon = () => (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="64"
-            height="64"
-            viewBox="0 0 24 24"
-            fill="white"
-            opacity="0.8"
-        >
-            <path d="M8 5v14l11-7z" />
-        </svg>
-    )
-
-    // SVG icon for the down arrow
-    const ArrowDownIcon = () => (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{
-                verticalAlign: "middle",
-                marginLeft: "0.5rem",
-                width: "1rem",
-                height: "1rem",
-            }}
-        >
-            <path d="M12 5v14m7-7-7 7-7-7" />
-        </svg>
-    )
-
-    // SVG icon for the up arrow
-    const ArrowUpIcon = () => (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            style={{
-                verticalAlign: "middle",
-                marginLeft: "0.5rem",
-                width: "1rem",
-                height: "1rem",
-            }}
-        >
-            <path d="M12 19V5m-7 7 7-7 7 7" />
-        </svg>
-    )
-
-    return (
-        <div
-            className={
-                isDark
-                    ? "page-container dark-mode"
-                    : "page-container light-mode"
-            }
-            style={{
-                backgroundColor: themeColors.bg,
-                color: themeColors.text,
-                transition: "background-color 0.5s, color 0.5s",
-                fontFamily: "Inter, sans-serif",
-                scrollBehavior: "smooth",
-            }}
-        >
-            <style>
-                {`
-                    .page-container {
-                        min-height: 100vh;
-                        width: 100vw;
-                        overflow-x: hidden;
-                    }
-
-                    .content-wrapper {
-                        max-width: 1280px;
-                        margin: 0 auto;
-                        padding: 1.5rem;
-                        padding-top: 6rem;
-                        box-sizing: border-box;
-                    }
-
-                    @media (min-width: 768px) {
-                        .content-wrapper {
-                            padding: 2.5rem;
-                            padding-top: 6rem;
-                        }
-                    }
-
-                    /* New hover effect styles for nav links */
-                    .nav-link {
-                        position: relative; /* Needed for positioning the pseudo-element */
-                        transition: color 0.3s;
-                        text-decoration: none;
-                        white-space: nowrap;
-                    }
-
-                    .nav-link::before {
-                        content: '';
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        border-radius: 9999px;
-                        z-index: -1;
-                        opacity: 0;
-                        transition: opacity 0.3s ease, background-color 0.3s ease;
-                    }
-
-                    .dark-mode .nav-link:hover::before {
-                        background-color: rgba(255, 255, 255, 0.1); /* Lighter grey for dark mode */
-                        opacity: 1;
-                    }
-
-                    .light-mode .nav-link:hover::before {
-                        background-color: rgba(0, 0, 0, 0.05); /* Lighter grey for light mode */
-                        opacity: 1;
-                    }
-
-                    /* End of new hover effect styles */
-
-                    .toggle-switch-container {
-                        display: flex;
-                        flex-direction: column; /* Changed to column */
-                        gap: 1rem;
-                    }
-                    /* Updated button dimensions for better spacing */
-                    .toggle-switch {
-                        position: relative;
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        width: 78px; /* Increased width */
-                        height: 40px; /* Increased height */
-                        padding: 3px;
-                        border-radius: 9999px;
-                        cursor: pointer;
-                        transition: background-color 0.3s, border-color 0.3s;
-                        border: 1px solid;
-                    }
-
-                    /* Updated thumb dimensions to fit within the larger switch */
-                    .toggle-switch-thumb {
-                        position: absolute;
-                        width: 34px;
-                        height: 34px;
-                        background-color: white;
-                        border-radius: 50%;
-                        transition: transform 0.3s ease-in-out;
-                        z-index: 1; /* Thumb is now behind the content */
-                    }
-
-                    /* Language text and icons are centered vertically and always on top */
-                    .toggle-inner-container {
-                        position: relative;
-                        z-index: 2; /* Icons and text are on top */
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        width: 100%;
-                        padding: 0 4px; /* Added horizontal padding to align with thumb movement */
-                        box-sizing: border-box; /* Ensures padding is included in width */
-                    }
-
-                    .language-text {
-                        z-index: 2;
-                        position: relative;
-                        font-size: 0.9rem;
-                        font-weight: bold;
-                        transition: color 0.3s;
-                    }
-
-                    .project-buttons {
-                        display: flex;
-                        justify-content: center;
-                        gap: 1rem;
-                        margin-top: 2rem;
-                    }
-
-                    .show-button {
-                        display: inline-block;
-                        font-weight: bold;
-                        padding: 0.75rem 2rem;
-                        border-radius: 9999px;
-                        transition: background-color 0.3s, transform 0.2s;
-                        border: none;
-                        cursor: pointer;
-                        text-decoration: none;
-                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                        text-align: center;
-                    }
-
-                    .show-button:hover {
-                        transform: translateY(-2px);
-                    }
-
-                    /* Styles for the animated grid container */
-                    .animated-grid-container {
-                        overflow: hidden;
-                        transition: height 0.5s ease;
-                    }
-
-                    /* Styles for the animated grid items */
-                    .animated-grid-item {
-                        opacity: 0;
-                        transform: translateY(20px);
-                        transition: opacity 0.5s ease, transform 0.5s ease;
-                    }
-
-                    .animated-grid-item.visible {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-
-                `}
-            </style>
-
-            {/* Fixed Header with centered Navigation */}
-            <div
-                style={{
-                    position: "fixed",
-                    top: "1rem",
-                    left: "1rem",
-                    right: "1rem",
-                    zIndex: "100",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "0 1rem",
-                }}
-            >
-                {/* Fixed Buttons at the top left */}
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "1rem",
-                    }}
-                >
-                    {/* Theme Toggle Switch */}
-                    <div
-                        onClick={() => setIsDark(!isDark)}
-                        className="toggle-switch"
-                        style={{
-                            backgroundColor: isDark ? "#4f46e5" : "#6366f1",
-                            borderColor: isDark ? "#3730a3" : "#4338ca",
-                            boxShadow: themeColors.buttonShadow,
-                            padding: "0",
-                            justifyContent: "start",
-                        }}
-                    >
-                        <div
-                            className="toggle-switch-thumb"
-                            style={{
-                                transform: isDark
-                                    ? "translateX(38px)"
-                                    : "translateX(3px)",
-                                boxShadow: themeColors.thumbShadow,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-                            {isDark ? <MoonIcon /> : <SunIcon />}
-                        </div>
-                    </div>
-
-                    {/* Language Toggle Switch */}
-                    <div
-                        onClick={() => setLang(lang === "en" ? "de" : "en")}
-                        className="toggle-switch"
-                        style={{
-                            backgroundColor:
-                                lang === "en" ? "#f97316" : "#f97316",
-                            borderColor: lang === "en" ? "#ea580c" : "#ea580c",
-                            boxShadow: themeColors.buttonShadow,
-                        }}
-                    >
-                        <div
-                            className="toggle-switch-thumb"
-                            style={{
-                                transform:
-                                    lang === "en"
-                                        ? "translateX(0)"
-                                        : "translateX(36px)",
-                                boxShadow: themeColors.thumbShadow,
-                                left: "3px",
-                            }}
-                        ></div>
-                        <div className="toggle-inner-container">
-                            <span
-                                className="language-text"
-                                style={{
-                                    // Updated language text colors
-                                    color:
-                                        lang === "en"
-                                            ? "rgba(0, 0, 0, 0.5)"
-                                            : "rgba(0, 0, 0, 0.3)",
-                                }}
-                            >
-                                EN
-                            </span>
-                            <span
-                                className="language-text"
-                                style={{
-                                    // Updated language text colors
-                                    color:
-                                        lang === "en"
-                                            ? "rgba(0, 0, 0, 0.3)"
-                                            : "rgba(0, 0, 0, 0.5)",
-                                }}
-                            >
-                                DE
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Centered Navigation Bar */}
-                <nav
-                    style={{
-                        position: "fixed",
-                        top: "1rem",
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        zIndex: "100",
-                        display: "flex",
-                        gap: "1rem",
-                        backgroundColor: themeColors.navBg,
-                        padding: "0.5rem",
-                        borderRadius: "9999px",
-                        border: "none",
-                        boxShadow: themeColors.navShadow,
-                    }}
-                >
-                    {/* The moving orange background indicator */}
-                    <div
-                        style={{
-                            position: "absolute",
-                            backgroundColor: "#f94706",
-                            borderRadius: "9999px",
-                            transition:
-                                "width 0.3s ease, left 0.3s ease, top 0.3s ease, height 0.3s ease, transform 0.3s ease",
-                            opacity: 0,
-                            transform: "scale(0)",
-                            ...indicatorStyle, // Use the new state for the style
-                        }}
-                    />
-                    <a
-                        ref={navRefs.home}
-                        href="#home"
-                        onClick={() => setActiveSection("home")}
-                        className="nav-link"
-                        style={{
-                            position: "relative",
-                            zIndex: 10,
-                            padding: "0.5rem 1rem",
-                            borderRadius: "9999px",
-                            color:
-                                activeSection === "home"
-                                    ? themeColors.navActiveText
-                                    : themeColors.navText,
-                            transition: "color 0.3s",
-                            textDecoration: "none",
-                            whiteSpace: "nowrap", // Ensure text stays on one line
-                        }}
-                    >
-                        {content[lang].nav.home}
-                    </a>
-                    <a
-                        ref={navRefs.about}
-                        href="#about"
-                        onClick={() => setActiveSection("about")}
-                        className="nav-link"
-                        style={{
-                            position: "relative",
-                            zIndex: 10,
-                            padding: "0.5rem 1rem",
-                            borderRadius: "9999px",
-                            color:
-                                activeSection === "about"
-                                    ? themeColors.navActiveText
-                                    : themeColors.navText,
-                            transition: "color 0.3s",
-                            textDecoration: "none",
-                            whiteSpace: "nowrap", // Ensure text stays on one line
-                        }}
-                    >
-                        {content[lang].nav.about}
-                    </a>
-                    <a
-                        ref={navRefs.skills}
-                        href="#skills"
-                        onClick={() => setActiveSection("skills")}
-                        className="nav-link"
-                        style={{
-                            position: "relative",
-                            zIndex: 10,
-                            padding: "0.5rem 1rem",
-                            borderRadius: "9999px",
-                            color:
-                                activeSection === "skills"
-                                    ? themeColors.navActiveText
-                                    : themeColors.navText,
-                            transition: "color 0.3s",
-                            textDecoration: "none",
-                            whiteSpace: "nowrap", // Ensure text stays on one line
-                        }}
-                    >
-                        {content[lang].nav.skills}
-                    </a>
-                    <a
-                        ref={navRefs.expertise}
-                        href="#expertise"
-                        onClick={() => setActiveSection("expertise")}
-                        className="nav-link"
-                        style={{
-                            position: "relative",
-                            zIndex: 10,
-                            padding: "0.5rem 1rem",
-                            borderRadius: "9999px",
-                            color:
-                                activeSection === "expertise"
-                                    ? themeColors.navActiveText
-                                    : themeColors.navText,
-                            transition: "color 0.3s",
-                            textDecoration: "none",
-                            whiteSpace: "nowrap", // Ensure text stays on one line
-                        }}
-                    >
-                        {content[lang].nav.expertise}
-                    </a>
-                    <a
-                        ref={navRefs.projects}
-                        href="#projects"
-                        onClick={() => setActiveSection("projects")}
-                        className="nav-link"
-                        style={{
-                            position: "relative",
-                            zIndex: 10,
-                            padding: "0.5rem 1rem",
-                            borderRadius: "9999px",
-                            color:
-                                activeSection === "projects"
-                                    ? themeColors.navActiveText
-                                    : themeColors.navText,
-                            transition: "color 0.3s",
-                            textDecoration: "none",
-                            whiteSpace: "nowrap", // Ensure text stays on one line
-                        }}
-                    >
-                        {content[lang].nav.projects}
-                    </a>
-                    <a
-                        ref={navRefs.contact}
-                        href="#contact"
-                        onClick={() => setActiveSection("contact")}
-                        className="nav-link"
-                        style={{
-                            position: "relative",
-                            zIndex: 10,
-                            padding: "0.5rem 1rem",
-                            borderRadius: "9999px",
-                            color:
-                                activeSection === "contact"
-                                    ? themeColors.navActiveText
-                                    : themeColors.navText,
-                            transition: "color 0.3s",
-                            textDecoration: "none",
-                            whiteSpace: "nowrap", // Ensure text stays on one line
-                        }}
-                    >
-                        {content[lang].nav.contact}
-                    </a>
-                </nav>
-            </div>
-
-            {/* Content Wrapper for all sections */}
-            <div className="content-wrapper">
-                {/* Home Section */}
-                <header
-                    id="home"
-                    style={{
-                        minHeight: "75vh",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                        textAlign: "center",
-                        paddingBottom: "3rem",
-                        paddingTop: "6rem",
-                    }}
-                >
-                    <h1
-                        style={{
-                            fontSize: "2.25rem",
-                            fontWeight: "800",
-                            color: themeColors.textAccent,
-                            marginBottom: "1rem",
-                            // Removed the text glow effect
-                            "@media (min-width: 768px)": {
-                                fontSize: "3.75rem",
-                            },
-                        }}
-                    >
-                        {content[lang].hero.title}
-                    </h1>
-                    <h2
-                        style={{
-                            fontSize: "1.25rem",
-                            fontWeight: "bold",
-                            color: themeColors.text,
-                            marginBottom: "2rem",
-                        }}
-                    >
-                        {content[lang].hero.subtitle}
-                    </h2>
-                    <p
-                        style={{
-                            maxWidth: "4xl",
-                            fontSize: "1rem",
-                            lineHeight: "1.75rem",
-                            color: themeColors.textSecondary,
-                            "@media (min-width: 768px)": {
-                                fontSize: "1.125rem",
-                            },
-                        }}
-                    >
-                        {content[lang].hero.text}
-                    </p>
-                </header>
-
-                {/* About Section */}
-                <section
-                    id="about"
-                    style={{
-                        backgroundColor: themeColors.sectionBg,
-                        padding: "3rem",
-                        borderRadius: "0.75rem",
-                        marginBottom: "2rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        boxShadow: `0 0 10px ${isDark ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.1)"}`,
-                    }}
-                >
-                    <h2
-                        style={{
-                            fontSize: "2rem",
-                            fontWeight: "bold",
-                            marginBottom: "1.5rem",
-                            color: themeColors.text,
-                            textAlign: "center",
-                        }}
-                    >
-                        {content[lang].about.title}
-                    </h2>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "2rem",
-                            alignItems: "center",
-                            "@media (min-width: 768px)": {
-                                flexDirection: "row",
-                                gap: "4rem",
-                            },
-                        }}
-                    >
-                        <div
-                            style={{
-                                width: "250px",
-                                height: "250px",
-                                backgroundColor: themeColors.border,
-                                borderRadius: "0.5rem",
-                                flexShrink: 0,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                color: themeColors.textSecondary,
-                                fontStyle: "italic",
-                            }}
-                        >
-                            {content[lang].about.placeholder}
-                        </div>
-                        <div
-                            style={{
-                                flexGrow: 1,
-                                textAlign: "center",
-                                "@media (min-width: 768px)": {
-                                    textAlign: "left",
-                                },
-                            }}
-                        >
-                            <p
-                                style={{
-                                    marginBottom: "1rem",
-                                    lineHeight: "1.75rem",
-                                    color: themeColors.text,
-                                }}
-                            >
-                                {content[lang].about.p1}
-                            </p>
-                            <p
-                                style={{
-                                    lineHeight: "1.75rem",
-                                    color: themeColors.text,
-                                }}
-                            >
-                                {content[lang].about.p2}
-                            </p>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Skills Section */}
-                <section
-                    id="skills"
-                    style={{
-                        backgroundColor: themeColors.sectionBg,
-                        padding: "3rem",
-                        borderRadius: "0.75rem",
-                        marginBottom: "2rem",
-                        boxShadow: `0 0 10px ${isDark ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.1)"}`,
-                    }}
-                >
-                    <h2
-                        style={{
-                            fontSize: "2rem",
-                            fontWeight: "bold",
-                            marginBottom: "2rem",
-                            color: themeColors.text,
-                            textAlign: "center",
-                        }}
-                    >
-                        {content[lang].skills.title}
-                    </h2>
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns:
-                                "repeat(auto-fit, minmax(250px, 1fr))",
-                            gap: "1.5rem",
-                        }}
-                    >
-                        {Object.entries(content[lang].skills).map(
-                            ([key, value]) => {
-                                if (key.endsWith("Desc") || key === "title") {
-                                    return null
-                                }
-                                return (
-                                    <div
-                                        key={key}
-                                        style={{
-                                            padding: "1.5rem",
-                                            backgroundColor: themeColors.bg,
-                                            borderRadius: "0.5rem",
-                                            boxShadow: `0 4px 6px ${isDark ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.1)"}`,
-                                            border: "none", // Removed the border
-                                        }}
-                                    >
-                                        <h3
-                                            style={{
-                                                fontSize: "1.125rem",
-                                                fontWeight: "bold",
-                                                color: themeColors.text,
-                                                marginBottom: "0.5rem",
-                                            }}
-                                        >
-                                            {value}
-                                        </h3>
-                                        <p
-                                            style={{
-                                                fontSize: "0.875rem",
-                                                color: themeColors.textSecondary,
-                                            }}
-                                        >
-                                            {content[lang].skills[key + "Desc"]}
-                                        </p>
-                                    </div>
-                                )
-                            }
-                        )}
-                    </div>
-                </section>
-
-                {/* Expertise Section */}
-                <section
-                    id="expertise"
-                    style={{
-                        backgroundColor: themeColors.sectionBg,
-                        padding: "3rem",
-                        borderRadius: "0.75rem",
-                        marginBottom: "2rem",
-                        boxShadow: `0 0 10px ${isDark ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.1)"}`,
-                    }}
-                >
-                    <h2
-                        style={{
-                            fontSize: "2rem",
-                            fontWeight: "bold",
-                            marginBottom: "2rem",
-                            color: themeColors.text,
-                            textAlign: "center",
-                        }}
-                    >
-                        {content[lang].expertise.title}
-                    </h2>
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns:
-                                "repeat(auto-fit, minmax(250px, 1fr))",
-                            gap: "1.5rem",
-                        }}
-                    >
-                        {Object.entries(content[lang].expertise).map(
-                            ([key, value]) => {
-                                if (key.endsWith("Desc") || key === "title") {
-                                    return null
-                                }
-                                return (
-                                    <div
-                                        key={key}
-                                        style={{
-                                            padding: "1.5rem",
-                                            backgroundColor: themeColors.bg,
-                                            borderRadius: "0.5rem",
-                                            boxShadow: `0 4px 6px ${isDark ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.1)"}`,
-                                            border: "none", // Removed the border
-                                        }}
-                                    >
-                                        <h3
-                                            style={{
-                                                fontSize: "1.125rem",
-                                                fontWeight: "bold",
-                                                color: themeColors.text,
-                                                marginBottom: "0.5rem",
-                                            }}
-                                        >
-                                            {value}
-                                        </h3>
-                                        <p
-                                            style={{
-                                                fontSize: "0.875rem",
-                                                color: themeColors.textSecondary,
-                                            }}
-                                        >
-                                            {
-                                                content[lang].expertise[
-                                                    key + "Desc"
-                                                ]
-                                            }
-                                        </p>
-                                    </div>
-                                )
-                            }
-                        )}
-                    </div>
-                </section>
-
-                {/* Projects Section */}
-                <section
-                    id="projects"
-                    style={{
-                        backgroundColor: themeColors.sectionBg,
-                        padding: "3rem",
-                        borderRadius: "0.75rem",
-                        marginBottom: "2rem",
-                        boxShadow: `0 0 10px ${isDark ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.1)"}`,
-                    }}
-                >
-                    <h2
-                        style={{
-                            fontSize: "2rem",
-                            fontWeight: "bold",
-                            marginBottom: "2rem",
-                            color: themeColors.text,
-                            textAlign: "center",
-                        }}
-                    >
-                        {content[lang].projects.title}
-                    </h2>
-                    {/* Container for the animated grid */}
-                    <div
-                        className="animated-grid-container"
-                        ref={projectsGridRef}
-                    >
-                        <div
-                            style={{
-                                display: "grid",
-                                gap: "2rem",
-                                // Updated the grid layout to be responsive
-                                gridTemplateColumns:
-                                    "repeat(auto-fit, minmax(250px, 1fr))",
-                            }}
-                        >
-                            {/* Map over the projects to render them */}
-                            {portfolioVideos
-                                .slice(0, visibleCount)
-                                .map((video, index) => (
-                                    <div
-                                        key={index}
-                                        className={`animated-grid-item visible`}
-                                        style={{
-                                            backgroundColor: themeColors.bg,
-                                            padding: "1rem",
-                                            borderRadius: "0.5rem",
-                                            boxShadow: `0 4px 6px ${isDark ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.1)"}`,
-                                            border: "none", // Removed the border
-                                            cursor: "pointer",
-                                        }}
-                                        onClick={() => handleVideoClick(video)}
-                                    >
-                                        <div
-                                            style={{
-                                                position: "relative",
-                                                paddingBottom: "56.25%",
-                                                height: 0,
-                                                marginBottom: "0.5rem",
-                                                borderRadius: "0.25rem",
-                                                overflow: "hidden",
-                                                backgroundImage: `url(https://img.youtube.com/vi/${video.embedUrl.split("/").pop()}/maxresdefault.jpg)`,
-                                                backgroundSize: "cover",
-                                                backgroundPosition: "center",
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                            }}
-                                        >
-                                            <div
-                                                style={{
-                                                    position: "absolute",
-                                                    top: 0,
-                                                    left: 0,
-                                                    width: "100%",
-                                                    height: "100%",
-                                                    backgroundColor:
-                                                        "rgba(0, 0, 0, 0.4)",
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    justifyContent: "center",
-                                                    transition:
-                                                        "background-color 0.3s",
-                                                }}
-                                                onMouseEnter={(e) =>
-                                                    (e.currentTarget.style.backgroundColor =
-                                                        "rgba(0, 0, 0, 0.6)")
-                                                }
-                                                onMouseLeave={(e) =>
-                                                    (e.currentTarget.style.backgroundColor =
-                                                        "rgba(0, 0, 0, 0.4)")
-                                                }
-                                            >
-                                                <PlayIcon />
-                                            </div>
-                                        </div>
-                                        <h3
-                                            style={{
-                                                fontSize: "1rem",
-                                                fontWeight: "bold",
-                                                color: themeColors.text,
-                                                textAlign: "center",
-                                            }}
-                                        >
-                                            {video.title}
-                                        </h3>
-                                    </div>
-                                ))}
-                        </div>
-                    </div>
-
-                    {/* The buttons for showing more or less projects */}
-                    <div className="project-buttons">
-                        {visibleCount < portfolioVideos.length ? (
-                            <button
-                                onClick={toggleProjects}
-                                className="show-button"
-                                style={{
-                                    backgroundColor: themeColors.buttonBg,
-                                    color: themeColors.buttonText,
-                                    boxShadow: themeColors.buttonShadow,
-                                }}
-                            >
-                                {content[lang].projects.showMore}
-                                <ArrowDownIcon />
-                            </button>
-                        ) : (
-                            <button
-                                onClick={toggleProjects}
-                                className="show-button"
-                                style={{
-                                    backgroundColor: themeColors.buttonBg,
-                                    color: themeColors.buttonText,
-                                    boxShadow: themeColors.buttonShadow,
-                                }}
-                            >
-                                {content[lang].projects.showLess}
-                                <ArrowUpIcon />
-                            </button>
-                        )}
-                    </div>
-                </section>
-
-                {/* Contact Section */}
-                <footer
-                    id="contact"
-                    style={{
-                        backgroundColor: themeColors.sectionBg,
-                        padding: "3rem",
-                        borderRadius: "0.75rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        textAlign: "center",
-                        boxShadow: `0 0 10px ${isDark ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.1)"}`,
-                    }}
-                >
-                    <h2
-                        style={{
-                            fontSize: "2rem",
-                            fontWeight: "bold",
-                            marginBottom: "1rem",
-                            color: themeColors.text,
-                        }}
-                    >
-                        {content[lang].contact.title}
-                    </h2>
-                    <p
-                        style={{
-                            fontSize: "1rem",
-                            lineHeight: "1.75rem",
-                            marginBottom: "1.5rem",
-                            color: themeColors.textSecondary,
-                        }}
-                    >
-                        {content[lang].contact.text}
-                    </p>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "0.5rem",
-                            color: themeColors.text,
-                            marginBottom: "2rem",
-                        }}
-                    >
-                        <p
-                            style={{
-                                fontSize: "1rem",
-                                "@media (min-width: 768px)": {
-                                    fontSize: "1.125rem",
-                                },
-                            }}
-                        >
-                            +49 176 34 42 5050
-                        </p>
-                        <p
-                            style={{
-                                fontSize: "1rem",
-                                "@media (min-width: 768px)": {
-                                    fontSize: "1.125rem",
-                                },
-                            }}
-                        >
-                            s.fotouhian@gmail.com
-                        </p>
-                    </div>
-                    <a
-                        href="https://shahab-studio.framer.ai/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                            marginTop: "2rem",
-                            display: "inline-block",
-                            fontWeight: "bold",
-                            padding: "0.75rem 2rem",
-                            borderRadius: "9999px",
-                            transition: "background-color 0.3s",
-                            backgroundColor: themeColors.buttonBg,
-                            color: themeColors.buttonText,
-                        }}
-                    >
-                        {content[lang].contact.button}
-                    </a>
-                </footer>
-            </div>
-
-            {/* Conditional rendering of the modal */}
-            {showModal && (
-                <VideoModal
-                    video={activeVideo}
-                    onClose={handleCloseModal}
-                    isDark={isDark}
-                    themeColors={themeColors}
-                />
-            )}
-        </div>
-    )
-}
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
