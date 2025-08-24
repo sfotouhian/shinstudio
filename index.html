@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shahab Fotouhian - Portfolio</title>
+    <!-- Use the Inter font for a modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Custom scroll-snap for a nice scrolling effect */
+        .scroll-snap-y {
+            scroll-snap-type: y mandatory;
+        }
+        .snap-start {
+            scroll-snap-align: start;
+        }
+        /* Style for the underline on nav links */
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: transform 0.3s ease;
+            transform: scaleX(1);
+        }
+        .nav-link::after {
+            transform: scaleX(0);
+        }
+        .dark .nav-link.active::after {
+            background-color: #e9c46a;
+        }
+        .light .nav-link.active::after {
+            background-color: #2a9d8f;
+        }
+
+        /* Custom shadow and color for light mode */
+        .light .card-gradient {
+            background: linear-gradient(145deg, #ffffff, #f5f5f4);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Custom shadow and color for dark mode */
+        .dark .card-gradient {
+            background: linear-gradient(145deg, #292524, #1c1917);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-stone-900 text-stone-100 transition-all duration-300 dark">
+    <!-- Video Modal - Initially hidden -->
+    <div id="video-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 backdrop-blur-md bg-black bg-opacity-80" onclick="closeModal()"></div>
+        <div class="relative z-[101] w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl scale-95 opacity-0 transition-all duration-300 transform">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-[102] text-white text-3xl font-bold bg-black/50 rounded-full w-10 h-10 flex items-center justify-center" aria-label="Close video player">&times;</button>
+            <div class="relative" style="padding-top: 56.25%;">
+                <iframe id="youtube-player" class="absolute top-0 left-0 w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 z-50 w-full p-4 md:p-6 bg-transparent">
+        <div class="container mx-auto flex items-center justify-between">
+            <a href="#" class="text-xl font-bold rounded-lg p-2 bg-black bg-opacity-30 backdrop-blur-md">SF.</a>
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-6 rounded-full px-6 py-2 bg-black bg-opacity-30 backdrop-blur-md">
+                    <a href="#home" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('home')">Home</a>
+                    <a href="#about" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('about')">About</a>
+                    <a href="#skills" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('skills')">Skills</a>
+                    <a href="#expertise" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('expertise')">Expertise</a>
+                    <a href="#projects" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('projects')">Projects</a>
+                    <a href="#contact" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('contact')">Contact</a>
+                </div>
+                <button id="lang-toggle" class="bg-black bg-opacity-30 backdrop-blur-md text-sm md:text-base px-3 py-1 md:px-4 md:py-2 rounded-full font-semibold">EN</button>
+                <button id="theme-toggle" class="text-xl md:text-2xl bg-black bg-opacity-30 backdrop-blur-md p-2 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Sections -->
+    <main class="scroll-snap-y">
+        <!-- Home Section -->
+        <section id="home" class="snap-start relative flex items-center justify-center min-h-screen text-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div class="w-full h-full bg-cover bg-center" style="background-image: url(https://placehold.co/1920x1080/264653/e9c46a?text=Hero+Video)"></div>
+            </div>
+            <div class="relative z-10 p-4 md:p-8 bg-black bg-opacity-40 backdrop-blur-sm rounded-xl max-w-lg md:max-w-xl">
+                <h1 class="text-4xl md:text-6xl font-bold">Hello, I'm Shahab.</h1>
+                <p class="mt-4 text-lg md:text-2xl font-light">A freelance Motion Designer & UI/UX Designer based in Berlin.</p>
+                <a href="#contact" class="mt-6 inline-block text-lg md:text-xl font-semibold px-6 py-3 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">Get in Touch</a>
+            </div>
+            <div class="absolute bottom-8 text-center text-sm md:text-base font-light opacity-75 animate-bounce">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                <span class="scroll-hint">Scroll down for more</span>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="snap-start py-16 md:py-24 card-gradient">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">About Me</h2>
+                <div class="max-w-3xl mx-auto text-lg md:text-xl leading-relaxed text-center">
+                    <p>I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="snap-start py-16 md:py-24 bg-stone-900 text-stone-100">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Skills & Expertise</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                    <!-- UI/UX Skills Card -->
+                    <div class="card-gradient p-6 md:p-8 rounded-xl shadow-lg border border-white/5 dark:border-stone-700/50">
+                        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-center">UI/UX Design</h3>
+                        <ul class="list-disc list-inside space-y-2 text-base md:text-lg">
+                            <li>User Research & Analysis</li>
+                            <li>Wireframing & Prototyping</li>
+                            <li>Usability Testing</li>
+                            <li>Figma & Adobe XD</li>
+                            <li>Interaction Design</li>
+                        </ul>
+                    </div>
+
+                    <!-- Motion Design Skills Card -->
+                    <div class="card-gradient p-6 md:p-8 rounded-xl shadow-lg border border-white/5 dark:border-stone-700/50">
+                        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-center">Motion Design</h3>
+                        <ul class="list-disc list-inside space-y-2 text-base md:text-lg">
+                            <li>2D/3D Animation</li>
+                            <li>Video Editing & Compositing</li>
+                            <li>Visual Effects (VFX)</li>
+                            <li>After Effects & Cinema 4D</li>
+                            <li>Storyboarding & Concepts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Expertise Section -->
+        <section id="expertise" class="snap-start py-16 md:py-24 card-gradient">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Expertise</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                    <!-- UI/UX Design Item -->
+                    <div class="text-center p-6 md:p-8 rounded-xl bg-white/5 dark:bg-stone-800/50 shadow-md transition-shadow hover:shadow-xl">
+                        <div class="w-16 h-16 mx-auto mb-4 p-3 rounded-full bg-yellow-400/20 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#e9c46a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10"><path d="M17 21h-2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2zM7 21H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2z"/></svg>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-semibold mb-2">UI/UX Design</h3>
+                        <p class="text-sm md:text-base opacity-80">Crafting intuitive and engaging user interfaces that provide seamless experiences. From user flows to interactive prototypes, I focus on creating designs that are both beautiful and functional.</p>
+                    </div>
+                    <!-- Motion Design Item -->
+                    <div class="text-center p-6 md:p-8 rounded-xl bg-white/5 dark:bg-stone-800/50 shadow-md transition-shadow hover:shadow-xl">
+                        <div class="w-16 h-16 mx-auto mb-4 p-3 rounded-full bg-yellow-400/20 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#e9c46a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-semibold mb-2">Motion Design</h3>
+                        <p class="text-sm md:text-base opacity-80">Adding life and dynamic energy to brands and stories through animation. My expertise spans from logo animations and explainers to character animation and visual effects.</p>
+                    </div>
+                    <!-- Webflow Development Item -->
+                    <div class="text-center p-6 md:p-8 rounded-xl bg-white/5 dark:bg-stone-800/50 shadow-md transition-shadow hover:shadow-xl">
+                        <div class="w-16 h-16 mx-auto mb-4 p-3 rounded-full bg-yellow-400/20 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#e9c46a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10"><path d="M10 17L4 12 10 7"/></svg>
+                        </div>
+                        <h3 class="text-lg md:text-xl font-semibold mb-2">Webflow Development</h3>
+                        <p class="text-sm md:text-base opacity-80">Turning design visions into reality with clean, responsive, and functional websites. Using Webflow, I build custom sites that are easy to manage and perform flawlessly on any device.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="snap-start py-16 md:py-24 bg-stone-900 text-stone-100">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">My projects</h2>
+                <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+                    <!-- Project Cards will be injected here by JavaScript -->
+                </div>
+                <div class="text-center mt-12">
+                    <button id="show-more-btn" class="inline-flex items-center text-lg md:text-xl font-semibold px-6 py-3 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">
+                        Show More Videos
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                    </button>
+                    <button id="show-less-btn" class="hidden inline-flex items-center text-lg md:text-xl font-semibold px-6 py-3 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">
+                        Show Less Videos
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2 transform rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="snap-start py-16 md:py-24 card-gradient">
+            <div class="container mx-auto px-4 md:px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Let's Talk</h2>
+                <p class="text-lg md:text-xl font-light mb-8">Interested in a collaboration? Feel free to reach out!</p>
+                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+                    <a href="mailto:s.fotouhian@gmail.com" class="inline-block text-lg md:text-xl font-semibold px-8 py-4 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">Let's Connect</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 md:py-12 text-center bg-stone-900 text-stone-100">
+        <p class="text-sm md:text-base opacity-75">Designed and Developed by Shahab Fotouhian</p>
+        <div class="mt-4 flex flex-col items-center">
+            <a href="tel:+4917634425050" class="text-sm md:text-base opacity-75 hover:underline">+49 176 34 42 5050</a>
+            <a href="mailto:s.fotouhian@gmail.com" class="text-sm md:text-base opacity-75 hover:underline">s.fotouhian@gmail.com</a>
+        </div>
+        <div class="flex justify-center space-x-6 mt-4 opacity-75">
+            <a href="https://www.behance.net/shahabfotouhian" target="_blank" rel="noopener noreferrer" aria-label="Behance" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 22.028v-2.18h-1.64c-2.31 0-3.37-.92-3.37-2.92v-2.22h5.68c.55 0 1.05-.18 1.45-.52.4-.34.61-.83.61-1.42s-.21-1.08-.61-1.42a2.38 2.38 0 00-1.45-.52h-5.68v-2.24c0-2.35 1.08-3.4 3.39-3.4h1.62V3.972h-1.62c-2.78 0-4.63 1.3-4.63 4.09v2.24H5.98c-1.39 0-2.25.92-2.25 2.58s.86 2.58 2.25 2.58h5.68v2.22c0 2.21-1.85 3.55-4.65 3.55H3.72V22.028z"/></svg></a>
+            <a href="https://www.linkedin.com/in/shahab-fotouhian/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 21v-8a4 4 0 0 1 8 0v8a4 4 0 0 1-8 0zM12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg></a>
+            <a href="https://www.instagram.com/shahab.studio/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.784 3.016a5.523 5.523 0 011.233 1.233c.52.52.926 1.108 1.233 1.764a5.523 5.523 0 010 6.642 5.523 5.523 0 01-1.233 1.764 5.523 5.523 0 01-1.764 1.233 5.523 5.523 0 01-6.642 0 5.523 5.523 0 01-1.764-1.233 5.523 5.523 0 01-1.233-1.764 5.523 5.523 0 010-6.642 5.523 5.523 0 011.233-1.764 5.523 5.523 0 011.764-1.233 5.523 5.523 0 016.642 0z"/></svg></a>
+        </div>
+    </footer>
+
+    <script>
+        // Data for all projects
+        const projectsData = [
+            { id: "project-1", title: "Digital Nomad", youtubeId: "dQw4w9WgXcQ" },
+            { id: "project-2", title: "City Explorer", youtubeId: "2n9M_C60EGA" },
+            { id: "project-3", title: "Aura Meditation", youtubeId: "c34t_4_g-iM" },
+            { id: "project-4", title: "Synthwave Visuals", youtubeId: "y1T1B4_nE30" },
+            { id: "project-5", title: "Abstract Flow", youtubeId: "V_J7T8zFfWk" },
+            { id: "project-6", title: "Product Showcase", youtubeId: "Fj1-s5z7E60" },
+            { id: "project-7", title: "Coffee App UI", youtubeId: "T8L04L-1t9w" },
+            { id: "project-8", title: "Corporate Explainer", youtubeId: "k-f5qM0vN2s" },
+            { id: "project-9", title: "Fitness App", youtubeId: "5423fA-uXbQ" },
+            { id: "project-10", title: "Space Exploration", youtubeId: "e9fP6p727vQ" },
+            { id: "project-11", title: "E-commerce Website", youtubeId: "6m7aU4K0534" },
+            { id: "project-12", title: "Data Visualization", youtubeId: "p573D5P3D8s" },
+            { id: "project-13", title: "Gaming UI", youtubeId: "9bZkp7q19f0" },
+            { id: "project-14", title: "Character Animation", youtubeId: "y8I5Hq2z6X4" },
+            { id: "project-15", title: "Brand Film", youtubeId: "j6Jp60wYtT8" },
+            { id: "project-16", title: "Iconography Set", youtubeId: "b85z7r0B96c" },
+        ];
+
+        // Constants and state
+        const themeToggle = document.getElementById('theme-toggle');
+        const langToggle = document.getElementById('lang-toggle');
+        const projectsGrid = document.getElementById('projects-grid');
+        const showMoreBtn = document.getElementById('show-more-btn');
+        const showLessBtn = document.getElementById('show-less-btn');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const modal = document.getElementById('video-modal');
+        const player = document.getElementById('youtube-player');
+        const sections = document.querySelectorAll('section');
+
+        const content = {
+            en: {
+                homeTitle: "Hello, I'm Shahab.",
+                homeSubtitle: "A freelance Motion Designer & UI/UX Designer based in Berlin.",
+                homeCta: "Get in Touch",
+                aboutTitle: "About Me",
+                aboutText: "I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.",
+                skillsTitle: "Skills & Expertise",
+                uiuxTitle: "UI/UX Design",
+                motionTitle: "Motion Design",
+                expertiseTitle: "Expertise",
+                contactTitle: "Let's Talk",
+                contactSubtitle: "Interested in a collaboration? Feel free to reach out!",
+                contactButton: "Let's Connect",
+                navHome: "Home",
+                navAbout: "About",
+                navSkills: "Skills",
+                navExpertise: "Expertise",
+                navProjects: "Projects",
+                navContact: "Contact",
+                footerText: "Designed and Developed by Shahab Fotouhian",
+                showMore: "Show More Videos",
+                showLess: "Show Less Videos",
+                scrollHint: "Scroll down for more"
+            },
+            de: {
+                homeTitle: "Hallo, ich bin Shahab.",
+                homeSubtitle: "Ein freiberuflicher Motion Designer & UI/UX Designer in Berlin.",
+                homeCta: "Kontakt aufnehmen",
+                aboutTitle: "Über mich",
+                aboutText: "Ich bin darauf spezialisiert, fesselnde visuelle Geschichten durch Animation und Video zu erschaffen. Mit umfassender Erfahrung in Motion Graphics und einer soliden Grundlage in der Videoproduktion erwecke ich Konzepte mit Kreativität und technischer Präzision zum Leben.",
+                skillsTitle: "Fähigkeiten & Expertise",
+                uiuxTitle: "UI/UX Design",
+                motionTitle: "Motion Design",
+                expertiseTitle: "Fachgebiete",
+                contactTitle: "Lass uns reden",
+                contactSubtitle: "Interessiert an einer Zusammenarbeit? Zögere nicht, mich zu kontaktieren!",
+                contactButton: "Verbinden wir uns",
+                navHome: "Startseite",
+                navAbout: "Über mich",
+                navSkills: "Fähigkeiten",
+                navExpertise: "Expertise",
+                navProjects: "Projekte",
+                navContact: "Kontakt",
+                footerText: "Entworfen und entwickelt von Shahab Fotouhian",
+                showMore: "Mehr Videos anzeigen",
+                showLess: "Weniger Videos anzeigen",
+                scrollHint: "Nach unten scrollen"
+            }
+        };
+
+        let currentLang = 'en';
+        let isDark = true;
+        let visibleProjectsCount = 4;
+
+        // Functions
+        function updateContent() {
+            const currentContent = content[currentLang];
+            // Update all elements with dynamic content
+            document.querySelector('#home h1').textContent = currentContent.homeTitle;
+            document.querySelector('#home p').textContent = currentContent.homeSubtitle;
+            document.querySelector('#home a').textContent = currentContent.homeCta;
+            document.querySelector('#about h2').textContent = currentContent.aboutTitle;
+            document.querySelector('#about p').textContent = currentContent.aboutText;
+            document.querySelector('#skills h2').textContent = currentContent.skillsTitle;
+            document.querySelector('#skills h3').textContent = currentContent.uiuxTitle;
+            document.querySelector('#skills .card-gradient:last-child h3').textContent = currentContent.motionTitle;
+            document.querySelector('#expertise h2').textContent = currentContent.expertiseTitle;
+            document.querySelector('#contact h2').textContent = currentContent.contactTitle;
+            document.querySelector('#contact p').textContent = currentContent.contactSubtitle;
+            document.querySelector('#contact a').textContent = currentContent.contactButton;
+            document.querySelector('footer p').textContent = currentContent.footerText;
+            document.querySelector('.scroll-hint').textContent = currentContent.scrollHint;
+            document.querySelector('#show-more-btn').textContent = currentContent.showMore;
+            document.querySelector('#show-less-btn').textContent = currentContent.showLess;
+
+            // Update nav links
+            const navMap = { home: 'navHome', about: 'navAbout', skills: 'navSkills', expertise: 'navExpertise', projects: 'navProjects', contact: 'navContact' };
+            navLinks.forEach(link => {
+                const sectionId = link.getAttribute('href').substring(1);
+                link.textContent = currentContent[navMap[sectionId]];
+            });
+
+            // Update language toggle button text
+            langToggle.textContent = currentLang.toUpperCase();
+        }
+        
+        function updateTheme() {
+            if (isDark) {
+                document.body.classList.remove('light');
+                document.body.classList.add('dark');
+                themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>';
+                document.querySelector('#home div:nth-child(1)').style.backgroundImage = `url(https://placehold.co/1920x1080/264653/e9c46a?text=Hero+Video)`;
+            } else {
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+                themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>';
+                document.querySelector('#home div:nth-child(1)').style.backgroundImage = `url(https://placehold.co/1920x1080/e9c46a/2a9d8f?text=Hero+Video)`;
+            }
+        }
+
+        function renderProjects() {
+            projectsGrid.innerHTML = ''; // Clear existing projects
+            const projectsToRender = projectsData.slice(0, visibleProjectsCount);
+            projectsToRender.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = `card-gradient p-4 md:p-6 rounded-2xl shadow-lg border border-white/5 dark:border-stone-700/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl cursor-pointer`;
+                projectCard.setAttribute('data-youtube-id', project.youtubeId);
+                projectCard.innerHTML = `
+                    <div class="aspect-video w-full rounded-xl overflow-hidden mb-4 relative group">
+                        <img src="https://img.youtube.com/vi/${project.youtubeId}/hqdefault.jpg" alt="Thumbnail for ${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold text-center">${project.title}</h3>
+                `;
+                projectCard.addEventListener('click', () => openModal(project.youtubeId));
+                projectsGrid.appendChild(projectCard);
+            });
+
+            // Update button visibility
+            if (visibleProjectsCount < projectsData.length) {
+                showMoreBtn.classList.remove('hidden');
+                showLessBtn.classList.add('hidden');
+            } else {
+                showMoreBtn.classList.add('hidden');
+                showLessBtn.classList.remove('hidden');
+            }
+        }
+        
+        function openModal(youtubeId) {
+            player.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
+            modal.style.display = 'flex';
+            // Trigger transition
+            setTimeout(() => {
+                modal.querySelector('div:nth-child(2)').classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+        
+        function closeModal() {
+            modal.querySelector('div:nth-child(2)').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                player.src = ''; // Stop the video
+            }, 300);
+        }
+
+        function setActiveSection(sectionId) {
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        // Event listeners
+        themeToggle.addEventListener('click', () => {
+            isDark = !isDark;
+            updateTheme();
+        });
+
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'de' : 'en';
+            updateContent();
+        });
+
+        showMoreBtn.addEventListener('click', () => {
+            visibleProjectsCount = projectsData.length;
+            renderProjects();
+        });
+        
+        showLessBtn.addEventListener('click', () => {
+            visibleProjectsCount = 4;
+            renderProjects();
+        });
+
+        // Initial setup on page load
+        window.addEventListener('load', () => {
+            updateContent();
+            updateTheme();
+            renderProjects();
+            setActiveSection('home');
+        });
+
+        // Set active nav link on scroll
+        let activeSectionId = 'home';
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    activeSectionId = entry.target.id;
+                    setActiveSection(activeSectionId);
+                }
+            });
+        }, { rootMargin: '-50% 0px -50% 0px' });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
