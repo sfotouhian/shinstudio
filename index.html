@@ -1,27 +1,111 @@
 import React, { useState, useEffect, useRef } from "react"
 
-// Import Lucide-React icons
-import {
-    Sparkles,
-    Film,
-    Image,
-    PenTool,
-    MonitorPlay,
-    Mic,
-    FileText,
-    Slack,
-    Cloud,
-    FileSearch,
-    Video,
-    LayoutDashboard,
-} from "lucide-react"
+// A new component for the video pop-up modal
+const VideoModal = ({ video, onClose, isDark, themeColors }) => {
+    // If no video is selected, don't show the modal
+    if (!video) return null
 
-// Main React Component for the Portfolio Website, designed for Framer
+    return (
+        // Modal overlay
+        <div
+            style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: isDark
+                    ? "rgba(0, 0, 0, 0.9)"
+                    : "rgba(0, 0, 0, 0.7)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 1000, // Ensure it's on top of everything
+                padding: "1rem",
+                boxSizing: "border-box",
+            }}
+            onClick={onClose} // Close modal when clicking the backdrop
+        >
+            {/* Modal content container */}
+            <div
+                style={{
+                    position: "relative",
+                    width: "100%",
+                    maxWidth: "900px",
+                    borderRadius: "0.75rem",
+                    overflow: "hidden",
+                    backgroundColor: themeColors.bg,
+                    boxShadow: `0 8px 30px ${isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.3)"}`,
+                }}
+                onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+            >
+                {/* Close button */}
+                <button
+                    onClick={onClose}
+                    style={{
+                        position: "absolute",
+                        top: "0.5rem",
+                        right: "0.5rem",
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        color: "white",
+                        borderRadius: "50%",
+                        border: "none",
+                        width: "30px",
+                        height: "30px",
+                        fontSize: "1.2rem",
+                        cursor: "pointer",
+                        zIndex: 1010,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: 0,
+                    }}
+                >
+                    &times;
+                </button>
+                {/* Video container with a fixed aspect ratio */}
+                <div
+                    style={{
+                        position: "relative",
+                        paddingBottom: "56.25%", // 16:9 aspect ratio
+                        height: 0,
+                    }}
+                >
+                    <iframe
+                        src={`${video.embedUrl}?autoplay=1`}
+                        title={video.title}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            width: "100%",
+                            height: "100%",
+                        }}
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+// Main React Component for the Portfolio Website
 export default function App() {
-    // State variables for theme and language, as in your original file
     const [isDark, setIsDark] = useState(true)
     const [lang, setLang] = useState("en")
     const [activeSection, setActiveSection] = useState("home")
+    // New state to hold the style of the nav indicator
+    const [indicatorStyle, setIndicatorStyle] = useState({})
+    // New state for the video modal
+    const [showModal, setShowModal] = useState(false)
+    const [activeVideo, setActiveVideo] = useState(null)
+    // State to control how many projects are visible, starting with 4
+    const [visibleCount, setVisibleCount] = useState(4)
+    // Ref to measure the projects grid height
+    const projectsGridRef = useRef(null)
+
     const navRefs = {
         home: useRef(null),
         about: useRef(null),
@@ -31,10 +115,38 @@ export default function App() {
         contact: useRef(null),
     }
 
-    // This useEffect hook is for the scroll-based navigation indicator
+    // Function to handle opening the video modal
+    const handleVideoClick = (video) => {
+        setActiveVideo(video)
+        setShowModal(true)
+    }
+
+    // Function to handle closing the video modal
+    const handleCloseModal = () => {
+        setShowModal(false)
+        setActiveVideo(null) // Clear the active video
+    }
+
+    // Function to toggle between showing more or less projects
+    const toggleProjects = () => {
+        if (visibleCount === 4) {
+            setVisibleCount(portfolioVideos.length)
+        } else {
+            setVisibleCount(4)
+        }
+    }
+
+    // Effect to handle the scrolling and update the active section
     useEffect(() => {
         const handleScroll = () => {
-            const sections = ["home", "about", "skills", "expertise", "projects", "contact"]
+            const sections = [
+                "home",
+                "about",
+                "skills",
+                "expertise",
+                "projects",
+                "contact",
+            ]
             let currentSection = ""
 
             for (const sectionId of sections) {
@@ -67,53 +179,21 @@ export default function App() {
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
 
-    const getIndicatorStyle = () => {
+    // Effect to update the indicator's position and size whenever activeSection or lang changes
+    useEffect(() => {
         const activeRef = navRefs[activeSection].current
         if (!activeRef) return {}
 
-        return {
+        // Set the new style for the indicator
+        setIndicatorStyle({
             width: activeRef.offsetWidth,
             height: activeRef.offsetHeight,
             left: activeRef.offsetLeft,
             top: activeRef.offsetTop,
             opacity: 1,
             transform: "scale(1)",
-        }
-    }
-
-    // Function to get the appropriate icon for each skill
-    const getSkillIcon = (skillName) => {
-        // Increased icon size to 36 for better visibility
-        const IconStyle = { size: 36, color: themeColors.textSecondary }
-        switch (skillName) {
-            case "Adobe After Effects":
-                return <Sparkles {...IconStyle} />
-            case "Adobe Premiere Pro":
-                return <Film {...IconStyle} />
-            case "Adobe Photoshop":
-                return <Image {...IconStyle} />
-            case "Adobe Illustrator":
-                return <PenTool {...IconStyle} />
-            case "Adobe Media Encoder":
-                return <MonitorPlay {...IconStyle} />
-            case "Adobe Audition":
-                return <Mic {...IconStyle} />
-            case "Office 365":
-                return <FileText {...IconStyle} />
-            case "Slack":
-                return <Slack {...IconStyle} />
-            case "Creative Cloud":
-                return <Cloud {...IconStyle} />
-            case "Acrobat Pro":
-                return <FileSearch {...IconStyle} />
-            case "Camtasia":
-                return <Video {...IconStyle} />
-            case "Asana":
-                return <LayoutDashboard {...IconStyle} />
-            default:
-                return null
-        }
-    }
+        })
+    }, [activeSection, lang]) // Add lang to the dependency array
 
     // Content for both languages
     const content = {
@@ -139,28 +219,59 @@ export default function App() {
             },
             skills: {
                 title: "Skills",
-                list: [
-                    { name: "Adobe After Effects", desc: "Motion Graphics & VFX" },
-                    { name: "Adobe Premiere Pro", desc: "Video Editing & Color Grading" },
-                    { name: "Adobe Photoshop", desc: "Image manipulation" },
-                    { name: "Adobe Illustrator", desc: "Vector graphics design" },
-                    { name: "Adobe Media Encoder", desc: "Video encoding and conversion" },
-                    { name: "Adobe Audition", desc: "Audio editing and mixing" },
-                    { name: "Office 365", desc: "Productivity suite" },
-                    { name: "Slack", desc: "Team collaboration and communication" },
-                    { name: "Creative Cloud", desc: "Comprehensive creative suite management" },
-                    { name: "Acrobat Pro", desc: "PDF creation and editing" },
-                    { name: "Camtasia", desc: "Screen recording and video editing" },
-                    { name: "Asana", desc: "Project management" }
-                ]
+                motionGraphics: "Motion Graphics",
+                motionGraphicsDesc:
+                    "Creating dynamic visual effects and animated content.",
+                videoProduction: "Video Production",
+                videoProductionDesc:
+                    "Filming, drone piloting, and on-set management.",
+                storyboarding: "Storyboarding",
+                storyboardingDesc:
+                    "Visualizing concepts and planning narratives.",
+                projectManagement: "Project Management",
+                projectManagementDesc: "Agile methodologies and SCRUM.",
+                creativeDirection: "Creative Direction",
+                creativeDirectionDesc:
+                    "Leading projects from concept to completion.",
+                postProduction: "Post-Production",
+                postProductionDesc: "Editing, color grading, and sound design.",
             },
             expertise: {
                 title: "Expertise",
-                placeholder: "We'll add a detailed description of your key areas of expertise here. For example, your proficiency in SCRUM, agile project management, or your specialization in a certain type of motion design."
+                afterEffects: "Adobe After Effects",
+                afterEffectsDesc:
+                    "Advanced motion graphics, VFX, and compositing.",
+                premierePro: "Adobe Premiere Pro",
+                premiereProDesc:
+                    "Professional video editing and color correction.",
+                illustrator: "Adobe Illustrator",
+                illustratorDesc:
+                    "Vector graphics and illustration for animation.",
+                photoshop: "Adobe Photoshop",
+                photoshopDesc:
+                    "Image manipulation, compositing, and digital painting.",
+                audition: "Adobe Audition",
+                auditionDesc: "Audio editing and sound design.",
+                cinema4d: "Maxon Cinema 4D",
+                cinema4dDesc: "3D modeling and animation.",
+                davinciResolve: "DaVinci Resolve",
+                davinciResolveDesc: "High-end color grading and finishing.",
+                blender: "Blender",
+                blenderDesc: "3D modeling, sculpting, and rendering.",
+                figma: "Figma",
+                figmaDesc: "UI/UX design and interactive prototyping.",
+                substancePainter: "Substance Painter",
+                substancePainterDesc:
+                    "3D texture painting and material creation.",
+                zbrush: "ZBrush",
+                zbrushDesc: "Digital sculpting.",
+                lightroom: "Adobe Lightroom",
+                lightroomDesc: "Image editing and photo management.",
             },
             projects: {
-                title: "My Video Projects",
-                cta: "Click to watch on YouTube.",
+                title: "My Projects",
+                showMore: "Show more projects",
+                showLess: "Show less projects",
             },
             contact: {
                 title: "Let's Connect",
@@ -173,7 +284,7 @@ export default function App() {
                 home: "Startseite",
                 about: "Über mich",
                 skills: "Fähigkeiten",
-                expertise: "Expertise",
+                expertise: "Kompetenzen",
                 projects: "Projekte",
                 contact: "Kontakt",
             },
@@ -185,38 +296,69 @@ export default function App() {
             about: {
                 title: "Über mich",
                 p1: "Mit einem Hintergrund im Bauingenieurwesen und einer Leidenschaft für visuelle Kommunikation hat meine Karriere eine kreative Wende in die Welt des Motion Designs genommen. In über sechs Jahren der Verklickern GmbH habe ich meine Fähigkeiten in allen Bereichen, von 2D-Animation und interaktiven Grafiken bis hin zu professioneller Videoproduktion und Postproduktion, verfeinert.",
-                p2: "Ich bin als Motion Designer zertifiziert und verfüge über eine SCRUM Master-Zertifizierung, was mein Engagement für künstlerische Exzellenz und effektives Projektmanagement widerspiegelt. Fließend in Persisch, Englisch, und Deutsch, fühle ich mich in internationalen, kollaborativen Umgebungen wohl.",
+                p2: "Ich bin als Motion Designer zertifiziert und verfüge über eine SCRUM Master-Zertifizierung, was mein Engagement für künstlerische Exzellenz und effektives Projektmanagement widerspiegelt. Fließend in Persisch, Englisch und Deutsch, fühle ich mich in internationalen, kollaborativen Umgebungen wohl.",
                 placeholder: "[Platzhalter für Ihr Foto]",
             },
             skills: {
                 title: "Fähigkeiten",
-                list: [
-                    { name: "Adobe After Effects", desc: "Motion Graphics & VFX" },
-                    { name: "Adobe Premiere Pro", desc: "Videoschnitt & Farbkorrektur" },
-                    { name: "Adobe Photoshop", desc: "Bildbearbeitung" },
-                    { name: "Adobe Illustrator", desc: "Vektorgrafikdesign" },
-                    { name: "Adobe Media Encoder", desc: "Video-Kodierung und Konvertierung" },
-                    { name: "Adobe Audition", desc: "Audiobearbeitung und -mischung" },
-                    { name: "Office 365", desc: "Produktivitätssuite" },
-                    { name: "Slack", desc: "Team-Kollaboration und Kommunikation" },
-                    { name: "Creative Cloud", desc: "Umfassendes Management der Creative Suite" },
-                    { name: "Acrobat Pro", desc: "PDF-Erstellung und -Bearbeitung" },
-                    { name: "Camtasia", desc: "Bildschirmaufnahme und Videoschnitt" },
-                    { name: "Asana", desc: "Projektmanagement" }
-                ]
+                motionGraphics: "Motion Graphics",
+                motionGraphicsDesc:
+                    "Erstellung von dynamischen visuellen Effekten und animierten Inhalten.",
+                videoProduction: "Videoproduktion",
+                videoProductionDesc:
+                    "Filmen, Drohnen-Steuerung und On-Set-Management.",
+                storyboarding: "Storyboard-Erstellung",
+                storyboardingDesc:
+                    "Visualisierung von Konzepten und Planung von Erzählungen.",
+                projectManagement: "Projektmanagement",
+                projectManagementDesc: "Agile Methodologien und SCRUM.",
+                creativeDirection: "Kreative Leitung",
+                creativeDirectionDesc:
+                    "Führung von Projekten vom Konzept bis zur Fertigstellung.",
+                postProduction: "Postproduktion",
+                postProductionDesc: "Schnitt, Farbkorrektur und Sounddesign.",
             },
             expertise: {
-                title: "Expertise",
-                placeholder: "Hier fügen wir eine detaillierte Beschreibung Ihrer Kernkompetenzen hinzu. Zum Beispiel Ihre Fähigkeiten in SCRUM, agilem Projektmanagement oder Ihre Spezialisierung auf eine bestimmte Art von Motion Design."
+                title: "Kompetenzen",
+                afterEffects: "Adobe After Effects",
+                afterEffectsDesc:
+                    "Fortgeschrittene Motion Graphics, VFX und Compositing.",
+                premierePro: "Adobe Premiere Pro",
+                premiereProDesc:
+                    "Professioneller Videoschnitt und Farbkorrektur.",
+                illustrator: "Adobe Illustrator",
+                illustratorDesc:
+                    "Vektorgrafiken und Illustrationen für Animationen.",
+                photoshop: "Adobe Photoshop",
+                photoshopDesc:
+                    "Bildbearbeitung, Compositing und digitales Malen.",
+                audition: "Adobe Audition",
+                auditionDesc: "Audiobearbeitung und Sounddesign.",
+                cinema4d: "Maxon Cinema 4D",
+                cinema4dDesc: "3D-Modellierung und Animation.",
+                davinciResolve: "DaVinci Resolve",
+                davinciResolveDesc: "Hochwertige Farbkorrektur und Finishing.",
+                blender: "Blender",
+                blenderDesc: "3D-Modellierung, Sculpting und Rendering.",
+                figma: "Figma",
+                figmaDesc: "UI/UX-Design und interaktives Prototyping.",
+                substancePainter: "Substance Painter",
+                substancePainterDesc:
+                    "3D-Texturbemalung und Materialerstellung.",
+                zbrush: "ZBrush",
+                zbrushDesc: "Digitales Sculpting.",
+                lightroom: "Adobe Lightroom",
+                lightroomDesc: "Image editing and photo management.",
             },
             projects: {
-                title: "Meine Videoprojekte",
-                cta: "Klicken Sie, um auf YouTube anzusehen.",
+                title: "My Projects",
+                showMore: "Show more projects",
+                showLess: "Show less projects",
             },
             contact: {
-                title: "Lassen Sie uns in Kontakt treten",
-                text: "Ich bin immer offen für neue Projekte und Kooperationen. Nehmen Sie gerne Kontakt auf!",
-                button: "Vollständiges Portfolio ansehen",
+                title: "Let's Connect",
+                text: "I am always open to new projects and collaborations. Feel free to get in touch!",
+                button: "View Full Portfolio",
             },
         },
     }
@@ -224,174 +366,544 @@ export default function App() {
     // Placeholder data for your portfolio videos
     const portfolioVideos = [
         {
-            title: "Verklickern Explainer Video",
-            url: "https://www.youtube.com/watch?v=your-video-id-1",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-1",
+            title: "Project 1",
+            url: "https://youtu.be/O8RsvUra8JE",
+            embedUrl: "https://www.youtube.com/embed/O8RsvUra8JE",
         },
         {
-            title: "Interactive E-Learning Demo",
-            url: "https://www.youtube.com/watch?v=your-video-id-2",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-2",
+            title: "Project 2",
+            url: "https://youtu.be/AAKkb9oXCss",
+            embedUrl: "https://www.youtube.com/embed/AAKkb9oXCss",
         },
         {
-            title: "Drone Footage Compilation",
-            url: "https://www.youtube.com/watch?v=your-video-id-3",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-3",
+            title: "Project 3",
+            url: "https://youtu.be/y4LTPeOgeS0",
+            embedUrl: "https://www.youtube.com/embed/y4LTPeOgeS0",
         },
         {
-            title: "Character Animation Showcase",
-            url: "https://www.youtube.com/watch?v=your-video-id-4",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-4",
+            title: "Project 4",
+            url: "https://youtu.be/wI8QYzj-phk",
+            embedUrl: "https://www.youtube.com/embed/wI8QYzj-phk",
         },
         {
-            title: "General Video 5",
-            url: "https://www.youtube.com/watch?v=your-video-id-5",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-5",
+            title: "Project 5",
+            url: "https://youtu.be/lOnX6pUKkbA",
+            embedUrl: "https://www.youtube.com/embed/lOnX6pUKkbA",
         },
         {
-            title: "General Video 6",
-            url: "https://www.youtube.com/watch?v=your-video-id-6",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-6",
+            title: "Project 6",
+            url: "https://youtu.be/wJIEdg1CGns",
+            embedUrl: "https://www.youtube.com/embed/wJIEdg1CGns",
         },
         {
-            title: "General Video 7",
-            url: "https://www.youtube.com/watch?v=your-video-id-7",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-7",
+            title: "Project 7",
+            url: "https://youtu.be/nq-nnNSeQbo",
+            embedUrl: "https://www.youtube.com/embed/nq-nnNSeQbo",
         },
         {
-            title: "General Video 8",
-            url: "https://www.youtube.com/watch?v=your-video-id-8",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-8",
+            title: "Project 8",
+            url: "https://youtu.be/rrMwJjRxb9E",
+            embedUrl: "https://www.youtube.com/embed/rrMwJjRxb9E",
         },
         {
-            title: "General Video 9",
-            url: "https://www.youtube.com/watch?v=your-video-id-9",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-9",
+            title: "Project 9",
+            url: "https://youtu.be/j-AUGz2xvLU",
+            embedUrl: "https://www.youtube.com/embed/j-AUGz2xvLU",
         },
         {
-            title: "General Video 10",
-            url: "https://www.youtube.com/watch?v=your-video-id-10",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-10",
+            title: "Project 10",
+            url: "https://youtu.be/3K6otI9MAko",
+            embedUrl: "https://www.youtube.com/embed/3K6otI9MAko",
         },
         {
-            title: "General Video 11",
-            url: "https://www.youtube.com/watch?v=your-video-id-11",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-11",
+            title: "Project 11",
+            url: "https://youtu.be/xWCdD5Cz3Q8",
+            embedUrl: "https://www.youtube.com/embed/xWCdD5Cz3Q8",
         },
         {
-            title: "General Video 12",
-            url: "https://www.youtube.com/watch?v=your-video-id-12",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-12",
+            title: "Project 12",
+            url: "https://youtu.be/dmPcSstXA4I",
+            embedUrl: "https://www.youtube.com/embed/dmPcSstXA4I",
         },
         {
-            title: "General Video 13",
-            url: "https://www.youtube.com/watch?v=your-video-id-13",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-13",
+            title: "Project 13",
+            url: "https://youtu.be/3HvT7U71cpA",
+            embedUrl: "https://www.youtube.com/embed/3HvT7U71cpA",
         },
         {
-            title: "General Video 14",
-            url: "https://www.youtube.com/watch?v=your-video-id-14",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-14",
+            title: "Project 14",
+            url: "https://youtu.be/brM7I-4KY0g",
+            embedUrl: "https://www.youtube.com/embed/brM7I-4KY0g",
         },
         {
-            title: "General Video 15",
-            url: "https://www.youtube.com/watch?v=your-video-id-15",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-15",
+            title: "Project 15",
+            url: "https://youtu.be/UPBK_LGcslQ",
+            embedUrl: "https://www.youtube.com/embed/UPBK_LGcslQ",
         },
         {
-            title: "General Video 16",
-            url: "https://www.youtube.com/watch?v=your-video-id-16",
-            embedUrl: "https://www.youtube.com/embed/your-video-id-16",
+            title: "Project 16",
+            url: "https://youtu.be/7o9G9ZfWRw4",
+            embedUrl: "https://www.youtube.com/embed/7o9G9ZfWRw4",
+        },
+        {
+            title: "Project 17",
+            url: "https://youtu.be/Kzz9EvZynwc",
+            embedUrl: "https://www.youtube.com/embed/Kzz9EvZynwc",
+        },
+        {
+            title: "Project 18",
+            url: "https://youtu.be/7aokYsmPVkg",
+            embedUrl: "https://www.youtube.com/embed/7aokYsmPVkg",
+        },
+        {
+            title: "Project 19",
+            url: "https://youtu.be/pCm0wXebzMk",
+            embedUrl: "https://www.youtube.com/embed/pCm0wXebzMk",
+        },
+        {
+            title: "Project 20",
+            url: "https://youtu.be/yn_64XKkw6c",
+            embedUrl: "https://www.youtube.com/embed/yn_64XKkw6c",
+        },
+        {
+            title: "Project 21",
+            url: "https://youtu.be/gddztaVql3Q",
+            embedUrl: "https://www.youtube.com/embed/gddztaVql3Q",
+        },
+        {
+            title: "Project 22",
+            url: "https://youtu.be/a0xRb27LRKs",
+            embedUrl: "https://www.youtube.com/embed/a0xRb27LRKs",
         },
     ]
 
     // Define colors for both modes
     const themeColors = isDark
         ? {
-              bg: "#333333", // Updated background color
-              text: "#B3B3B3", // Updated text color
+              bg: "#333333",
+              text: "#cbd5e1",
               textSecondary: "#94a3b8",
-              textAccent: "#22d3ee",
-              sectionBg: "#333333", // Navigation background is now this color
-              border: "#555555",
-              accent1: "#22d3ee",
-              accent2: "#00FFFF",
+              // Changed the textAccent color from cyan to the navigation bar's orange
+              textAccent: "#f94706",
+              sectionBg: "#1e1e1e",
+              border: "#334155",
+              accent1: "#f94706", // Also updated other accents for consistency
+              accent2: "#f97316",
               accent3: "#ffbe6b",
-              buttonBg: "#22d3ee",
+              buttonBg: "#f94706",
               buttonText: "#000000",
-              buttonHover: "#00FFFF",
+              buttonHover: "#ffbe6b",
+              navBg: "#333333", // New nav background color
+              navText: "#B3B3B3", // New nav text color
+              navActiveText: "#ffffff", // New nav active text color
+              navShadow: "0 4px 6px rgba(255, 255, 255, 0.05)",
+              thumbShadow: "0 0 10px rgba(255, 255, 255, 0.15)", // Thin blurred shadow for dark mode
+              buttonShadow: "0 4px 6px rgba(255, 255, 255, 0.05)", // New button shadow for dark mode
           }
         : {
-              bg: "#ffffff",
+              bg: "#E7E7E7",
               text: "#1e293b",
               textSecondary: "#475569",
-              textAccent: "#0ea5e9",
-              sectionBg: "#ffffff",
+              // Changed the textAccent color from cyan to a bright orange for light mode
+              textAccent: "#f97316",
+              sectionBg: "#f1f5f9",
               border: "#e2e8f0",
-              accent1: "#0ea5e9",
-              accent2: "#06b6d4",
+              accent1: "#f97316",
+              accent2: "#f97316",
               accent3: "#fbbf24",
-              buttonBg: "#0ea5e9",
+              buttonBg: "#f97316",
               buttonText: "#ffffff",
-              buttonHover: "#0284c7",
+              buttonHover: "#ea580c",
+              navBg: "#ffffff", // New nav background color
+              navText: "#1e293b", // New nav text color
+              navActiveText: "#1e293b", // Active text is the same as normal in light mode
+              navShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+              thumbShadow: "0 0 10px rgba(0, 0, 0, 0.15)", // Thin blurred shadow for light mode
+              buttonShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // New button shadow for light mode
           }
 
-    const navLinkStyle = (sectionId) => ({
-        position: "relative",
-        zIndex: 10,
-        padding: "0.5rem 1rem",
-        borderRadius: "9999px",
-        color: activeSection === sectionId ? "white" : themeColors.text,
-        transition: "color 0.3s, transform 0.3s",
-        textDecoration: "none",
-        "&:hover": {
-            transform: "translateY(-4px)",
-        },
-    });
+    // New SVG icons for theme toggle (Moon and Star)
+    const MoonIcon = () => (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ width: "20px", height: "20px", color: "#ffbe6b" }}
+        >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+    )
 
-    const navShadow = isDark
-        ? "0px 8px 30px rgba(255, 255, 255, 0.05)"
-        : "0px 8px 30px rgba(0, 0, 0, 0.05)";
+    const SunIcon = () => (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ width: "20px", height: "20px", color: "#fbbf24" }}
+        >
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+    )
 
-    // Updated the shadow blur to 18px as requested
-    const skillShadow = isDark
-        ? "0px 0px 18px rgba(255, 255, 255, 0.05)"
-        : "0px 0px 18px rgba(0, 0, 0, 0.05)";
+    // Play button SVG icon
+    const PlayIcon = () => (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="white"
+            opacity="0.8"
+        >
+            <path d="M8 5v14l11-7z" />
+        </svg>
+    )
+
+    // SVG icon for the down arrow
+    const ArrowDownIcon = () => (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{
+                verticalAlign: "middle",
+                marginLeft: "0.5rem",
+                width: "1rem",
+                height: "1rem",
+            }}
+        >
+            <path d="M12 5v14m7-7-7 7-7-7" />
+        </svg>
+    )
+
+    // SVG icon for the up arrow
+    const ArrowUpIcon = () => (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{
+                verticalAlign: "middle",
+                marginLeft: "0.5rem",
+                width: "1rem",
+                height: "1rem",
+            }}
+        >
+            <path d="M12 19V5m-7 7 7-7 7 7" />
+        </svg>
+    )
 
     return (
         <div
+            className={
+                isDark
+                    ? "page-container dark-mode"
+                    : "page-container light-mode"
+            }
             style={{
                 backgroundColor: themeColors.bg,
                 color: themeColors.text,
                 transition: "background-color 0.5s, color 0.5s",
                 fontFamily: "Inter, sans-serif",
+                scrollBehavior: "smooth",
             }}
         >
+            <style>
+                {`
+                    .page-container {
+                        min-height: 100vh;
+                        width: 100vw;
+                        overflow-x: hidden;
+                    }
+
+                    .content-wrapper {
+                        max-width: 1280px;
+                        margin: 0 auto;
+                        padding: 1.5rem;
+                        padding-top: 6rem;
+                        box-sizing: border-box;
+                    }
+
+                    @media (min-width: 768px) {
+                        .content-wrapper {
+                            padding: 2.5rem;
+                            padding-top: 6rem;
+                        }
+                    }
+
+                    /* New hover effect styles for nav links */
+                    .nav-link {
+                        position: relative; /* Needed for positioning the pseudo-element */
+                        transition: color 0.3s;
+                        text-decoration: none;
+                        white-space: nowrap;
+                    }
+
+                    .nav-link::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 9999px;
+                        z-index: -1;
+                        opacity: 0;
+                        transition: opacity 0.3s ease, background-color 0.3s ease;
+                    }
+
+                    .dark-mode .nav-link:hover::before {
+                        background-color: rgba(255, 255, 255, 0.1); /* Lighter grey for dark mode */
+                        opacity: 1;
+                    }
+
+                    .light-mode .nav-link:hover::before {
+                        background-color: rgba(0, 0, 0, 0.05); /* Lighter grey for light mode */
+                        opacity: 1;
+                    }
+
+                    /* End of new hover effect styles */
+
+                    .toggle-switch-container {
+                        display: flex;
+                        flex-direction: column; /* Changed to column */
+                        gap: 1rem;
+                    }
+                    /* Updated button dimensions for better spacing */
+                    .toggle-switch {
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        width: 78px; /* Increased width */
+                        height: 40px; /* Increased height */
+                        padding: 3px;
+                        border-radius: 9999px;
+                        cursor: pointer;
+                        transition: background-color 0.3s, border-color 0.3s;
+                        border: 1px solid;
+                    }
+
+                    /* Updated thumb dimensions to fit within the larger switch */
+                    .toggle-switch-thumb {
+                        position: absolute;
+                        width: 34px;
+                        height: 34px;
+                        background-color: white;
+                        border-radius: 50%;
+                        transition: transform 0.3s ease-in-out;
+                        z-index: 1; /* Thumb is now behind the content */
+                    }
+
+                    /* Language text and icons are centered vertically and always on top */
+                    .toggle-inner-container {
+                        position: relative;
+                        z-index: 2; /* Icons and text are on top */
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        width: 100%;
+                        padding: 0 4px; /* Added horizontal padding to align with thumb movement */
+                        box-sizing: border-box; /* Ensures padding is included in width */
+                    }
+
+                    .language-text {
+                        z-index: 2;
+                        position: relative;
+                        font-size: 0.9rem;
+                        font-weight: bold;
+                        transition: color 0.3s;
+                    }
+
+                    .project-buttons {
+                        display: flex;
+                        justify-content: center;
+                        gap: 1rem;
+                        margin-top: 2rem;
+                    }
+
+                    .show-button {
+                        display: inline-block;
+                        font-weight: bold;
+                        padding: 0.75rem 2rem;
+                        border-radius: 9999px;
+                        transition: background-color 0.3s, transform 0.2s;
+                        border: none;
+                        cursor: pointer;
+                        text-decoration: none;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        text-align: center;
+                    }
+
+                    .show-button:hover {
+                        transform: translateY(-2px);
+                    }
+
+                    /* Styles for the animated grid container */
+                    .animated-grid-container {
+                        overflow: hidden;
+                        transition: height 0.5s ease;
+                    }
+
+                    /* Styles for the animated grid items */
+                    .animated-grid-item {
+                        opacity: 0;
+                        transform: translateY(20px);
+                        transition: opacity 0.5s ease, transform 0.5s ease;
+                    }
+
+                    .animated-grid-item.visible {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+
+                `}
+            </style>
+
             {/* Fixed Header with centered Navigation */}
             <div
                 style={{
                     position: "fixed",
-                    top: "0",
-                    left: "0",
-                    right: "0",
+                    top: "1rem",
+                    left: "1rem",
+                    right: "1rem",
                     zIndex: "100",
                     display: "flex",
-                    justifyContent: "center",
+                    justifyContent: "space-between",
                     alignItems: "center",
-                    padding: "1rem",
-                    backgroundColor: "transparent",
+                    padding: "0 1rem",
                 }}
             >
+                {/* Fixed Buttons at the top left */}
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1rem",
+                    }}
+                >
+                    {/* Theme Toggle Switch */}
+                    <div
+                        onClick={() => setIsDark(!isDark)}
+                        className="toggle-switch"
+                        style={{
+                            backgroundColor: isDark ? "#4f46e5" : "#6366f1",
+                            borderColor: isDark ? "#3730a3" : "#4338ca",
+                            boxShadow: themeColors.buttonShadow,
+                            padding: "0",
+                            justifyContent: "start",
+                        }}
+                    >
+                        <div
+                            className="toggle-switch-thumb"
+                            style={{
+                                transform: isDark
+                                    ? "translateX(38px)"
+                                    : "translateX(3px)",
+                                boxShadow: themeColors.thumbShadow,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            {isDark ? <MoonIcon /> : <SunIcon />}
+                        </div>
+                    </div>
+
+                    {/* Language Toggle Switch */}
+                    <div
+                        onClick={() => setLang(lang === "en" ? "de" : "en")}
+                        className="toggle-switch"
+                        style={{
+                            backgroundColor:
+                                lang === "en" ? "#f97316" : "#f97316",
+                            borderColor: lang === "en" ? "#ea580c" : "#ea580c",
+                            boxShadow: themeColors.buttonShadow,
+                        }}
+                    >
+                        <div
+                            className="toggle-switch-thumb"
+                            style={{
+                                transform:
+                                    lang === "en"
+                                        ? "translateX(0)"
+                                        : "translateX(36px)",
+                                boxShadow: themeColors.thumbShadow,
+                                left: "3px",
+                            }}
+                        ></div>
+                        <div className="toggle-inner-container">
+                            <span
+                                className="language-text"
+                                style={{
+                                    // Updated language text colors
+                                    color:
+                                        lang === "en"
+                                            ? "rgba(0, 0, 0, 0.5)"
+                                            : "rgba(0, 0, 0, 0.3)",
+                                }}
+                            >
+                                EN
+                            </span>
+                            <span
+                                className="language-text"
+                                style={{
+                                    // Updated language text colors
+                                    color:
+                                        lang === "en"
+                                            ? "rgba(0, 0, 0, 0.3)"
+                                            : "rgba(0, 0, 0, 0.5)",
+                                }}
+                            >
+                                DE
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Centered Navigation Bar */}
                 <nav
                     style={{
-                        position: "relative",
+                        position: "fixed",
+                        top: "1rem",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        zIndex: "100",
                         display: "flex",
                         gap: "1rem",
-                        backgroundColor: themeColors.sectionBg,
+                        backgroundColor: themeColors.navBg,
                         padding: "0.5rem",
                         borderRadius: "9999px",
                         border: "none",
-                        boxShadow: navShadow,
+                        boxShadow: themeColors.navShadow,
                     }}
                 >
                     {/* The moving orange background indicator */}
@@ -404,14 +916,27 @@ export default function App() {
                                 "width 0.3s ease, left 0.3s ease, top 0.3s ease, height 0.3s ease, transform 0.3s ease",
                             opacity: 0,
                             transform: "scale(0)",
-                            ...getIndicatorStyle(),
+                            ...indicatorStyle, // Use the new state for the style
                         }}
                     />
                     <a
                         ref={navRefs.home}
                         href="#home"
                         onClick={() => setActiveSection("home")}
-                        style={navLinkStyle("home")}
+                        className="nav-link"
+                        style={{
+                            position: "relative",
+                            zIndex: 10,
+                            padding: "0.5rem 1rem",
+                            borderRadius: "9999px",
+                            color:
+                                activeSection === "home"
+                                    ? themeColors.navActiveText
+                                    : themeColors.navText,
+                            transition: "color 0.3s",
+                            textDecoration: "none",
+                            whiteSpace: "nowrap", // Ensure text stays on one line
+                        }}
                     >
                         {content[lang].nav.home}
                     </a>
@@ -419,7 +944,20 @@ export default function App() {
                         ref={navRefs.about}
                         href="#about"
                         onClick={() => setActiveSection("about")}
-                        style={navLinkStyle("about")}
+                        className="nav-link"
+                        style={{
+                            position: "relative",
+                            zIndex: 10,
+                            padding: "0.5rem 1rem",
+                            borderRadius: "9999px",
+                            color:
+                                activeSection === "about"
+                                    ? themeColors.navActiveText
+                                    : themeColors.navText,
+                            transition: "color 0.3s",
+                            textDecoration: "none",
+                            whiteSpace: "nowrap", // Ensure text stays on one line
+                        }}
                     >
                         {content[lang].nav.about}
                     </a>
@@ -427,7 +965,20 @@ export default function App() {
                         ref={navRefs.skills}
                         href="#skills"
                         onClick={() => setActiveSection("skills")}
-                        style={navLinkStyle("skills")}
+                        className="nav-link"
+                        style={{
+                            position: "relative",
+                            zIndex: 10,
+                            padding: "0.5rem 1rem",
+                            borderRadius: "9999px",
+                            color:
+                                activeSection === "skills"
+                                    ? themeColors.navActiveText
+                                    : themeColors.navText,
+                            transition: "color 0.3s",
+                            textDecoration: "none",
+                            whiteSpace: "nowrap", // Ensure text stays on one line
+                        }}
                     >
                         {content[lang].nav.skills}
                     </a>
@@ -435,7 +986,20 @@ export default function App() {
                         ref={navRefs.expertise}
                         href="#expertise"
                         onClick={() => setActiveSection("expertise")}
-                        style={navLinkStyle("expertise")}
+                        className="nav-link"
+                        style={{
+                            position: "relative",
+                            zIndex: 10,
+                            padding: "0.5rem 1rem",
+                            borderRadius: "9999px",
+                            color:
+                                activeSection === "expertise"
+                                    ? themeColors.navActiveText
+                                    : themeColors.navText,
+                            transition: "color 0.3s",
+                            textDecoration: "none",
+                            whiteSpace: "nowrap", // Ensure text stays on one line
+                        }}
                     >
                         {content[lang].nav.expertise}
                     </a>
@@ -443,7 +1007,20 @@ export default function App() {
                         ref={navRefs.projects}
                         href="#projects"
                         onClick={() => setActiveSection("projects")}
-                        style={navLinkStyle("projects")}
+                        className="nav-link"
+                        style={{
+                            position: "relative",
+                            zIndex: 10,
+                            padding: "0.5rem 1rem",
+                            borderRadius: "9999px",
+                            color:
+                                activeSection === "projects"
+                                    ? themeColors.navActiveText
+                                    : themeColors.navText,
+                            transition: "color 0.3s",
+                            textDecoration: "none",
+                            whiteSpace: "nowrap", // Ensure text stays on one line
+                        }}
                     >
                         {content[lang].nav.projects}
                     </a>
@@ -451,73 +1028,40 @@ export default function App() {
                         ref={navRefs.contact}
                         href="#contact"
                         onClick={() => setActiveSection("contact")}
-                        style={navLinkStyle("contact")}
+                        className="nav-link"
+                        style={{
+                            position: "relative",
+                            zIndex: 10,
+                            padding: "0.5rem 1rem",
+                            borderRadius: "9999px",
+                            color:
+                                activeSection === "contact"
+                                    ? themeColors.navActiveText
+                                    : themeColors.navText,
+                            transition: "color 0.3s",
+                            textDecoration: "none",
+                            whiteSpace: "nowrap", // Ensure text stays on one line
+                        }}
                     >
                         {content[lang].nav.contact}
                     </a>
                 </nav>
             </div>
 
-            {/* Fixed Buttons at the bottom left */}
-            <div
-                style={{
-                    position: "fixed",
-                    bottom: "1rem",
-                    left: "1rem",
-                    zIndex: "100",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.5rem",
-                }}
-            >
-                <button
-                    onClick={() => setIsDark(!isDark)}
-                    style={{
-                        padding: "0.5rem 1rem",
-                        borderRadius: "9999px",
-                        backgroundColor: themeColors.sectionBg,
-                        color: themeColors.text,
-                        transition: "background-color 0.3s, color 0.3s",
-                        border: `1px solid ${themeColors.border}`,
-                    }}
-                >
-                    {isDark ? "☀️ Light Mode" : "🌙 Dark Mode"}
-                </button>
-                <button
-                    onClick={() => setLang(lang === "en" ? "de" : "en")}
-                    style={{
-                        padding: "0.5rem 1rem",
-                        borderRadius: "9999px",
-                        backgroundColor: themeColors.sectionBg,
-                        color: themeColors.text,
-                        transition: "background-color 0.3s, color 0.3s",
-                        border: `1px solid ${themeColors.border}`,
-                    }}
-                >
-                    {lang === "en" ? "🇩🇪 Deutsch" : "🇺🇸 English"}
-                </button>
-            </div>
-
             {/* Content Wrapper for all sections */}
-            <div
-                style={{
-                    maxWidth: "1280px",
-                    margin: "0 auto",
-                    padding: "1.5rem",
-                    paddingTop: "6rem",
-                    boxSizing: "border-box",
-                    "@media (min-width: 768px)": {
-                        padding: "2.5rem",
-                        paddingTop: "6rem",
-                    },
-                }}
-            >
-                {/* Home Section (Previously Hero) */}
+            <div className="content-wrapper">
+                {/* Home Section */}
                 <header
                     id="home"
                     style={{
-                        paddingBottom: "3rem",
+                        minHeight: "75vh",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column",
                         textAlign: "center",
+                        paddingBottom: "3rem",
+                        paddingTop: "6rem",
                     }}
                 >
                     <h1
@@ -526,6 +1070,7 @@ export default function App() {
                             fontWeight: "800",
                             color: themeColors.textAccent,
                             marginBottom: "1rem",
+                            // Removed the text glow effect
                             "@media (min-width: 768px)": {
                                 fontSize: "3.75rem",
                             },
@@ -537,21 +1082,18 @@ export default function App() {
                         style={{
                             fontSize: "1.25rem",
                             fontWeight: "bold",
-                            color: themeColors.textSecondary,
-                            "@media (min-width: 768px)": {
-                                fontSize: "1.875rem",
-                            },
+                            color: themeColors.text,
+                            marginBottom: "2rem",
                         }}
                     >
                         {content[lang].hero.subtitle}
                     </h2>
                     <p
                         style={{
-                            marginTop: "1.5rem",
+                            maxWidth: "4xl",
                             fontSize: "1rem",
+                            lineHeight: "1.75rem",
                             color: themeColors.textSecondary,
-                            maxWidth: "48rem",
-                            margin: "1.5rem auto 0 auto",
                             "@media (min-width: 768px)": {
                                 fontSize: "1.125rem",
                             },
@@ -565,92 +1107,81 @@ export default function App() {
                 <section
                     id="about"
                     style={{
-                        padding: "3rem 0",
-                        borderTop: `1px solid ${themeColors.border}`,
+                        backgroundColor: themeColors.sectionBg,
+                        padding: "3rem",
+                        borderRadius: "0.75rem",
+                        marginBottom: "2rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        boxShadow: `0 0 10px ${isDark ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.1)"}`,
                     }}
                 >
-                    <h3
+                    <h2
                         style={{
-                            fontSize: "1.5rem",
+                            fontSize: "2rem",
                             fontWeight: "bold",
-                            color: themeColors.accent2,
-                            marginBottom: "2rem",
+                            marginBottom: "1.5rem",
+                            color: themeColors.text,
                             textAlign: "center",
-                            "@media (min-width: 768px)": {
-                                fontSize: "1.875rem",
-                            },
                         }}
                     >
                         {content[lang].about.title}
-                    </h3>
+                    </h2>
                     <div
                         style={{
                             display: "flex",
                             flexDirection: "column",
-                            alignItems: "center",
                             gap: "2rem",
+                            alignItems: "center",
                             "@media (min-width: 768px)": {
                                 flexDirection: "row",
-                                justifyContent: "center",
+                                gap: "4rem",
                             },
                         }}
                     >
                         <div
                             style={{
-                                width: "100%",
+                                width: "250px",
+                                height: "250px",
+                                backgroundColor: themeColors.border,
+                                borderRadius: "0.5rem",
+                                flexShrink: 0,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                color: themeColors.textSecondary,
+                                fontStyle: "italic",
+                            }}
+                        >
+                            {content[lang].about.placeholder}
+                        </div>
+                        <div
+                            style={{
+                                flexGrow: 1,
+                                textAlign: "center",
                                 "@media (min-width: 768px)": {
-                                    width: "50%",
+                                    textAlign: "left",
                                 },
                             }}
                         >
                             <p
                                 style={{
-                                    fontSize: "1rem",
                                     marginBottom: "1rem",
-                                    lineHeight: "1.625",
+                                    lineHeight: "1.75rem",
                                     color: themeColors.text,
-                                    "@media (min-width: 768px)": {
-                                        fontSize: "1.125rem",
-                                    },
                                 }}
                             >
                                 {content[lang].about.p1}
                             </p>
                             <p
                                 style={{
-                                    fontSize: "1rem",
-                                    lineHeight: "1.625",
+                                    lineHeight: "1.75rem",
                                     color: themeColors.text,
-                                    "@media (min-width: 768px)": {
-                                        fontSize: "1.125rem",
-                                    },
                                 }}
                             >
                                 {content[lang].about.p2}
                             </p>
-                        </div>
-                        <div
-                            style={{
-                                width: "100%",
-                                "@media (min-width: 768px)": {
-                                    width: "50%",
-                                },
-                            }}
-                        >
-                            <div
-                                style={{
-                                    width: "100%",
-                                    height: "18rem",
-                                    backgroundColor: themeColors.sectionBg,
-                                    borderRadius: "0.5rem",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    color: themeColors.textSecondary,
-                                }}
-                            >
-                                {content[lang].about.placeholder}
-                            </div>
                         </div>
                     </div>
                 </section>
@@ -659,192 +1190,288 @@ export default function App() {
                 <section
                     id="skills"
                     style={{
-                        padding: "3rem 0",
-                        borderTop: `1px solid ${themeColors.border}`,
+                        backgroundColor: themeColors.sectionBg,
+                        padding: "3rem",
+                        borderRadius: "0.75rem",
+                        marginBottom: "2rem",
+                        boxShadow: `0 0 10px ${isDark ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.1)"}`,
                     }}
                 >
-                    <h3
+                    <h2
                         style={{
-                            fontSize: "1.5rem",
+                            fontSize: "2rem",
                             fontWeight: "bold",
-                            color: themeColors.accent3,
                             marginBottom: "2rem",
+                            color: themeColors.text,
                             textAlign: "center",
-                            "@media (min-width: 768px)": {
-                                fontSize: "1.875rem",
-                            },
                         }}
                     >
                         {content[lang].skills.title}
-                    </h3>
+                    </h2>
                     <div
                         style={{
                             display: "grid",
-                            gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
-                            gap: "2.375rem", // Changed to 2.375rem for 38px gap
-                            textAlign: "center",
+                            gridTemplateColumns:
+                                "repeat(auto-fit, minmax(250px, 1fr))",
+                            gap: "1.5rem",
                         }}
                     >
-                        {content[lang].skills.list.map((skill, index) => (
-                            <div
-                                key={index}
-                                style={{
-                                    backgroundColor: themeColors.sectionBg,
-                                    padding: "1.65rem",
-                                    borderRadius: "0.5rem",
-                                    boxShadow: skillShadow,
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
-                            >
-                                <div style={{ marginBottom: "0.5rem" }}>
-                                    {getSkillIcon(skill.name)}
-                                </div>
-                                <h4
-                                    style={{
-                                        fontWeight: "bold",
-                                        fontSize: "1.125rem",
-                                        color: themeColors.text,
-                                    }}
-                                >
-                                    {skill.name}
-                                </h4>
-                            </div>
-                        ))}
+                        {Object.entries(content[lang].skills).map(
+                            ([key, value]) => {
+                                if (key.endsWith("Desc") || key === "title") {
+                                    return null
+                                }
+                                return (
+                                    <div
+                                        key={key}
+                                        style={{
+                                            padding: "1.5rem",
+                                            backgroundColor: themeColors.bg,
+                                            borderRadius: "0.5rem",
+                                            boxShadow: `0 4px 6px ${isDark ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.1)"}`,
+                                            border: "none", // Removed the border
+                                        }}
+                                    >
+                                        <h3
+                                            style={{
+                                                fontSize: "1.125rem",
+                                                fontWeight: "bold",
+                                                color: themeColors.text,
+                                                marginBottom: "0.5rem",
+                                            }}
+                                        >
+                                            {value}
+                                        </h3>
+                                        <p
+                                            style={{
+                                                fontSize: "0.875rem",
+                                                color: themeColors.textSecondary,
+                                            }}
+                                        >
+                                            {content[lang].skills[key + "Desc"]}
+                                        </p>
+                                    </div>
+                                )
+                            }
+                        )}
                     </div>
                 </section>
 
-                {/* Expertise Section (New) */}
+                {/* Expertise Section */}
                 <section
                     id="expertise"
                     style={{
-                        padding: "3rem 0",
-                        borderTop: `1px solid ${themeColors.border}`,
+                        backgroundColor: themeColors.sectionBg,
+                        padding: "3rem",
+                        borderRadius: "0.75rem",
+                        marginBottom: "2rem",
+                        boxShadow: `0 0 10px ${isDark ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.1)"}`,
                     }}
                 >
-                    <h3
+                    <h2
                         style={{
-                            fontSize: "1.5rem",
+                            fontSize: "2rem",
                             fontWeight: "bold",
-                            color: themeColors.accent1,
                             marginBottom: "2rem",
+                            color: themeColors.text,
                             textAlign: "center",
-                            "@media (min-width: 768px)": {
-                                fontSize: "1.875rem",
-                            },
                         }}
                     >
                         {content[lang].expertise.title}
-                    </h3>
-                    <div
-                        style={{
-                            backgroundColor: themeColors.sectionBg,
-                            padding: "2rem",
-                            borderRadius: "0.5rem",
-                            textAlign: "center",
-                            color: themeColors.textSecondary,
-                        }}
-                    >
-                        <p>{content[lang].expertise.placeholder}</p>
-                    </div>
-                </section>
-
-                {/* Projects Section (Previously Portfolio) */}
-                <section
-                    id="projects"
-                    style={{
-                        padding: "3rem 0",
-                        borderTop: `1px solid ${themeColors.border}`,
-                    }}
-                >
-                    <h3
-                        style={{
-                            fontSize: "1.5rem",
-                            fontWeight: "bold",
-                            color: themeColors.textAccent,
-                            marginBottom: "2rem",
-                            textAlign: "center",
-                            "@media (min-width: 768px)": {
-                                fontSize: "1.875rem",
-                            },
-                        }}
-                    >
-                        {content[lang].projects.title}
-                    </h3>
+                    </h2>
                     <div
                         style={{
                             display: "grid",
-                            gap: "2rem",
-                            gridTemplateColumns: "1fr",
-                            "@media (min-width: 640px)": {
-                                gridTemplateColumns: "repeat(2, 1fr)",
-                            },
-                            "@media (min-width: 1024px)": {
-                                gridTemplateColumns: "repeat(4, 1fr)",
-                            },
+                            gridTemplateColumns:
+                                "repeat(auto-fit, minmax(250px, 1fr))",
+                            gap: "1.5rem",
                         }}
                     >
-                        {portfolioVideos.map((video, index) => (
-                            <div
-                                key={index}
-                                style={{
-                                    position: "relative",
-                                    aspectRatio: "16 / 9",
-                                    borderRadius: "0.5rem",
-                                    overflow: "hidden",
-                                    boxShadow:
-                                        "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-                                    transition: "transform 0.3s",
-                                    cursor: "pointer",
-                                    "&:hover": {
-                                        transform: "scale(1.02)",
-                                    },
-                                }}
-                            >
-                                <iframe
-                                    width="100%"
-                                    height="100%"
-                                    src={video.embedUrl}
-                                    title={video.title}
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
-                                <a
-                                    href={video.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{
-                                        position: "absolute",
-                                        top: 0,
-                                        left: 0,
-                                        width: "100%",
-                                        height: "100%",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        backgroundColor: "rgba(0,0,0,0.5)",
-                                        opacity: 0,
-                                        transition: "opacity 0.3s",
-                                        "&:hover": {
-                                            opacity: 1,
-                                        },
-                                    }}
-                                >
-                                    <span
+                        {Object.entries(content[lang].expertise).map(
+                            ([key, value]) => {
+                                if (key.endsWith("Desc") || key === "title") {
+                                    return null
+                                }
+                                return (
+                                    <div
+                                        key={key}
                                         style={{
-                                            color: "white",
-                                            fontWeight: "bold",
-                                            fontSize: "1rem",
+                                            padding: "1.5rem",
+                                            backgroundColor: themeColors.bg,
+                                            borderRadius: "0.5rem",
+                                            boxShadow: `0 4px 6px ${isDark ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.1)"}`,
+                                            border: "none", // Removed the border
                                         }}
                                     >
-                                        {content[lang].projects.cta}
-                                    </span>
-                                </a>
-                            </div>
-                        ))}
+                                        <h3
+                                            style={{
+                                                fontSize: "1.125rem",
+                                                fontWeight: "bold",
+                                                color: themeColors.text,
+                                                marginBottom: "0.5rem",
+                                            }}
+                                        >
+                                            {value}
+                                        </h3>
+                                        <p
+                                            style={{
+                                                fontSize: "0.875rem",
+                                                color: themeColors.textSecondary,
+                                            }}
+                                        >
+                                            {
+                                                content[lang].expertise[
+                                                    key + "Desc"
+                                                ]
+                                            }
+                                        </p>
+                                    </div>
+                                )
+                            }
+                        )}
+                    </div>
+                </section>
+
+                {/* Projects Section */}
+                <section
+                    id="projects"
+                    style={{
+                        backgroundColor: themeColors.sectionBg,
+                        padding: "3rem",
+                        borderRadius: "0.75rem",
+                        marginBottom: "2rem",
+                        boxShadow: `0 0 10px ${isDark ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.1)"}`,
+                    }}
+                >
+                    <h2
+                        style={{
+                            fontSize: "2rem",
+                            fontWeight: "bold",
+                            marginBottom: "2rem",
+                            color: themeColors.text,
+                            textAlign: "center",
+                        }}
+                    >
+                        {content[lang].projects.title}
+                    </h2>
+                    {/* Container for the animated grid */}
+                    <div
+                        className="animated-grid-container"
+                        ref={projectsGridRef}
+                    >
+                        <div
+                            style={{
+                                display: "grid",
+                                gap: "2rem",
+                                // Updated the grid layout to be responsive
+                                gridTemplateColumns:
+                                    "repeat(auto-fit, minmax(250px, 1fr))",
+                            }}
+                        >
+                            {/* Map over the projects to render them */}
+                            {portfolioVideos
+                                .slice(0, visibleCount)
+                                .map((video, index) => (
+                                    <div
+                                        key={index}
+                                        className={`animated-grid-item visible`}
+                                        style={{
+                                            backgroundColor: themeColors.bg,
+                                            padding: "1rem",
+                                            borderRadius: "0.5rem",
+                                            boxShadow: `0 4px 6px ${isDark ? "rgba(0,0,0,0.2)" : "rgba(0,0,0,0.1)"}`,
+                                            border: "none", // Removed the border
+                                            cursor: "pointer",
+                                        }}
+                                        onClick={() => handleVideoClick(video)}
+                                    >
+                                        <div
+                                            style={{
+                                                position: "relative",
+                                                paddingBottom: "56.25%",
+                                                height: 0,
+                                                marginBottom: "0.5rem",
+                                                borderRadius: "0.25rem",
+                                                overflow: "hidden",
+                                                backgroundImage: `url(https://img.youtube.com/vi/${video.embedUrl.split("/").pop()}/maxresdefault.jpg)`,
+                                                backgroundSize: "cover",
+                                                backgroundPosition: "center",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    position: "absolute",
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    backgroundColor:
+                                                        "rgba(0, 0, 0, 0.4)",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    transition:
+                                                        "background-color 0.3s",
+                                                }}
+                                                onMouseEnter={(e) =>
+                                                    (e.currentTarget.style.backgroundColor =
+                                                        "rgba(0, 0, 0, 0.6)")
+                                                }
+                                                onMouseLeave={(e) =>
+                                                    (e.currentTarget.style.backgroundColor =
+                                                        "rgba(0, 0, 0, 0.4)")
+                                                }
+                                            >
+                                                <PlayIcon />
+                                            </div>
+                                        </div>
+                                        <h3
+                                            style={{
+                                                fontSize: "1rem",
+                                                fontWeight: "bold",
+                                                color: themeColors.text,
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            {video.title}
+                                        </h3>
+                                    </div>
+                                ))}
+                        </div>
+                    </div>
+
+                    {/* The buttons for showing more or less projects */}
+                    <div className="project-buttons">
+                        {visibleCount < portfolioVideos.length ? (
+                            <button
+                                onClick={toggleProjects}
+                                className="show-button"
+                                style={{
+                                    backgroundColor: themeColors.buttonBg,
+                                    color: themeColors.buttonText,
+                                    boxShadow: themeColors.buttonShadow,
+                                }}
+                            >
+                                {content[lang].projects.showMore}
+                                <ArrowDownIcon />
+                            </button>
+                        ) : (
+                            <button
+                                onClick={toggleProjects}
+                                className="show-button"
+                                style={{
+                                    backgroundColor: themeColors.buttonBg,
+                                    color: themeColors.buttonText,
+                                    boxShadow: themeColors.buttonShadow,
+                                }}
+                            >
+                                {content[lang].projects.showLess}
+                                <ArrowUpIcon />
+                            </button>
+                        )}
                     </div>
                 </section>
 
@@ -852,32 +1479,32 @@ export default function App() {
                 <footer
                     id="contact"
                     style={{
-                        padding: "3rem 0",
-                        borderTop: `1px solid ${themeColors.border}`,
+                        backgroundColor: themeColors.sectionBg,
+                        padding: "3rem",
+                        borderRadius: "0.75rem",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
                         textAlign: "center",
+                        boxShadow: `0 0 10px ${isDark ? "rgba(0,0,0,0.5)" : "rgba(0,0,0,0.1)"}`,
                     }}
                 >
-                    <h3
+                    <h2
                         style={{
-                            fontSize: "1.5rem",
+                            fontSize: "2rem",
                             fontWeight: "bold",
-                            color: themeColors.accent1,
                             marginBottom: "1rem",
-                            "@media (min-width: 768px)": {
-                                fontSize: "1.875rem",
-                            },
+                            color: themeColors.text,
                         }}
                     >
                         {content[lang].contact.title}
-                    </h3>
+                    </h2>
                     <p
                         style={{
                             fontSize: "1rem",
+                            lineHeight: "1.75rem",
+                            marginBottom: "1.5rem",
                             color: themeColors.textSecondary,
-                            marginBottom: "2rem",
-                            "@media (min-width: 768px)": {
-                                fontSize: "1.125rem",
-                            },
                         }}
                     >
                         {content[lang].contact.text}
@@ -886,9 +1513,9 @@ export default function App() {
                         style={{
                             display: "flex",
                             flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center",
                             gap: "0.5rem",
+                            color: themeColors.text,
+                            marginBottom: "2rem",
                         }}
                     >
                         <p
@@ -931,6 +1558,16 @@ export default function App() {
                     </a>
                 </footer>
             </div>
+
+            {/* Conditional rendering of the modal */}
+            {showModal && (
+                <VideoModal
+                    video={activeVideo}
+                    onClose={handleCloseModal}
+                    isDark={isDark}
+                    themeColors={themeColors}
+                />
+            )}
         </div>
     )
 }
