@@ -1,469 +1,936 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shahab Fotouhian - Portfolio</title>
-    <!-- Use the Inter font for a modern look -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        /* Custom scroll-snap for a nice scrolling effect */
-        .scroll-snap-y {
-            scroll-snap-type: y mandatory;
-        }
-        .snap-start {
-            scroll-snap-align: start;
-        }
-        /* Style for the underline on nav links */
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background-color: var(--primary-color);
-            transition: transform 0.3s ease;
-            transform: scaleX(1);
-        }
-        .nav-link::after {
-            transform: scaleX(0);
-        }
-        .dark .nav-link.active::after {
-            background-color: #e9c46a;
-        }
-        .light .nav-link.active::after {
-            background-color: #2a9d8f;
+import React, { useState, useEffect, useRef } from "react"
+
+// Import Lucide-React icons
+import {
+    Sparkles,
+    Film,
+    Image,
+    PenTool,
+    MonitorPlay,
+    Mic,
+    FileText,
+    Slack,
+    Cloud,
+    FileSearch,
+    Video,
+    LayoutDashboard,
+} from "lucide-react"
+
+// Main React Component for the Portfolio Website, designed for Framer
+export default function App() {
+    // State variables for theme and language, as in your original file
+    const [isDark, setIsDark] = useState(true)
+    const [lang, setLang] = useState("en")
+    const [activeSection, setActiveSection] = useState("home")
+    const navRefs = {
+        home: useRef(null),
+        about: useRef(null),
+        skills: useRef(null),
+        expertise: useRef(null),
+        projects: useRef(null),
+        contact: useRef(null),
+    }
+
+    // This useEffect hook is for the scroll-based navigation indicator
+    useEffect(() => {
+        const handleScroll = () => {
+            const sections = ["home", "about", "skills", "expertise", "projects", "contact"]
+            let currentSection = ""
+
+            for (const sectionId of sections) {
+                const section = document.getElementById(sectionId)
+                if (section) {
+                    const rect = section.getBoundingClientRect()
+                    // Check if the top of the section is within the top 50% of the viewport
+                    if (
+                        rect.top <= window.innerHeight / 2 &&
+                        rect.bottom > window.innerHeight / 2
+                    ) {
+                        currentSection = sectionId
+                        break
+                    }
+                }
+            }
+
+            // Fallback for when the user is at the very top of the page
+            if (!currentSection && window.scrollY < window.innerHeight / 2) {
+                currentSection = "home"
+            }
+
+            if (currentSection) {
+                setActiveSection(currentSection)
+            }
         }
 
-        /* Custom shadow and color for light mode */
-        .light .card-gradient {
-            background: linear-gradient(145deg, #ffffff, #f5f5f4);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
+        window.addEventListener("scroll", handleScroll)
+        // Clean up the event listener when the component unmounts
+        return () => window.removeEventListener("scroll", handleScroll)
+    }, [])
 
-        /* Custom shadow and color for dark mode */
-        .dark .card-gradient {
-            background: linear-gradient(145deg, #292524, #1c1917);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    const getIndicatorStyle = () => {
+        const activeRef = navRefs[activeSection].current
+        if (!activeRef) return {}
+
+        return {
+            width: activeRef.offsetWidth,
+            height: activeRef.offsetHeight,
+            left: activeRef.offsetLeft,
+            top: activeRef.offsetTop,
+            opacity: 1,
+            transform: "scale(1)",
         }
-    </style>
-</head>
-<body class="bg-stone-900 text-stone-100 transition-all duration-300 dark">
-    <!-- Video Modal - Initially hidden -->
-    <div id="video-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
-        <div class="absolute inset-0 backdrop-blur-md bg-black bg-opacity-80" onclick="closeModal()"></div>
-        <div class="relative z-[101] w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl scale-95 opacity-0 transition-all duration-300 transform">
-            <button onclick="closeModal()" class="absolute top-4 right-4 z-[102] text-white text-3xl font-bold bg-black/50 rounded-full w-10 h-10 flex items-center justify-center" aria-label="Close video player">&times;</button>
-            <div class="relative" style="padding-top: 56.25%;">
-                <iframe id="youtube-player" class="absolute top-0 left-0 w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    }
+
+    // Function to get the appropriate icon for each skill
+    const getSkillIcon = (skillName) => {
+        // Increased icon size to 36 for better visibility
+        const IconStyle = { size: 36, color: themeColors.textSecondary }
+        switch (skillName) {
+            case "Adobe After Effects":
+                return <Sparkles {...IconStyle} />
+            case "Adobe Premiere Pro":
+                return <Film {...IconStyle} />
+            case "Adobe Photoshop":
+                return <Image {...IconStyle} />
+            case "Adobe Illustrator":
+                return <PenTool {...IconStyle} />
+            case "Adobe Media Encoder":
+                return <MonitorPlay {...IconStyle} />
+            case "Adobe Audition":
+                return <Mic {...IconStyle} />
+            case "Office 365":
+                return <FileText {...IconStyle} />
+            case "Slack":
+                return <Slack {...IconStyle} />
+            case "Creative Cloud":
+                return <Cloud {...IconStyle} />
+            case "Acrobat Pro":
+                return <FileSearch {...IconStyle} />
+            case "Camtasia":
+                return <Video {...IconStyle} />
+            case "Asana":
+                return <LayoutDashboard {...IconStyle} />
+            default:
+                return null
+        }
+    }
+
+    // Content for both languages
+    const content = {
+        en: {
+            nav: {
+                home: "Home",
+                about: "About Me",
+                skills: "Skills",
+                expertise: "Expertise",
+                projects: "Projects",
+                contact: "Contact",
+            },
+            hero: {
+                title: "Shahab Fotouhian",
+                subtitle: "Motion Designer & Video Producer",
+                text: "I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.",
+            },
+            about: {
+                title: "About Me",
+                p1: "With a background in Civil Engineering and a passion for visual communication, my career took a creative turn into the world of motion design. For over six years at Verklickern GmbH, I honed my skills in everything from 2D animation and interactive graphics to professional video production and post-production.",
+                p2: "I am certified as a Motion Designer and hold a SCRUM Master certification, reflecting my commitment to both artistic excellence and effective project management. Fluent in Farsi, English, and German, I thrive in international, collaborative environments.",
+                placeholder: "[Placeholder for your photo]",
+            },
+            skills: {
+                title: "Skills",
+                list: [
+                    { name: "Adobe After Effects", desc: "Motion Graphics & VFX" },
+                    { name: "Adobe Premiere Pro", desc: "Video Editing & Color Grading" },
+                    { name: "Adobe Photoshop", desc: "Image manipulation" },
+                    { name: "Adobe Illustrator", desc: "Vector graphics design" },
+                    { name: "Adobe Media Encoder", desc: "Video encoding and conversion" },
+                    { name: "Adobe Audition", desc: "Audio editing and mixing" },
+                    { name: "Office 365", desc: "Productivity suite" },
+                    { name: "Slack", desc: "Team collaboration and communication" },
+                    { name: "Creative Cloud", desc: "Comprehensive creative suite management" },
+                    { name: "Acrobat Pro", desc: "PDF creation and editing" },
+                    { name: "Camtasia", desc: "Screen recording and video editing" },
+                    { name: "Asana", desc: "Project management" }
+                ]
+            },
+            expertise: {
+                title: "Expertise",
+                placeholder: "We'll add a detailed description of your key areas of expertise here. For example, your proficiency in SCRUM, agile project management, or your specialization in a certain type of motion design."
+            },
+            projects: {
+                title: "My Video Projects",
+                cta: "Click to watch on YouTube.",
+            },
+            contact: {
+                title: "Let's Connect",
+                text: "I am always open to new projects and collaborations. Feel free to get in touch!",
+                button: "View Full Portfolio",
+            },
+        },
+        de: {
+            nav: {
+                home: "Startseite",
+                about: "Über mich",
+                skills: "Fähigkeiten",
+                expertise: "Expertise",
+                projects: "Projekte",
+                contact: "Kontakt",
+            },
+            hero: {
+                title: "Shahab Fotouhian",
+                subtitle: "Motion Designer & Videoproduzent",
+                text: "Ich bin darauf spezialisiert, fesselnde visuelle Geschichten durch Animation und Video zu schaffen. Mit umfassender Erfahrung in Motion Graphics und einer solider Grundlage in der Videoproduktion erwecke ich Konzepte mit Kreativität und technischer Präzision zum Leben.",
+            },
+            about: {
+                title: "Über mich",
+                p1: "Mit einem Hintergrund im Bauingenieurwesen und einer Leidenschaft für visuelle Kommunikation hat meine Karriere eine kreative Wende in die Welt des Motion Designs genommen. In über sechs Jahren der Verklickern GmbH habe ich meine Fähigkeiten in allen Bereichen, von 2D-Animation und interaktiven Grafiken bis hin zu professioneller Videoproduktion und Postproduktion, verfeinert.",
+                p2: "Ich bin als Motion Designer zertifiziert und verfüge über eine SCRUM Master-Zertifizierung, was mein Engagement für künstlerische Exzellenz und effektives Projektmanagement widerspiegelt. Fließend in Persisch, Englisch, und Deutsch, fühle ich mich in internationalen, kollaborativen Umgebungen wohl.",
+                placeholder: "[Platzhalter für Ihr Foto]",
+            },
+            skills: {
+                title: "Fähigkeiten",
+                list: [
+                    { name: "Adobe After Effects", desc: "Motion Graphics & VFX" },
+                    { name: "Adobe Premiere Pro", desc: "Videoschnitt & Farbkorrektur" },
+                    { name: "Adobe Photoshop", desc: "Bildbearbeitung" },
+                    { name: "Adobe Illustrator", desc: "Vektorgrafikdesign" },
+                    { name: "Adobe Media Encoder", desc: "Video-Kodierung und Konvertierung" },
+                    { name: "Adobe Audition", desc: "Audiobearbeitung und -mischung" },
+                    { name: "Office 365", desc: "Produktivitätssuite" },
+                    { name: "Slack", desc: "Team-Kollaboration und Kommunikation" },
+                    { name: "Creative Cloud", desc: "Umfassendes Management der Creative Suite" },
+                    { name: "Acrobat Pro", desc: "PDF-Erstellung und -Bearbeitung" },
+                    { name: "Camtasia", desc: "Bildschirmaufnahme und Videoschnitt" },
+                    { name: "Asana", desc: "Projektmanagement" }
+                ]
+            },
+            expertise: {
+                title: "Expertise",
+                placeholder: "Hier fügen wir eine detaillierte Beschreibung Ihrer Kernkompetenzen hinzu. Zum Beispiel Ihre Fähigkeiten in SCRUM, agilem Projektmanagement oder Ihre Spezialisierung auf eine bestimmte Art von Motion Design."
+            },
+            projects: {
+                title: "Meine Videoprojekte",
+                cta: "Klicken Sie, um auf YouTube anzusehen.",
+            },
+            contact: {
+                title: "Lassen Sie uns in Kontakt treten",
+                text: "Ich bin immer offen für neue Projekte und Kooperationen. Nehmen Sie gerne Kontakt auf!",
+                button: "Vollständiges Portfolio ansehen",
+            },
+        },
+    }
+
+    // Placeholder data for your portfolio videos
+    const portfolioVideos = [
+        {
+            title: "Verklickern Explainer Video",
+            url: "https://www.youtube.com/watch?v=your-video-id-1",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-1",
+        },
+        {
+            title: "Interactive E-Learning Demo",
+            url: "https://www.youtube.com/watch?v=your-video-id-2",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-2",
+        },
+        {
+            title: "Drone Footage Compilation",
+            url: "https://www.youtube.com/watch?v=your-video-id-3",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-3",
+        },
+        {
+            title: "Character Animation Showcase",
+            url: "https://www.youtube.com/watch?v=your-video-id-4",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-4",
+        },
+        {
+            title: "General Video 5",
+            url: "https://www.youtube.com/watch?v=your-video-id-5",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-5",
+        },
+        {
+            title: "General Video 6",
+            url: "https://www.youtube.com/watch?v=your-video-id-6",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-6",
+        },
+        {
+            title: "General Video 7",
+            url: "https://www.youtube.com/watch?v=your-video-id-7",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-7",
+        },
+        {
+            title: "General Video 8",
+            url: "https://www.youtube.com/watch?v=your-video-id-8",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-8",
+        },
+        {
+            title: "General Video 9",
+            url: "https://www.youtube.com/watch?v=your-video-id-9",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-9",
+        },
+        {
+            title: "General Video 10",
+            url: "https://www.youtube.com/watch?v=your-video-id-10",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-10",
+        },
+        {
+            title: "General Video 11",
+            url: "https://www.youtube.com/watch?v=your-video-id-11",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-11",
+        },
+        {
+            title: "General Video 12",
+            url: "https://www.youtube.com/watch?v=your-video-id-12",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-12",
+        },
+        {
+            title: "General Video 13",
+            url: "https://www.youtube.com/watch?v=your-video-id-13",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-13",
+        },
+        {
+            title: "General Video 14",
+            url: "https://www.youtube.com/watch?v=your-video-id-14",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-14",
+        },
+        {
+            title: "General Video 15",
+            url: "https://www.youtube.com/watch?v=your-video-id-15",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-15",
+        },
+        {
+            title: "General Video 16",
+            url: "https://www.youtube.com/watch?v=your-video-id-16",
+            embedUrl: "https://www.youtube.com/embed/your-video-id-16",
+        },
+    ]
+
+    // Define colors for both modes
+    const themeColors = isDark
+        ? {
+              bg: "#333333", // Updated background color
+              text: "#B3B3B3", // Updated text color
+              textSecondary: "#94a3b8",
+              textAccent: "#22d3ee",
+              sectionBg: "#333333", // Navigation background is now this color
+              border: "#555555",
+              accent1: "#22d3ee",
+              accent2: "#00FFFF",
+              accent3: "#ffbe6b",
+              buttonBg: "#22d3ee",
+              buttonText: "#000000",
+              buttonHover: "#00FFFF",
+          }
+        : {
+              bg: "#ffffff",
+              text: "#1e293b",
+              textSecondary: "#475569",
+              textAccent: "#0ea5e9",
+              sectionBg: "#ffffff",
+              border: "#e2e8f0",
+              accent1: "#0ea5e9",
+              accent2: "#06b6d4",
+              accent3: "#fbbf24",
+              buttonBg: "#0ea5e9",
+              buttonText: "#ffffff",
+              buttonHover: "#0284c7",
+          }
+
+    const navLinkStyle = (sectionId) => ({
+        position: "relative",
+        zIndex: 10,
+        padding: "0.5rem 1rem",
+        borderRadius: "9999px",
+        color: activeSection === sectionId ? "white" : themeColors.text,
+        transition: "color 0.3s, transform 0.3s",
+        textDecoration: "none",
+        "&:hover": {
+            transform: "translateY(-4px)",
+        },
+    });
+
+    const navShadow = isDark
+        ? "0px 8px 30px rgba(255, 255, 255, 0.05)"
+        : "0px 8px 30px rgba(0, 0, 0, 0.05)";
+
+    // Updated the shadow blur to 18px as requested
+    const skillShadow = isDark
+        ? "0px 0px 18px rgba(255, 255, 255, 0.05)"
+        : "0px 0px 18px rgba(0, 0, 0, 0.05)";
+
+    return (
+        <div
+            style={{
+                backgroundColor: themeColors.bg,
+                color: themeColors.text,
+                transition: "background-color 0.5s, color 0.5s",
+                fontFamily: "Inter, sans-serif",
+            }}
+        >
+            {/* Fixed Header with centered Navigation */}
+            <div
+                style={{
+                    position: "fixed",
+                    top: "0",
+                    left: "0",
+                    right: "0",
+                    zIndex: "100",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "1rem",
+                    backgroundColor: "transparent",
+                }}
+            >
+                <nav
+                    style={{
+                        position: "relative",
+                        display: "flex",
+                        gap: "1rem",
+                        backgroundColor: themeColors.sectionBg,
+                        padding: "0.5rem",
+                        borderRadius: "9999px",
+                        border: "none",
+                        boxShadow: navShadow,
+                    }}
+                >
+                    {/* The moving orange background indicator */}
+                    <div
+                        style={{
+                            position: "absolute",
+                            backgroundColor: "#f94706",
+                            borderRadius: "9999px",
+                            transition:
+                                "width 0.3s ease, left 0.3s ease, top 0.3s ease, height 0.3s ease, transform 0.3s ease",
+                            opacity: 0,
+                            transform: "scale(0)",
+                            ...getIndicatorStyle(),
+                        }}
+                    />
+                    <a
+                        ref={navRefs.home}
+                        href="#home"
+                        onClick={() => setActiveSection("home")}
+                        style={navLinkStyle("home")}
+                    >
+                        {content[lang].nav.home}
+                    </a>
+                    <a
+                        ref={navRefs.about}
+                        href="#about"
+                        onClick={() => setActiveSection("about")}
+                        style={navLinkStyle("about")}
+                    >
+                        {content[lang].nav.about}
+                    </a>
+                    <a
+                        ref={navRefs.skills}
+                        href="#skills"
+                        onClick={() => setActiveSection("skills")}
+                        style={navLinkStyle("skills")}
+                    >
+                        {content[lang].nav.skills}
+                    </a>
+                    <a
+                        ref={navRefs.expertise}
+                        href="#expertise"
+                        onClick={() => setActiveSection("expertise")}
+                        style={navLinkStyle("expertise")}
+                    >
+                        {content[lang].nav.expertise}
+                    </a>
+                    <a
+                        ref={navRefs.projects}
+                        href="#projects"
+                        onClick={() => setActiveSection("projects")}
+                        style={navLinkStyle("projects")}
+                    >
+                        {content[lang].nav.projects}
+                    </a>
+                    <a
+                        ref={navRefs.contact}
+                        href="#contact"
+                        onClick={() => setActiveSection("contact")}
+                        style={navLinkStyle("contact")}
+                    >
+                        {content[lang].nav.contact}
+                    </a>
+                </nav>
             </div>
-        </div>
-    </div>
 
-    <!-- Navigation Bar -->
-    <nav class="fixed top-0 z-50 w-full p-4 md:p-6 bg-transparent">
-        <div class="container mx-auto flex items-center justify-between">
-            <a href="#" class="text-xl font-bold rounded-lg p-2 bg-black bg-opacity-30 backdrop-blur-md">SF.</a>
-            <div class="flex items-center space-x-4">
-                <div class="hidden md:flex items-center space-x-6 rounded-full px-6 py-2 bg-black bg-opacity-30 backdrop-blur-md">
-                    <a href="#home" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('home')">Home</a>
-                    <a href="#about" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('about')">About</a>
-                    <a href="#skills" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('skills')">Skills</a>
-                    <a href="#expertise" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('expertise')">Expertise</a>
-                    <a href="#projects" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('projects')">Projects</a>
-                    <a href="#contact" class="nav-link relative transition-colors duration-300 hover:text-white" onclick="setActiveSection('contact')">Contact</a>
-                </div>
-                <button id="lang-toggle" class="bg-black bg-opacity-30 backdrop-blur-md text-sm md:text-base px-3 py-1 md:px-4 md:py-2 rounded-full font-semibold">EN</button>
-                <button id="theme-toggle" class="text-xl md:text-2xl bg-black bg-opacity-30 backdrop-blur-md p-2 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            {/* Fixed Buttons at the bottom left */}
+            <div
+                style={{
+                    position: "fixed",
+                    bottom: "1rem",
+                    left: "1rem",
+                    zIndex: "100",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.5rem",
+                }}
+            >
+                <button
+                    onClick={() => setIsDark(!isDark)}
+                    style={{
+                        padding: "0.5rem 1rem",
+                        borderRadius: "9999px",
+                        backgroundColor: themeColors.sectionBg,
+                        color: themeColors.text,
+                        transition: "background-color 0.3s, color 0.3s",
+                        border: `1px solid ${themeColors.border}`,
+                    }}
+                >
+                    {isDark ? "☀️ Light Mode" : "🌙 Dark Mode"}
+                </button>
+                <button
+                    onClick={() => setLang(lang === "en" ? "de" : "en")}
+                    style={{
+                        padding: "0.5rem 1rem",
+                        borderRadius: "9999px",
+                        backgroundColor: themeColors.sectionBg,
+                        color: themeColors.text,
+                        transition: "background-color 0.3s, color 0.3s",
+                        border: `1px solid ${themeColors.border}`,
+                    }}
+                >
+                    {lang === "en" ? "🇩🇪 Deutsch" : "🇺🇸 English"}
                 </button>
             </div>
+
+            {/* Content Wrapper for all sections */}
+            <div
+                style={{
+                    maxWidth: "1280px",
+                    margin: "0 auto",
+                    padding: "1.5rem",
+                    paddingTop: "6rem",
+                    boxSizing: "border-box",
+                    "@media (min-width: 768px)": {
+                        padding: "2.5rem",
+                        paddingTop: "6rem",
+                    },
+                }}
+            >
+                {/* Home Section (Previously Hero) */}
+                <header
+                    id="home"
+                    style={{
+                        paddingBottom: "3rem",
+                        textAlign: "center",
+                    }}
+                >
+                    <h1
+                        style={{
+                            fontSize: "2.25rem",
+                            fontWeight: "800",
+                            color: themeColors.textAccent,
+                            marginBottom: "1rem",
+                            "@media (min-width: 768px)": {
+                                fontSize: "3.75rem",
+                            },
+                        }}
+                    >
+                        {content[lang].hero.title}
+                    </h1>
+                    <h2
+                        style={{
+                            fontSize: "1.25rem",
+                            fontWeight: "bold",
+                            color: themeColors.textSecondary,
+                            "@media (min-width: 768px)": {
+                                fontSize: "1.875rem",
+                            },
+                        }}
+                    >
+                        {content[lang].hero.subtitle}
+                    </h2>
+                    <p
+                        style={{
+                            marginTop: "1.5rem",
+                            fontSize: "1rem",
+                            color: themeColors.textSecondary,
+                            maxWidth: "48rem",
+                            margin: "1.5rem auto 0 auto",
+                            "@media (min-width: 768px)": {
+                                fontSize: "1.125rem",
+                            },
+                        }}
+                    >
+                        {content[lang].hero.text}
+                    </p>
+                </header>
+
+                {/* About Section */}
+                <section
+                    id="about"
+                    style={{
+                        padding: "3rem 0",
+                        borderTop: `1px solid ${themeColors.border}`,
+                    }}
+                >
+                    <h3
+                        style={{
+                            fontSize: "1.5rem",
+                            fontWeight: "bold",
+                            color: themeColors.accent2,
+                            marginBottom: "2rem",
+                            textAlign: "center",
+                            "@media (min-width: 768px)": {
+                                fontSize: "1.875rem",
+                            },
+                        }}
+                    >
+                        {content[lang].about.title}
+                    </h3>
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            gap: "2rem",
+                            "@media (min-width: 768px)": {
+                                flexDirection: "row",
+                                justifyContent: "center",
+                            },
+                        }}
+                    >
+                        <div
+                            style={{
+                                width: "100%",
+                                "@media (min-width: 768px)": {
+                                    width: "50%",
+                                },
+                            }}
+                        >
+                            <p
+                                style={{
+                                    fontSize: "1rem",
+                                    marginBottom: "1rem",
+                                    lineHeight: "1.625",
+                                    color: themeColors.text,
+                                    "@media (min-width: 768px)": {
+                                        fontSize: "1.125rem",
+                                    },
+                                }}
+                            >
+                                {content[lang].about.p1}
+                            </p>
+                            <p
+                                style={{
+                                    fontSize: "1rem",
+                                    lineHeight: "1.625",
+                                    color: themeColors.text,
+                                    "@media (min-width: 768px)": {
+                                        fontSize: "1.125rem",
+                                    },
+                                }}
+                            >
+                                {content[lang].about.p2}
+                            </p>
+                        </div>
+                        <div
+                            style={{
+                                width: "100%",
+                                "@media (min-width: 768px)": {
+                                    width: "50%",
+                                },
+                            }}
+                        >
+                            <div
+                                style={{
+                                    width: "100%",
+                                    height: "18rem",
+                                    backgroundColor: themeColors.sectionBg,
+                                    borderRadius: "0.5rem",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    color: themeColors.textSecondary,
+                                }}
+                            >
+                                {content[lang].about.placeholder}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Skills Section */}
+                <section
+                    id="skills"
+                    style={{
+                        padding: "3rem 0",
+                        borderTop: `1px solid ${themeColors.border}`,
+                    }}
+                >
+                    <h3
+                        style={{
+                            fontSize: "1.5rem",
+                            fontWeight: "bold",
+                            color: themeColors.accent3,
+                            marginBottom: "2rem",
+                            textAlign: "center",
+                            "@media (min-width: 768px)": {
+                                fontSize: "1.875rem",
+                            },
+                        }}
+                    >
+                        {content[lang].skills.title}
+                    </h3>
+                    <div
+                        style={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(auto-fit, minmax(11rem, 1fr))",
+                            gap: "2.375rem", // Changed to 2.375rem for 38px gap
+                            textAlign: "center",
+                        }}
+                    >
+                        {content[lang].skills.list.map((skill, index) => (
+                            <div
+                                key={index}
+                                style={{
+                                    backgroundColor: themeColors.sectionBg,
+                                    padding: "1.65rem",
+                                    borderRadius: "0.5rem",
+                                    boxShadow: skillShadow,
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <div style={{ marginBottom: "0.5rem" }}>
+                                    {getSkillIcon(skill.name)}
+                                </div>
+                                <h4
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: "1.125rem",
+                                        color: themeColors.text,
+                                    }}
+                                >
+                                    {skill.name}
+                                </h4>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Expertise Section (New) */}
+                <section
+                    id="expertise"
+                    style={{
+                        padding: "3rem 0",
+                        borderTop: `1px solid ${themeColors.border}`,
+                    }}
+                >
+                    <h3
+                        style={{
+                            fontSize: "1.5rem",
+                            fontWeight: "bold",
+                            color: themeColors.accent1,
+                            marginBottom: "2rem",
+                            textAlign: "center",
+                            "@media (min-width: 768px)": {
+                                fontSize: "1.875rem",
+                            },
+                        }}
+                    >
+                        {content[lang].expertise.title}
+                    </h3>
+                    <div
+                        style={{
+                            backgroundColor: themeColors.sectionBg,
+                            padding: "2rem",
+                            borderRadius: "0.5rem",
+                            textAlign: "center",
+                            color: themeColors.textSecondary,
+                        }}
+                    >
+                        <p>{content[lang].expertise.placeholder}</p>
+                    </div>
+                </section>
+
+                {/* Projects Section (Previously Portfolio) */}
+                <section
+                    id="projects"
+                    style={{
+                        padding: "3rem 0",
+                        borderTop: `1px solid ${themeColors.border}`,
+                    }}
+                >
+                    <h3
+                        style={{
+                            fontSize: "1.5rem",
+                            fontWeight: "bold",
+                            color: themeColors.textAccent,
+                            marginBottom: "2rem",
+                            textAlign: "center",
+                            "@media (min-width: 768px)": {
+                                fontSize: "1.875rem",
+                            },
+                        }}
+                    >
+                        {content[lang].projects.title}
+                    </h3>
+                    <div
+                        style={{
+                            display: "grid",
+                            gap: "2rem",
+                            gridTemplateColumns: "1fr",
+                            "@media (min-width: 640px)": {
+                                gridTemplateColumns: "repeat(2, 1fr)",
+                            },
+                            "@media (min-width: 1024px)": {
+                                gridTemplateColumns: "repeat(4, 1fr)",
+                            },
+                        }}
+                    >
+                        {portfolioVideos.map((video, index) => (
+                            <div
+                                key={index}
+                                style={{
+                                    position: "relative",
+                                    aspectRatio: "16 / 9",
+                                    borderRadius: "0.5rem",
+                                    overflow: "hidden",
+                                    boxShadow:
+                                        "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                                    transition: "transform 0.3s",
+                                    cursor: "pointer",
+                                    "&:hover": {
+                                        transform: "scale(1.02)",
+                                    },
+                                }}
+                            >
+                                <iframe
+                                    width="100%"
+                                    height="100%"
+                                    src={video.embedUrl}
+                                    title={video.title}
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                                <a
+                                    href={video.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        position: "absolute",
+                                        top: 0,
+                                        left: 0,
+                                        width: "100%",
+                                        height: "100%",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        backgroundColor: "rgba(0,0,0,0.5)",
+                                        opacity: 0,
+                                        transition: "opacity 0.3s",
+                                        "&:hover": {
+                                            opacity: 1,
+                                        },
+                                    }}
+                                >
+                                    <span
+                                        style={{
+                                            color: "white",
+                                            fontWeight: "bold",
+                                            fontSize: "1rem",
+                                        }}
+                                    >
+                                        {content[lang].projects.cta}
+                                    </span>
+                                </a>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Contact Section */}
+                <footer
+                    id="contact"
+                    style={{
+                        padding: "3rem 0",
+                        borderTop: `1px solid ${themeColors.border}`,
+                        textAlign: "center",
+                    }}
+                >
+                    <h3
+                        style={{
+                            fontSize: "1.5rem",
+                            fontWeight: "bold",
+                            color: themeColors.accent1,
+                            marginBottom: "1rem",
+                            "@media (min-width: 768px)": {
+                                fontSize: "1.875rem",
+                            },
+                        }}
+                    >
+                        {content[lang].contact.title}
+                    </h3>
+                    <p
+                        style={{
+                            fontSize: "1rem",
+                            color: themeColors.textSecondary,
+                            marginBottom: "2rem",
+                            "@media (min-width: 768px)": {
+                                fontSize: "1.125rem",
+                            },
+                        }}
+                    >
+                        {content[lang].contact.text}
+                    </p>
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "0.5rem",
+                        }}
+                    >
+                        <p
+                            style={{
+                                fontSize: "1rem",
+                                "@media (min-width: 768px)": {
+                                    fontSize: "1.125rem",
+                                },
+                            }}
+                        >
+                            +49 176 34 42 5050
+                        </p>
+                        <p
+                            style={{
+                                fontSize: "1rem",
+                                "@media (min-width: 768px)": {
+                                    fontSize: "1.125rem",
+                                },
+                            }}
+                        >
+                            s.fotouhian@gmail.com
+                        </p>
+                    </div>
+                    <a
+                        href="https://shahab-studio.framer.ai/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                            marginTop: "2rem",
+                            display: "inline-block",
+                            fontWeight: "bold",
+                            padding: "0.75rem 2rem",
+                            borderRadius: "9999px",
+                            transition: "background-color 0.3s",
+                            backgroundColor: themeColors.buttonBg,
+                            color: themeColors.buttonText,
+                        }}
+                    >
+                        {content[lang].contact.button}
+                    </a>
+                </footer>
+            </div>
         </div>
-    </nav>
-
-    <!-- Main Content Sections -->
-    <main class="scroll-snap-y">
-        <!-- Home Section -->
-        <section id="home" class="snap-start relative flex items-center justify-center min-h-screen text-center overflow-hidden">
-            <div class="absolute inset-0 z-0">
-                <div class="w-full h-full bg-cover bg-center" style="background-image: url(https://placehold.co/1920x1080/264653/e9c46a?text=Hero+Video)"></div>
-            </div>
-            <div class="relative z-10 p-4 md:p-8 bg-black bg-opacity-40 backdrop-blur-sm rounded-xl max-w-lg md:max-w-xl">
-                <h1 class="text-4xl md:text-6xl font-bold">Hello, I'm Shahab.</h1>
-                <p class="mt-4 text-lg md:text-2xl font-light">A freelance Motion Designer & UI/UX Designer based in Berlin.</p>
-                <a href="#contact" class="mt-6 inline-block text-lg md:text-xl font-semibold px-6 py-3 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">Get in Touch</a>
-            </div>
-            <div class="absolute bottom-8 text-center text-sm md:text-base font-light opacity-75 animate-bounce">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-                <span class="scroll-hint">Scroll down for more</span>
-            </div>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="snap-start py-16 md:py-24 card-gradient">
-            <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">About Me</h2>
-                <div class="max-w-3xl mx-auto text-lg md:text-xl leading-relaxed text-center">
-                    <p>I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="snap-start py-16 md:py-24 bg-stone-900 text-stone-100">
-            <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Skills & Expertise</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-                    <!-- UI/UX Skills Card -->
-                    <div class="card-gradient p-6 md:p-8 rounded-xl shadow-lg border border-white/5 dark:border-stone-700/50">
-                        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-center">UI/UX Design</h3>
-                        <ul class="list-disc list-inside space-y-2 text-base md:text-lg">
-                            <li>User Research & Analysis</li>
-                            <li>Wireframing & Prototyping</li>
-                            <li>Usability Testing</li>
-                            <li>Figma & Adobe XD</li>
-                            <li>Interaction Design</li>
-                        </ul>
-                    </div>
-
-                    <!-- Motion Design Skills Card -->
-                    <div class="card-gradient p-6 md:p-8 rounded-xl shadow-lg border border-white/5 dark:border-stone-700/50">
-                        <h3 class="text-xl md:text-2xl font-semibold mb-4 text-center">Motion Design</h3>
-                        <ul class="list-disc list-inside space-y-2 text-base md:text-lg">
-                            <li>2D/3D Animation</li>
-                            <li>Video Editing & Compositing</li>
-                            <li>Visual Effects (VFX)</li>
-                            <li>After Effects & Cinema 4D</li>
-                            <li>Storyboarding & Concepts</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Expertise Section -->
-        <section id="expertise" class="snap-start py-16 md:py-24 card-gradient">
-            <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Expertise</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                    <!-- UI/UX Design Item -->
-                    <div class="text-center p-6 md:p-8 rounded-xl bg-white/5 dark:bg-stone-800/50 shadow-md transition-shadow hover:shadow-xl">
-                        <div class="w-16 h-16 mx-auto mb-4 p-3 rounded-full bg-yellow-400/20 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#e9c46a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10"><path d="M17 21h-2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2zM7 21H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2z"/></svg>
-                        </div>
-                        <h3 class="text-lg md:text-xl font-semibold mb-2">UI/UX Design</h3>
-                        <p class="text-sm md:text-base opacity-80">Crafting intuitive and engaging user interfaces that provide seamless experiences. From user flows to interactive prototypes, I focus on creating designs that are both beautiful and functional.</p>
-                    </div>
-                    <!-- Motion Design Item -->
-                    <div class="text-center p-6 md:p-8 rounded-xl bg-white/5 dark:bg-stone-800/50 shadow-md transition-shadow hover:shadow-xl">
-                        <div class="w-16 h-16 mx-auto mb-4 p-3 rounded-full bg-yellow-400/20 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#e9c46a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"/></svg>
-                        </div>
-                        <h3 class="text-lg md:text-xl font-semibold mb-2">Motion Design</h3>
-                        <p class="text-sm md:text-base opacity-80">Adding life and dynamic energy to brands and stories through animation. My expertise spans from logo animations and explainers to character animation and visual effects.</p>
-                    </div>
-                    <!-- Webflow Development Item -->
-                    <div class="text-center p-6 md:p-8 rounded-xl bg-white/5 dark:bg-stone-800/50 shadow-md transition-shadow hover:shadow-xl">
-                        <div class="w-16 h-16 mx-auto mb-4 p-3 rounded-full bg-yellow-400/20 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#e9c46a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10"><path d="M10 17L4 12 10 7"/></svg>
-                        </div>
-                        <h3 class="text-lg md:text-xl font-semibold mb-2">Webflow Development</h3>
-                        <p class="text-sm md:text-base opacity-80">Turning design visions into reality with clean, responsive, and functional websites. Using Webflow, I build custom sites that are easy to manage and perform flawlessly on any device.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section id="projects" class="snap-start py-16 md:py-24 bg-stone-900 text-stone-100">
-            <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">My projects</h2>
-                <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-                    <!-- Project Cards will be injected here by JavaScript -->
-                </div>
-                <div class="text-center mt-12">
-                    <button id="show-more-btn" class="inline-flex items-center text-lg md:text-xl font-semibold px-6 py-3 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">
-                        Show More Videos
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-                    </button>
-                    <button id="show-less-btn" class="hidden inline-flex items-center text-lg md:text-xl font-semibold px-6 py-3 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">
-                        Show Less Videos
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2 transform rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="snap-start py-16 md:py-24 card-gradient">
-            <div class="container mx-auto px-4 md:px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Let's Talk</h2>
-                <p class="text-lg md:text-xl font-light mb-8">Interested in a collaboration? Feel free to reach out!</p>
-                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
-                    <a href="mailto:s.fotouhian@gmail.com" class="inline-block text-lg md:text-xl font-semibold px-8 py-4 rounded-full transition-all duration-300 transform bg-[#e9c46a] text-stone-900 hover:scale-105">Let's Connect</a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="py-8 md:py-12 text-center bg-stone-900 text-stone-100">
-        <p class="text-sm md:text-base opacity-75">Designed and Developed by Shahab Fotouhian</p>
-        <div class="mt-4 flex flex-col items-center">
-            <a href="tel:+4917634425050" class="text-sm md:text-base opacity-75 hover:underline">+49 176 34 42 5050</a>
-            <a href="mailto:s.fotouhian@gmail.com" class="text-sm md:text-base opacity-75 hover:underline">s.fotouhian@gmail.com</a>
-        </div>
-        <div class="flex justify-center space-x-6 mt-4 opacity-75">
-            <a href="https://www.behance.net/shahabfotouhian" target="_blank" rel="noopener noreferrer" aria-label="Behance" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 22.028v-2.18h-1.64c-2.31 0-3.37-.92-3.37-2.92v-2.22h5.68c.55 0 1.05-.18 1.45-.52.4-.34.61-.83.61-1.42s-.21-1.08-.61-1.42a2.38 2.38 0 00-1.45-.52h-5.68v-2.24c0-2.35 1.08-3.4 3.39-3.4h1.62V3.972h-1.62c-2.78 0-4.63 1.3-4.63 4.09v2.24H5.98c-1.39 0-2.25.92-2.25 2.58s.86 2.58 2.25 2.58h5.68v2.22c0 2.21-1.85 3.55-4.65 3.55H3.72V22.028z"/></svg></a>
-            <a href="https://www.linkedin.com/in/shahab-fotouhian/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 21v-8a4 4 0 0 1 8 0v8a4 4 0 0 1-8 0zM12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg></a>
-            <a href="https://www.instagram.com/shahab.studio/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.784 3.016a5.523 5.523 0 011.233 1.233c.52.52.926 1.108 1.233 1.764a5.523 5.523 0 010 6.642 5.523 5.523 0 01-1.233 1.764 5.523 5.523 0 01-1.764 1.233 5.523 5.523 0 01-6.642 0 5.523 5.523 0 01-1.764-1.233 5.523 5.523 0 01-1.233-1.764 5.523 5.523 0 010-6.642 5.523 5.523 0 011.233-1.764 5.523 5.523 0 011.764-1.233 5.523 5.523 0 016.642 0z"/></svg></a>
-        </div>
-    </footer>
-
-    <script>
-        // Data for all projects
-        const projectsData = [
-            { id: "project-1", title: "Digital Nomad", youtubeId: "dQw4w9WgXcQ" },
-            { id: "project-2", title: "City Explorer", youtubeId: "2n9M_C60EGA" },
-            { id: "project-3", title: "Aura Meditation", youtubeId: "c34t_4_g-iM" },
-            { id: "project-4", title: "Synthwave Visuals", youtubeId: "y1T1B4_nE30" },
-            { id: "project-5", title: "Abstract Flow", youtubeId: "V_J7T8zFfWk" },
-            { id: "project-6", title: "Product Showcase", youtubeId: "Fj1-s5z7E60" },
-            { id: "project-7", title: "Coffee App UI", youtubeId: "T8L04L-1t9w" },
-            { id: "project-8", title: "Corporate Explainer", youtubeId: "k-f5qM0vN2s" },
-            { id: "project-9", title: "Fitness App", youtubeId: "5423fA-uXbQ" },
-            { id: "project-10", title: "Space Exploration", youtubeId: "e9fP6p727vQ" },
-            { id: "project-11", title: "E-commerce Website", youtubeId: "6m7aU4K0534" },
-            { id: "project-12", title: "Data Visualization", youtubeId: "p573D5P3D8s" },
-            { id: "project-13", title: "Gaming UI", youtubeId: "9bZkp7q19f0" },
-            { id: "project-14", title: "Character Animation", youtubeId: "y8I5Hq2z6X4" },
-            { id: "project-15", title: "Brand Film", youtubeId: "j6Jp60wYtT8" },
-            { id: "project-16", title: "Iconography Set", youtubeId: "b85z7r0B96c" },
-        ];
-
-        // Constants and state
-        const themeToggle = document.getElementById('theme-toggle');
-        const langToggle = document.getElementById('lang-toggle');
-        const projectsGrid = document.getElementById('projects-grid');
-        const showMoreBtn = document.getElementById('show-more-btn');
-        const showLessBtn = document.getElementById('show-less-btn');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const modal = document.getElementById('video-modal');
-        const player = document.getElementById('youtube-player');
-        const sections = document.querySelectorAll('section');
-
-        const content = {
-            en: {
-                homeTitle: "Hello, I'm Shahab.",
-                homeSubtitle: "A freelance Motion Designer & UI/UX Designer based in Berlin.",
-                homeCta: "Get in Touch",
-                aboutTitle: "About Me",
-                aboutText: "I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.",
-                skillsTitle: "Skills & Expertise",
-                uiuxTitle: "UI/UX Design",
-                motionTitle: "Motion Design",
-                expertiseTitle: "Expertise",
-                contactTitle: "Let's Talk",
-                contactSubtitle: "Interested in a collaboration? Feel free to reach out!",
-                contactButton: "Let's Connect",
-                navHome: "Home",
-                navAbout: "About",
-                navSkills: "Skills",
-                navExpertise: "Expertise",
-                navProjects: "Projects",
-                navContact: "Contact",
-                footerText: "Designed and Developed by Shahab Fotouhian",
-                showMore: "Show More Videos",
-                showLess: "Show Less Videos",
-                scrollHint: "Scroll down for more"
-            },
-            de: {
-                homeTitle: "Hallo, ich bin Shahab.",
-                homeSubtitle: "Ein freiberuflicher Motion Designer & UI/UX Designer in Berlin.",
-                homeCta: "Kontakt aufnehmen",
-                aboutTitle: "Über mich",
-                aboutText: "Ich bin darauf spezialisiert, fesselnde visuelle Geschichten durch Animation und Video zu erschaffen. Mit umfassender Erfahrung in Motion Graphics und einer soliden Grundlage in der Videoproduktion erwecke ich Konzepte mit Kreativität und technischer Präzision zum Leben.",
-                skillsTitle: "Fähigkeiten & Expertise",
-                uiuxTitle: "UI/UX Design",
-                motionTitle: "Motion Design",
-                expertiseTitle: "Fachgebiete",
-                contactTitle: "Lass uns reden",
-                contactSubtitle: "Interessiert an einer Zusammenarbeit? Zögere nicht, mich zu kontaktieren!",
-                contactButton: "Verbinden wir uns",
-                navHome: "Startseite",
-                navAbout: "Über mich",
-                navSkills: "Fähigkeiten",
-                navExpertise: "Expertise",
-                navProjects: "Projekte",
-                navContact: "Kontakt",
-                footerText: "Entworfen und entwickelt von Shahab Fotouhian",
-                showMore: "Mehr Videos anzeigen",
-                showLess: "Weniger Videos anzeigen",
-                scrollHint: "Nach unten scrollen"
-            }
-        };
-
-        let currentLang = 'en';
-        let isDark = true;
-        let visibleProjectsCount = 4;
-
-        // Functions
-        function updateContent() {
-            const currentContent = content[currentLang];
-            // Update all elements with dynamic content
-            document.querySelector('#home h1').textContent = currentContent.homeTitle;
-            document.querySelector('#home p').textContent = currentContent.homeSubtitle;
-            document.querySelector('#home a').textContent = currentContent.homeCta;
-            document.querySelector('#about h2').textContent = currentContent.aboutTitle;
-            document.querySelector('#about p').textContent = currentContent.aboutText;
-            document.querySelector('#skills h2').textContent = currentContent.skillsTitle;
-            document.querySelector('#skills h3').textContent = currentContent.uiuxTitle;
-            document.querySelector('#skills .card-gradient:last-child h3').textContent = currentContent.motionTitle;
-            document.querySelector('#expertise h2').textContent = currentContent.expertiseTitle;
-            document.querySelector('#contact h2').textContent = currentContent.contactTitle;
-            document.querySelector('#contact p').textContent = currentContent.contactSubtitle;
-            document.querySelector('#contact a').textContent = currentContent.contactButton;
-            document.querySelector('footer p').textContent = currentContent.footerText;
-            document.querySelector('.scroll-hint').textContent = currentContent.scrollHint;
-            document.querySelector('#show-more-btn').textContent = currentContent.showMore;
-            document.querySelector('#show-less-btn').textContent = currentContent.showLess;
-
-            // Update nav links
-            const navMap = { home: 'navHome', about: 'navAbout', skills: 'navSkills', expertise: 'navExpertise', projects: 'navProjects', contact: 'navContact' };
-            navLinks.forEach(link => {
-                const sectionId = link.getAttribute('href').substring(1);
-                link.textContent = currentContent[navMap[sectionId]];
-            });
-
-            // Update language toggle button text
-            langToggle.textContent = currentLang.toUpperCase();
-        }
-        
-        function updateTheme() {
-            if (isDark) {
-                document.body.classList.remove('light');
-                document.body.classList.add('dark');
-                themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>';
-                document.querySelector('#home div:nth-child(1)').style.backgroundImage = `url(https://placehold.co/1920x1080/264653/e9c46a?text=Hero+Video)`;
-            } else {
-                document.body.classList.remove('dark');
-                document.body.classList.add('light');
-                themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>';
-                document.querySelector('#home div:nth-child(1)').style.backgroundImage = `url(https://placehold.co/1920x1080/e9c46a/2a9d8f?text=Hero+Video)`;
-            }
-        }
-
-        function renderProjects() {
-            projectsGrid.innerHTML = ''; // Clear existing projects
-            const projectsToRender = projectsData.slice(0, visibleProjectsCount);
-            projectsToRender.forEach(project => {
-                const projectCard = document.createElement('div');
-                projectCard.className = `card-gradient p-4 md:p-6 rounded-2xl shadow-lg border border-white/5 dark:border-stone-700/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl cursor-pointer`;
-                projectCard.setAttribute('data-youtube-id', project.youtubeId);
-                projectCard.innerHTML = `
-                    <div class="aspect-video w-full rounded-xl overflow-hidden mb-4 relative group">
-                        <img src="https://img.youtube.com/vi/${project.youtubeId}/hqdefault.jpg" alt="Thumbnail for ${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
-                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-bold text-center">${project.title}</h3>
-                `;
-                projectCard.addEventListener('click', () => openModal(project.youtubeId));
-                projectsGrid.appendChild(projectCard);
-            });
-
-            // Update button visibility
-            if (visibleProjectsCount < projectsData.length) {
-                showMoreBtn.classList.remove('hidden');
-                showLessBtn.classList.add('hidden');
-            } else {
-                showMoreBtn.classList.add('hidden');
-                showLessBtn.classList.remove('hidden');
-            }
-        }
-        
-        function openModal(youtubeId) {
-            player.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
-            modal.style.display = 'flex';
-            // Trigger transition
-            setTimeout(() => {
-                modal.querySelector('div:nth-child(2)').classList.remove('scale-95', 'opacity-0');
-            }, 10);
-        }
-        
-        function closeModal() {
-            modal.querySelector('div:nth-child(2)').classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.style.display = 'none';
-                player.src = ''; // Stop the video
-            }, 300);
-        }
-
-        function setActiveSection(sectionId) {
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
-            });
-        }
-
-        // Event listeners
-        themeToggle.addEventListener('click', () => {
-            isDark = !isDark;
-            updateTheme();
-        });
-
-        langToggle.addEventListener('click', () => {
-            currentLang = currentLang === 'en' ? 'de' : 'en';
-            updateContent();
-        });
-
-        showMoreBtn.addEventListener('click', () => {
-            visibleProjectsCount = projectsData.length;
-            renderProjects();
-        });
-        
-        showLessBtn.addEventListener('click', () => {
-            visibleProjectsCount = 4;
-            renderProjects();
-        });
-
-        // Initial setup on page load
-        window.addEventListener('load', () => {
-            updateContent();
-            updateTheme();
-            renderProjects();
-            setActiveSection('home');
-        });
-
-        // Set active nav link on scroll
-        let activeSectionId = 'home';
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    activeSectionId = entry.target.id;
-                    setActiveSection(activeSectionId);
-                }
-            });
-        }, { rootMargin: '-50% 0px -50% 0px' });
-
-        sections.forEach(section => {
-            observer.observe(section);
-        });
-    </script>
-</body>
-</html>
+    )
+}
