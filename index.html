@@ -254,410 +254,403 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-4a2 2 0 01-2-2V4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M12 22h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M22 16h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M12 2h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/></svg>
                         </div>
                         <h3 class="text-xl md:text-2xl font-bold mb-4 text-center">Strategic Communications</h3>
-                        <p class="text-base md:text-lg opacity-80 text-center">Building clear and impactful communication strategies, from content writing to script development and storytelling.</p>
+                        <p class="text-base md:text-lg opacity-80 text-center">Crafting compelling narratives and messaging that resonate with target audiences to achieve brand and business goals.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Expertise Section: Now with clickable cards for software -->
+        <!-- Expertise Section: New section for specific areas of expertise -->
         <section id="expertise" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
             <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">Software Expertise</h2>
-                <!-- Card grid will be dynamically rendered by JavaScript -->
-                <div id="expertise-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-                    <!-- Cards will be injected here -->
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">My Expertise</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12" id="expertise-container">
+                    <!-- Expertise cards will be dynamically added here -->
                 </div>
             </div>
         </section>
 
-        <!-- Projects Section: Dynamically rendered video projects -->
+        <!-- Projects Section: Portfolio grid with clickable cards -->
         <section id="projects" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
             <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">My projects</h2>
-                <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-                    <!-- Project Cards will be injected here by JavaScript -->
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12" id="projects-container">
+                    <!-- Project cards will be dynamically added here -->
                 </div>
-                <div class="text-center mt-12">
-                    <!-- Buttons to show more or less projects -->
-                    <button id="show-more-btn" class="inline-flex items-center text-lg md:text-xl font-semibold px-6 py-3 rounded-full transition-all duration-300 transform bg-accent text-button-text hover:scale-105" style="background-color: var(--button-bg); color: var(--button-text);">
-                        Show More Videos
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-                    </button>
-                    <button id="show-less-btn" class="hidden inline-flex items-center text-lg md:text-xl font-semibold px-6 py-3 rounded-full transition-all duration-300 transform bg-accent text-button-text hover:scale-105" style="background-color: var(--button-bg); color: var(--button-text);">
-                        Show Less Videos
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2 transform rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-                    </button>
+                <!-- Show More/Less buttons -->
+                <div class="mt-12 text-center">
+                    <button id="show-more-btn" class="bg-accent px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hidden" style="color: var(--button-text)">Show More</button>
+                    <button id="show-less-btn" class="bg-gray-700 px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hidden" style="color: white; margin-left: 1rem;">Show Less</button>
                 </div>
             </div>
         </section>
 
-        <!-- Contact Section: Provides contact information and a button -->
+        <!-- Contact Section: Contact form and social links -->
         <section id="contact" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
-            <div class="container mx-auto px-4 md:px-6 text-center">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4">Let's Talk</h2>
-                <p class="text-lg md:text-xl font-light mb-8">Interested in a collaboration? Feel free to reach out!</p>
-                <a href="mailto:s.fotouhian@gmail.com" class="inline-block text-lg md:text-xl font-semibold px-8 py-4 rounded-full transition-all duration-300 transform bg-accent text-button-text hover:scale-105" style="background-color: var(--button-bg); color: var(--button-text);">Let's Connect</a>
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">Contact</h2>
+                <div class="max-w-2xl mx-auto text-center">
+                    <p class="text-lg md:text-xl leading-relaxed opacity-80">Let's create something great together. Feel free to reach out for collaborations or inquiries.</p>
+                    <div class="mt-8 flex justify-center space-x-6">
+                        <a href="mailto:hello@example.com" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300">Email</a>
+                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300">LinkedIn</a>
+                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300">Behance</a>
+                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300">Instagram</a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
     <!-- Footer -->
-    <footer class="py-8 md:py-12 text-center card">
-        <p class="text-sm md:text-base opacity-75">Designed and Developed by Shahab Fotouhian</p>
-        <div class="mt-4 flex flex-col items-center">
-            <a href="tel:+4917634425050" class="text-sm md:text-base opacity-75 hover:underline">+49 176 34 42 5050</a>
-            <a href="mailto:s.fotouhian@gmail.com" class="text-sm md:text-base opacity-75 hover:underline">s.fotouhian@gmail.com</a>
-        </div>
-        <div class="flex justify-center space-x-6 mt-4 opacity-75">
-            <!-- Social media icons (Behance, LinkedIn, Instagram) -->
-            <a href="https://www.behance.net/shahabfotouhian" target="_blank" rel="noopener noreferrer" aria-label="Behance" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 22.028v-2.18h-1.64c-2.31 0-3.37-.92-3.37-2.92v-2.22h5.68c.55 0 1.05-.18 1.45-.52.4-.34.61-.83.61-1.42s-.21-1.08-.61-1.42a2.38 2.38 0 00-1.45-.52h-5.68v-2.24c0-2.35 1.08-3.4 3.39-3.4h1.62V3.972h-1.62c-2.78 0-4.63 1.3-4.63 4.09v2.24H5.98c-1.39 0-2.25.92-2.25 2.58s.86 2.58 2.25 2.58h5.68v2.22c0 2.21-1.85 3.55-4.65 3.55H3.72V22.028z"/></svg></a>
-            <a href="https://www.linkedin.com/in/shahab-fotouhian/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 21v-8a4 4 0 0 1 8 0v8a4 4 0 0 1-8 0zM12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg></a>
-            <a href="https://www.instagram.com/shahab.studio/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="hover:opacity-100"><svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.784 3.016a5.523 5.523 0 011.233 1.233c.52.52.926 1.108 1.233 1.764a5.523 5.523 0 010 6.642 5.523 5.523 0 01-1.233 1.764 5.523 5.523 0 01-1.764 1.233 5.523 5.523 0 01-6.642 0 5.523 5.523 0 01-1.764-1.233 5.523 5.523 0 01-1.233-1.764 5.523 5.523 0 010-6.642 5.523 5.523 0 011.233-1.764 5.523 5.523 0 011.764-1.233 5.523 5.523 0 016.642 0z"/></svg></a>
-        </div>
-        <!-- Copyrights reserved sentence -->
-        <p class="mt-4 text-sm opacity-60">© 2024 Shahab Fotouhian. All rights reserved.</p>
+    <footer class="text-center text-sm md:text-base py-6 opacity-75">
+        <p>&copy; 2024 Shahab Fotouhian. All rights reserved.</p>
     </footer>
 
+    <!-- JavaScript for dynamic content, theming, and interactions -->
     <script>
-        // Data for all projects to be displayed
-        const projectsData = [
-            { id: "project-1", title: "Digital Nomad", youtubeId: "dQw4w9WgXcQ" },
-            { id: "project-2", title: "City Explorer", youtubeId: "2n9M_C60EGA" },
-            { id: "project-3", title: "Aura Meditation", youtubeId: "c34t_4_g-iM" },
-            { id: "project-4", title: "Synthwave Visuals", youtubeId: "y1T1B4_nE30" },
-            { id: "project-5", title: "Abstract Flow", youtubeId: "V_J7T8zFfWk" },
-            { id: "project-6", title: "Product Showcase", youtubeId: "Fj1-s5z7E60" },
-            { id: "project-7", title: "Coffee App UI", youtubeId: "T8L04L-1t9w" },
-            { id: "project-8", title: "Corporate Explainer", youtubeId: "k-f5qM0vN2s" },
-            { id: "project-9", title: "Fitness App", youtubeId: "5423fA-uXbQ" },
-            { id: "project-10", title: "Space Exploration", youtubeId: "e9fP6p727vQ" },
-            { id: "project-11", title: "E-commerce Website", youtubeId: "6m7aU4K0534" },
-            { id: "project-12", title: "Data Visualization", youtubeId: "p573D5P3D8s" },
-            { id: "project-13", title: "Gaming UI", youtubeId: "9bZkp7q19f0" },
-            { id: "project-14", title: "Character Animation", youtubeId: "y8I5Hq2z6X4" },
-            { id: "project-15", title: "Brand Film", youtubeId: "j6Jp60wYtT8" },
-            { id: "project-16", title: "Iconography Set", youtubeId: "b85z7r0B96c" },
+        // Data for projects and expertise cards
+        const projectData = [
+            {
+                title: "Premium showreel",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/O8RsvUra8JE?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/00a896/ffffff?text=Premium+showreel"
+            },
+            {
+                title: "Business cartoon showreel",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/AAKkb9oXCss?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/4CAF50/ffffff?text=Business+cartoon+showreel"
+            },
+            {
+                title: "B&W showreel",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/y4LTPeOgeS0?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/FFC107/ffffff?text=B&W+showreel"
+            },
+            {
+                title: "Catification",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/wI8QYzj-phk?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/9C27B0/ffffff?text=Catification"
+            },
+            {
+                title: "Cyberpunk glimpse",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/lOnX6pUKkbA?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/3F51B5/ffffff?text=Cyberpunk+glimpse"
+            },
+            {
+                title: "Finally free",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/wJIEdg1CGns?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/FF5722/ffffff?text=Finally+free"
+            },
+            {
+                title: "Stadt Bochum",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/nq-nnNSeQbo?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/00a896/ffffff?text=Stadt+Bochum"
+            },
+            {
+                title: "Stadtbauprojekt",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/rrMwJjRxb9E?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/4CAF50/ffffff?text=Stadtbauprojekt"
+            },
+            {
+                title: "Explainer video",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/j-AUGz2xvLU?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/FFC107/ffffff?text=Explainer+video"
+            },
+            {
+                title: "Covivio",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/3K6otI9MAko?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/9C27B0/ffffff?text=Covivio"
+            },
+            {
+                title: "Organeers",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/xWCdD5Cz3Q8?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/3F51B5/ffffff?text=Organeers"
+            },
+            {
+                title: "Ärzte zum Migränetagebuch",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/dmPcSstXA4I?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/FF5722/ffffff?text=Ärzte+zum+Migränetagebuch"
+            },
+            {
+                title: "Patienten zum Migränetagebuch",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/3HvT7U71cpA?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/00a896/ffffff?text=Patienten+zum+Migränetagebuch"
+            },
+            {
+                title: "Meditation",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/brM7I-4KY0g?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/4CAF50/ffffff?text=Meditation"
+            },
+            {
+                title: "ADAC",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/UPBK_LGcslQ?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/FFC107/ffffff?text=ADAC"
+            },
+            {
+                title: "WOBCOM",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/7o9G9ZfWRw4?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/9C27B0/ffffff?text=WOBCOM"
+            },
+            {
+                title: "Bierentdecker",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/Kzz9EvZynwc?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/3F51B5/ffffff?text=Bierentdecker"
+            },
+            {
+                title: "Tag der Meditation",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/7aokYsmPVkg?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/FF5722/ffffff?text=Tag+der+Meditation"
+            },
+            {
+                title: "Die drückende Hitze",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/pCm0wXebzMk?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/00a896/ffffff?text=Die+drückende+Hitze"
+            },
+            {
+                title: "DEU-PA",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/yn_64XKkw6c?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/4CAF50/ffffff?text=DEU-PA"
+            },
+            {
+                title: "Der Camping Butler",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/gddztaVql3Q?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/FFC107/ffffff?text=Der+Camping+Butler"
+            },
+            {
+                title: "Sleeperoo",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/a0xRb27LRKs?autoplay=1&rel=0&showinfo=0",
+                thumbnail: "https://placehold.co/800x450/9C27B0/ffffff?text=Sleeperoo"
+            }
         ];
 
-        // New data for software expertise cards, including titles, descriptions, and icons
         const expertiseData = [
             {
-                title: "After Effects",
-                description: "After Effects is my go-to tool for crafting dynamic animations, compositing intricate scenes, and conquering UI... It leverages its robust keyframing, expression engine, and 3D tracking capabilities to bring my creative visions to life.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M12 2l-7 7m7-7l7 7m-7-7v20m7-13l-7-7m7 7h-7"/></svg>'
+                title: "Adobe After Effects",
+                description: "Advanced proficiency in motion graphics, visual effects, and 2D animation.",
             },
             {
-                title: "Premiere Pro",
-                description: "Premiere Pro is my trusted companion for editing and assembling video sequences, applying transitions, and fine-tuning color correction. I rely on its intuitive timeline, extensive format support, and efficient workflow to deliver polished and professional video content.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>'
+                title: "Cinema 4D",
+                description: "Expertise in 3D modeling, texturing, lighting, and rendering for dynamic visuals.",
             },
             {
-                title: "Photoshop",
-                description: "Photoshop is my digital canvas for manipulating images, creating graphics, and designing interfaces. I skillfully utilize its layers, masks, filters, and painting tools to achieve the desired visual impact and enhance the overall aesthetic of my motion design projects.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2z"/><path d="M16 8v8a2 2 0 01-2 2H8a2 2 0 01-2-2V8z"/></svg>'
+                title: "Figma & Adobe XD",
+                description: "Skilled in UI/UX design, prototyping, and creating interactive user experiences.",
             },
             {
-                title: "Illustrator",
-                description: "Illustrator is my vector graphics powerhouse, allowing me to create scalable designs, logos, icons, and other design elements. I harness its precision tools, shape manipulation, and typography capabilities to craft visually striking and versatile assets.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 22 22 22 12 2"/></svg>'
+                title: "Adobe Premiere Pro",
+                description: "Proficient in video editing, color grading, and audio post-production.",
             },
             {
-                title: "Media Encoder",
-                description: "Media Encoder is my reliable batch processing tool for efficiently rendering videos and audio files in various formats and resolutions. I optimize my exports to meet specific delivery requirements, ensuring compatibility and quality across different platforms.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M9 12h6"/></svg>'
+                title: "DaVinci Resolve",
+                description: "In-depth knowledge of color correction, grading, and advanced video editing workflows.",
             },
             {
-                title: "Audition",
-                description: "Audition is my audio editing and mixing studio, where I refine and enhance the soundtrack for my motion design projects. I employ its noise reduction, equalization, compression, and other audio processing techniques to create immersive and impactful audio experiences.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18a6 6 0 100-12 6 6 0 000 12z"/><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><path d="M12 21v-3m0-12V3"/></svg>'
-            },
-            {
-                title: "Office 365",
-                description: "Office 365 is my productivity suite for managing documents, spreadsheets, presentations, and emails. I rely on its cloud-based features, online collaboration tools, and integration with other Microsoft services to streamline my workflow and enhance productivity.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2a8 8 0 100 16 8 8 0 000-16z"/><path d="M12 10a2 2 0 10-4 0 2 2 0 004 0z"/></svg>'
-            },
-            {
-                title: "Slack",
-                description: "Slack is my go-to communication platform for collaborating with team members, sharing updates, and staying organized. I utilize its channels, direct messaging, and file sharing capabilities to foster efficient and effective teamwork.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 100-20 10 10 0 000 20z"/><path d="M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>'
-            },
-            {
-                title: "Creative Cloud",
-                description: "Creative Cloud is my comprehensive toolkit for unleashing creative potential. I benefit from its seamless integration between various Adobe applications, cloud-based features, and access to the latest tools and updates, empowering me to explore and experiment with different creative avenues.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 100-16 8 8 0 000 16zM12 20v2M12 4V2M20 12h2M4 12H2"/></svg>'
-            },
-            {
-                title: "Acrobat Pro",
-                description: "Acrobat Pro is my essential PDF management tool, enabling me to create, edit, and share documents with ease. I leverage its features for adding digital signatures, redacting sensitive information, and converting files to PDF format for efficient sharing and distribution.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>'
-            },
-            {
-                title: "Camtasia",
-                description: "Camtasia is my streamlined tool for creating screencasts and video tutorials. I appreciate its user-friendly interface and intuitive features, making it a suitable choice for projects that require quick and efficient video production without the complexity of After Effects. I effectively capture screen activity, add annotations, edit audio, and export videos in various formats.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 22h2a2 2 0 002-2V4a2 2 0 00-2-2H6a2 2 0 00-2 2v16a2 2 0 002 2h2"/><path d="M10 22L4 16l6-6L4 4h16"/></svg>'
-            },
-            {
-                title: "Asana",
-                description: "Asana is my project management tool for organizing tasks, setting deadlines, and tracking progress. I utilize its boards, lists, timelines, and custom fields to effectively plan and execute my projects, ensuring efficient collaboration and timely delivery.",
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/></svg>'
+                title: "Ableton Live",
+                description: "Competent in sound design, music composition, and audio synchronization for video.",
             }
         ];
 
-        // Constants and state variables
+        // DOM elements
+        const body = document.body;
         const themeToggle = document.getElementById('theme-toggle');
         const langToggle = document.getElementById('lang-toggle');
-        const projectsGrid = document.getElementById('projects-grid');
-        const expertiseGrid = document.getElementById('expertise-grid'); // New element
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('main section');
+        const projectsContainer = document.getElementById('projects-container');
+        const expertiseContainer = document.getElementById('expertise-container');
         const showMoreBtn = document.getElementById('show-more-btn');
         const showLessBtn = document.getElementById('show-less-btn');
-        const navLinks = document.querySelectorAll('.nav-link');
-        const modal = document.getElementById('video-modal');
-        const infoModal = document.getElementById('info-modal'); // New modal
-        const infoModalTitle = document.getElementById('modal-title'); // New modal element
-        const infoModalDescription = document.getElementById('modal-description'); // New modal element
-        const player = document.getElementById('youtube-player');
-        const sections = document.querySelectorAll('section');
+        const videoModal = document.getElementById('video-modal');
+        const youtubePlayer = document.getElementById('youtube-player');
+        const infoModal = document.getElementById('info-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
         const heroBg = document.getElementById('hero-bg');
 
-        const content = {
-            en: {
-                homeTitle: "Hello, I'm Shahab.",
-                homeSubtitle: "A freelance Motion Designer & UI/UX Designer based in Berlin.",
-                homeCta: "Get in Touch",
-                aboutTitle: "About Me",
-                aboutText: "I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.",
-                skillsTitle: "Skills",
-                uiuxTitle: "UI/UX Design",
-                motionTitle: "Motion Design",
-                expertiseTitle: "Expertise",
-                contactTitle: "Let's Talk",
-                contactSubtitle: "Interested in a collaboration? Feel free to reach out!",
-                contactButton: "Let's Connect",
-                navHome: "Home",
-                navAbout: "About",
-                navSkills: "Skills",
-                navExpertise: "Expertise",
-                navProjects: "Projects",
-                navContact: "Contact",
-                footerText: "Designed and Developed by Shahab Fotouhian",
-                showMore: "Show More Videos",
-                showLess: "Show Less Videos",
-                scrollHint: "Scroll down for more"
-            },
-            de: {
-                homeTitle: "Hallo, ich bin Shahab.",
-                homeSubtitle: "Ein freiberuflicher Motion Designer & UI/UX Designer in Berlin.",
-                homeCta: "Kontakt aufnehmen",
-                aboutTitle: "Über mich",
-                aboutText: "Ich bin darauf spezialisiert, fesselnde visuelle Geschichten durch Animation und Video zu schaffen. Mit umfassender Erfahrung in Motion Graphics und einer solider Grundlage in der Videoproduktion erwecke ich Konzepte mit Kreativität und technischer Präzision zum Leben.",
-                skillsTitle: "Fähigkeiten",
-                uiuxTitle: "UI/UX Design",
-                motionTitle: "Motion Design",
-                expertiseTitle: "Fachgebiete",
-                contactTitle: "Lassen Sie uns in Kontakt treten",
-                contactSubtitle: "Interessiert an einer Zusammenarbeit? Zögere nicht, mich zu kontaktieren!",
-                contactButton: "Verbinden wir uns",
-                navHome: "Startseite",
-                navAbout: "Über mich",
-                navSkills: "Fähigkeiten",
-                navExpertise: "Fachgebiete",
-                navProjects: "Projekte",
-                navContact: "Kontakt",
-                footerText: "Entworfen und entwickelt von Shahab Fotouhian",
-                showMore: "Mehr Videos anzeigen",
-                showLess: "Weniger Videos anzeigen",
-                scrollHint: "Nach unten scrollen"
-            }
-        };
-
+        // State variables
         let currentLang = 'en';
-        let isDark = true;
-        let visibleProjectsCount = 4;
+        let visibleProjects = 3;
 
-        // Function to update all text content based on the current language
-        function updateContent() {
-            const currentContent = content[currentLang];
-            document.querySelector('#home h1').textContent = currentContent.homeTitle;
-            document.querySelector('#home p').textContent = currentContent.homeSubtitle;
-            document.querySelector('#home a').textContent = currentContent.homeCta;
-            document.querySelector('#about h2').textContent = currentContent.aboutTitle;
-            document.querySelector('#about p').textContent = currentContent.aboutText;
-            document.querySelector('#skills h2').textContent = currentContent.skillsTitle;
-            document.querySelector('#expertise h2').textContent = currentContent.expertiseTitle;
-            document.querySelector('#contact h2').textContent = currentContent.contactTitle;
-            document.querySelector('#contact p').textContent = currentContent.contactSubtitle;
-            document.querySelector('#contact a').textContent = currentContent.contactButton;
-            document.querySelector('footer p').textContent = currentContent.footerText;
-            document.querySelector('.scroll-hint').textContent = currentContent.scrollHint;
-            document.querySelector('#show-more-btn').textContent = currentContent.showMore;
-            document.querySelector('#show-less-btn').textContent = currentContent.showLess;
-            
-            navLinks.forEach(link => {
-                const sectionId = link.getAttribute('href').substring(1);
-                const navKey = `nav${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)}`;
-                link.textContent = currentContent[navKey];
-            });
-
-            langToggle.textContent = currentLang.toUpperCase();
-        }
-        
-        // Function to toggle between dark and light themes
-        function updateTheme() {
-            if (isDark) {
-                document.body.classList.remove('light');
-                document.body.classList.add('dark');
-                heroBg.style.backgroundImage = `url(https://placehold.co/1920x1080/1a1a1a/00a896?text=Hero+Video+Placeholder)`;
-                themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>';
-            } else {
-                document.body.classList.remove('dark');
-                document.body.classList.add('light');
-                heroBg.style.backgroundImage = `url(https://placehold.co/1920x1080/f7f7f7/00a896?text=Hero+Video+Placeholder)`;
-                themeToggle.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>';
-            }
+        // Function to open the video modal
+        function openModal(videoUrl) {
+            youtubePlayer.src = videoUrl;
+            videoModal.classList.remove('hidden');
+            setTimeout(() => {
+                videoModal.querySelector('div:last-child').classList.remove('scale-95', 'opacity-0');
+            }, 10);
         }
 
-        // Function to dynamically render project cards
+        // Function to close the video modal
+        function closeModal() {
+            videoModal.querySelector('div:last-child').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                videoModal.classList.add('hidden');
+                youtubePlayer.src = ''; // Stop the video
+            }, 300);
+        }
+
+        // Function to open the info modal
+        function openInfoModal(title, description) {
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            infoModal.classList.remove('hidden');
+            setTimeout(() => {
+                infoModal.querySelector('div:last-child').classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+
+        // Function to close the info modal
+        function closeInfoModal() {
+            infoModal.querySelector('div:last-child').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                infoModal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Render projects
         function renderProjects() {
-            projectsGrid.innerHTML = '';
-            const projectsToRender = projectsData.slice(0, visibleProjectsCount);
-            projectsToRender.forEach(project => {
+            projectsContainer.innerHTML = '';
+            const projectsToShow = projectData.slice(0, visibleProjects);
+            projectsToShow.forEach(project => {
                 const projectCard = document.createElement('div');
-                projectCard.className = `card p-4 md:p-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] cursor-pointer`;
-                projectCard.setAttribute('data-youtube-id', project.youtubeId);
+                projectCard.className = 'card rounded-3xl overflow-hidden shadow-lg cursor-pointer transition-transform duration-300 transform hover:scale-105 group';
+                projectCard.setAttribute('onclick', `openModal('${project.videoUrl}')`);
                 projectCard.innerHTML = `
-                    <div class="aspect-video w-full rounded-xl overflow-hidden mb-4 relative group">
-                        <img src="https://img.youtube.com/vi/${project.youtubeId}/hqdefault.jpg" alt="Thumbnail for ${project.title}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
-                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                            </svg>
+                    <div class="relative w-full h-auto pb-[56.25%] overflow-hidden">
+                        <img src="${project.thumbnail}" alt="${project.title} Thumbnail" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                         </div>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-bold text-center">${project.title}</h3>
+                    <div class="p-6">
+                        <h3 class="text-xl md:text-2xl font-bold mb-2">${project.title}</h3>
+                    </div>
                 `;
-                projectCard.addEventListener('click', () => openModal(project.youtubeId));
-                projectsGrid.appendChild(projectCard);
+                projectsContainer.appendChild(projectCard);
             });
 
-            if (visibleProjectsCount < projectsData.length) {
+            // Toggle "Show More/Less" buttons
+            if (projectData.length > visibleProjects) {
                 showMoreBtn.classList.remove('hidden');
-                showLessBtn.classList.add('hidden');
             } else {
                 showMoreBtn.classList.add('hidden');
+            }
+
+            if (visibleProjects > 3) {
                 showLessBtn.classList.remove('hidden');
+            } else {
+                showLessBtn.classList.add('hidden');
             }
         }
 
-        // New function to render expertise cards
+        // Render expertise cards
         function renderExpertise() {
-            expertiseGrid.innerHTML = '';
-            expertiseData.forEach(item => {
+            expertiseContainer.innerHTML = '';
+            expertiseData.forEach(expertise => {
                 const expertiseCard = document.createElement('div');
-                expertiseCard.className = `card p-8 rounded-3xl text-center transition-all duration-300 hover:scale-[1.02] cursor-pointer`;
+                expertiseCard.className = 'card p-8 rounded-3xl cursor-pointer transition-transform duration-300 transform hover:scale-105';
+                expertiseCard.setAttribute('onclick', `openInfoModal('${expertise.title}', '${expertise.description}')`);
                 expertiseCard.innerHTML = `
-                    <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
-                        <!-- Icon will be injected from the data object -->
-                        ${item.iconSvg}
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-bold mb-2">${item.title}</h3>
-                    <p class="text-sm md:text-base opacity-80">${item.description.split('.')[0] + '.'}</p>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">${expertise.title}</h3>
+                    <p class="text-base md:text-lg opacity-80">${expertise.description}</p>
                 `;
-                // Add click listener to open the info modal
-                expertiseCard.addEventListener('click', () => openInfoModal(item.title, item.description));
-                expertiseGrid.appendChild(expertiseCard);
-            });
-        }
-        
-        // Functions to open and close the video modal
-        function openModal(youtubeId) {
-            player.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
-            modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.querySelector('div:nth-child(2)').classList.remove('scale-95', 'opacity-0');
-            }, 10);
-        }
-        
-        function closeModal() {
-            modal.querySelector('div:nth-child(2)').classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.style.display = 'none';
-                player.src = '';
-            }, 300);
-        }
-
-        // New functions to open and close the info modal
-        function openInfoModal(title, description) {
-            infoModalTitle.textContent = title;
-            infoModalDescription.textContent = description;
-            infoModal.style.display = 'flex';
-            setTimeout(() => {
-                infoModal.querySelector('div:nth-child(2)').classList.remove('scale-95', 'opacity-0');
-            }, 10);
-        }
-
-        function closeInfoModal() {
-            infoModal.querySelector('div:nth-child(2)').classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                infoModal.style.display = 'none';
-            }, 300);
-        }
-
-        // Function to set the active navigation link based on the current section
-        function setActiveSection(sectionId) {
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
+                expertiseContainer.appendChild(expertiseCard);
             });
         }
 
-        // Event listeners
-        themeToggle.addEventListener('click', () => {
-            isDark = !isDark;
-            updateTheme();
-        });
-
+        // Language toggle
         langToggle.addEventListener('click', () => {
             currentLang = currentLang === 'en' ? 'de' : 'en';
-            updateContent();
+            // Placeholder for actual text changes based on language
+            const newText = currentLang === 'en' ? 'EN' : 'DE';
+            langToggle.textContent = newText;
+            document.querySelector('body').setAttribute('lang', currentLang);
+            // This is where you would replace all text content on the page
+            // to match the selected language from a data object.
+            // Example: document.getElementById('home-title').textContent = content[currentLang].homeTitle;
         });
 
-        showMoreBtn.addEventListener('click', () => {
-            visibleProjectsCount = projectsData.length;
-            renderProjects();
-        });
-        
-        showLessBtn.addEventListener('click', () => {
-            visibleProjectsCount = 4;
-            renderProjects();
-        });
-
-        // Initial setup on page load
-        window.addEventListener('load', () => {
-            updateContent();
-            updateTheme();
-            renderProjects();
-            renderExpertise(); // Render the new expertise cards
-            setActiveSection('home');
-        });
-
-        // Observer to automatically set active nav link on scroll
-        let activeSectionId = 'home';
-        const observer = new IntersectionObserver(entries => {
-            const visibleSections = entries.filter(entry => entry.isIntersecting);
-            if (visibleSections.length > 0) {
-                // Find the section that is closest to the top of the viewport
-                const topMostSection = visibleSections.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-                setActiveSection(topMostSection.target.id);
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                heroBg.style.backgroundImage = 'url(https://placehold.co/1920x1080/f7f7f7/00a896?text=Hero+Video+Placeholder)';
+                themeToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>`;
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                heroBg.style.backgroundImage = 'url(https://placehold.co/1920x1080/1a1a1a/00a896?text=Hero+Video+Placeholder)';
+                themeToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
             }
-        }, { rootMargin: '-50% 0px -50% 0px' });
+        });
+
+        // Show More/Less buttons
+        showMoreBtn.addEventListener('click', () => {
+            visibleProjects = projectData.length;
+            renderProjects();
+        });
+
+        showLessBtn.addEventListener('click', () => {
+            visibleProjects = 3;
+            renderProjects();
+        });
+
+        // Active navigation link on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id);
+                }
+            });
+        }, observerOptions);
+
+        const setActiveSection = (sectionId) => {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        };
 
         sections.forEach(section => {
             observer.observe(section);
         });
+
+        // Initial render on page load
+        window.onload = () => {
+            renderProjects();
+            renderExpertise();
+        };
     </script>
 </body>
 </html>
