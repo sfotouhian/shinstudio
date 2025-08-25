@@ -146,12 +146,12 @@
             <div class="flex items-center space-x-4">
                 <!-- Desktop navigation links -->
                 <div class="hidden md:flex items-center space-x-6 rounded-full px-6 py-2 bg-[var(--nav-bg)] backdrop-blur-md transition-colors duration-500">
-                    <a href="#home" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('home')" style="color: var(--nav-text)">Home</a>
-                    <a href="#about" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('about')" style="color: var(--nav-text)">About</a>
-                    <a href="#skills" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('skills')" style="color: var(--nav-text)">Skills</a>
-                    <a href="#expertise" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('expertise')" style="color: var(--nav-text)">Expertise</a>
-                    <a href="#projects" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('projects')" style="color: var(--nav-text)">Projects</a>
-                    <a href="#contact" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('contact')" style="color: var(--nav-text)">Contact</a>
+                    <a href="#home" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('home')" style="color: var(--nav-text)" data-key="navHome">Home</a>
+                    <a href="#about" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('about')" style="color: var(--nav-text)" data-key="navAbout">About</a>
+                    <a href="#skills" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('skills')" style="color: var(--nav-text)" data-key="navSkills">Skills</a>
+                    <a href="#expertise" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('expertise')" style="color: var(--nav-text)" data-key="navExpertise">Expertise</a>
+                    <a href="#projects" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('projects')" style="color: var(--nav-text)" data-key="navProjects">Projects</a>
+                    <a href="#contact" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('contact')" style="color: var(--nav-text)" data-key="navContact">Contact</a>
                 </div>
                 <!-- Language and Theme toggles -->
                 <button id="lang-toggle" class="bg-[var(--nav-bg)] backdrop-blur-md text-sm md:text-base px-3 py-1 md:px-4 md:py-2 rounded-full font-semibold transition-colors duration-500" style="color: var(--nav-text)">EN</button>
@@ -172,23 +172,23 @@
                 <div id="hero-bg" class="w-full h-full bg-cover bg-center" style="background-image: url(https://placehold.co/1920x1080/1a1a1a/00a896?text=Hero+Video+Placeholder)"></div>
             </div>
             <div class="relative z-10 p-6 md:p-12 bg-black bg-opacity-40 backdrop-blur-sm rounded-3xl max-w-2xl transform transition-all duration-500">
-                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight text-white">Hello, I'm Shahab.</h1>
-                <p class="mt-4 text-xl md:text-2xl font-light text-gray-200">A freelance Motion Designer & UI/UX Designer based in Berlin.</p>
-                <a href="#contact" class="mt-8 inline-block text-lg md:text-xl font-semibold px-8 py-4 rounded-full transition-all duration-300 transform bg-accent text-button-text hover:scale-105" style="background-color: var(--button-bg); color: var(--button-text);">Get in Touch</a>
+                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight text-white" data-key="homeTitle">Hello, I'm Shahab.</h1>
+                <p class="mt-4 text-xl md:text-2xl font-light text-gray-200" data-key="homeSubtitle">A freelance Motion Designer & UI/UX Designer based in Berlin.</p>
+                <a href="#contact" class="mt-8 inline-block text-lg md:text-xl font-semibold px-8 py-4 rounded-full transition-all duration-300 transform bg-accent text-button-text hover:scale-105" style="background-color: var(--button-bg); color: var(--button-text);" data-key="getInTouch">Get in Touch</a>
             </div>
             <!-- Scroll hint icon -->
             <div class="absolute bottom-8 text-center text-sm md:text-base font-light opacity-75 animate-bounce">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-                <span class="scroll-hint">Scroll down for more</span>
+                <span class="scroll-hint" data-key="scrollHint">Scroll down for more</span>
             </div>
         </section>
 
         <!-- About Section: A brief introduction -->
         <section id="about" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
             <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-8">About Me</h2>
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-8" data-key="aboutTitle">About Me</h2>
                 <div class="max-w-3xl mx-auto text-lg md:text-xl leading-relaxed text-center">
-                    <p>I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.</p>
+                    <p data-key="aboutText">I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.</p>
                 </div>
             </div>
         </section>
@@ -196,7 +196,7 @@
         <!-- Skills Section: Lists key skills, updated based on the image -->
         <section id="skills" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
             <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">Skills</h2>
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="skillsTitle">Skills</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
                     <!-- Visual Design & Concepting -->
                     <div class="card p-8 rounded-3xl">
@@ -204,8 +204,8 @@
                             <!-- SVG for Visual Design -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14v16H5z"/></svg>
                         </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center">Visual Design & Concepting</h3>
-                        <p class="text-base md:text-lg opacity-80 text-center">Crafting compelling visual narratives and user experiences through creative design and thoughtful concept development.</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill1Title">Visual Design & Concepting</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill1Text">Crafting compelling visual narratives and user experiences through creative design and thoughtful concept development.</p>
                     </div>
 
                     <!-- Motion Graphics & 2D/3D Animation -->
@@ -214,8 +214,8 @@
                             <!-- SVG for Motion Graphics -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><path d="M10 12h4"/><path d="M12 7v5"/></svg>
                         </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center">Motion Graphics & 2D/3D Animation</h3>
-                        <p class="text-base md:text-lg opacity-80 text-center">Bringing static visuals to life with dynamic motion graphics and seamless animations for engaging digital content.</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill2Title">Motion Graphics & 2D/3D Animation</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill2Text">Bringing static visuals to life with dynamic motion graphics and seamless animations for engaging digital content.</p>
                     </div>
                     
                     <!-- Video Production & Editing -->
@@ -224,8 +224,8 @@
                             <!-- SVG for Video Production -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 22h2a2 2 0 002-2V4a2 2 0 00-2-2H6a2 2 0 00-2 2v16a2 2 0 002 2h2"/><path d="M10 22L4 16l6-6L4 4h16"/></svg>
                         </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center">Video Production & Editing</h3>
-                        <p class="text-base md:text-lg opacity-80 text-center">Full-cycle video production, from shooting and lighting to post-production editing, color grading, and sound design.</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill3Title">Video Production & Editing</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill3Text">Full-cycle video production, from shooting and lighting to post-production editing, color grading, and sound design.</p>
                     </div>
 
                     <!-- Sound Design & Music Composition -->
@@ -234,8 +234,8 @@
                             <!-- SVG for Sound Design -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><circle cx="12" cy="12" r="6"/><path d="M12 6a6 6 0 100 12 6 6 0 000-12z"/></svg>
                         </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center">Sound Design & Music Composition</h3>
-                        <p class="text-base md:text-lg opacity-80 text-center">Creating rich, immersive audio experiences and original musical scores to enhance the emotional impact of a project.</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill4Title">Sound Design & Music Composition</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill4Text">Creating rich, immersive audio experiences and original musical scores to enhance the emotional impact of a project.</p>
                     </div>
 
                     <!-- Graphic Design & Illustration -->
@@ -244,8 +244,8 @@
                             <!-- SVG for Graphic Design -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3H7a4 4 0 00-4 4v10a4 4 0 004 4h10a4 4 0 004-4V7a4 4 0 00-4-4z"/><circle cx="12" cy="12" r="3"/><path d="M17 7h.01"/></svg>
                         </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center">Graphic Design & Illustration</h3>
-                        <p class="text-base md:text-lg opacity-80 text-center">Developing custom illustrations, logos, and print materials that communicate brand identity and vision effectively.</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill5Title">Graphic Design & Illustration</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill5Text">Developing custom illustrations, logos, and print materials that communicate brand identity and vision effectively.</p>
                     </div>
 
                     <!-- Strategic Communications -->
@@ -254,8 +254,8 @@
                             <!-- SVG for Strategic Communications -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-4a2 2 0 01-2-2V4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M12 22h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M22 16h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M12 2h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/></svg>
                         </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center">Strategic Communications</h3>
-                        <p class="text-base md:text-lg opacity-80 text-center">Crafting compelling narratives and messaging that resonate with target audiences to achieve brand and business goals.</p>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill6Title">Strategic Communications</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill6Text">Crafting compelling narratives and messaging that resonate with target audiences to achieve brand and business goals.</p>
                     </div>
                 </div>
             </div>
@@ -264,7 +264,7 @@
         <!-- Expertise Section: New section for specific areas of expertise -->
         <section id="expertise" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
             <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">My Expertise</h2>
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="expertiseTitle">My Expertise</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12" id="expertise-container">
                     <!-- Expertise cards will be dynamically added here -->
                 </div>
@@ -274,14 +274,14 @@
         <!-- Projects Section: Portfolio grid with clickable cards -->
         <section id="projects" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
             <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">Projects</h2>
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="projectsTitle">Projects</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12" id="projects-container">
                     <!-- Project cards will be dynamically added here -->
                 </div>
                 <!-- Show More/Less buttons -->
                 <div class="mt-12 text-center">
-                    <button id="show-more-btn" class="bg-accent px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hidden" style="color: var(--button-text)">Show More</button>
-                    <button id="show-less-btn" class="bg-gray-700 px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hidden" style="color: white; margin-left: 1rem;">Show Less</button>
+                    <button id="show-more-btn" class="bg-accent px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hidden" style="color: var(--button-text)" data-key="showMoreBtn">Show More</button>
+                    <button id="show-less-btn" class="bg-gray-700 px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hidden" style="color: white; margin-left: 1rem;" data-key="showLessBtn">Show Less</button>
                 </div>
             </div>
         </section>
@@ -289,14 +289,14 @@
         <!-- Contact Section: Contact form and social links -->
         <section id="contact" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
             <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12">Contact</h2>
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="contactTitle">Contact</h2>
                 <div class="max-w-2xl mx-auto text-center">
-                    <p class="text-lg md:text-xl leading-relaxed opacity-80">Let's create something great together. Feel free to reach out for collaborations or inquiries.</p>
+                    <p class="text-lg md:text-xl leading-relaxed opacity-80" data-key="contactText">Let's create something great together. Feel free to reach out for collaborations or inquiries.</p>
                     <div class="mt-8 flex justify-center space-x-6">
-                        <a href="mailto:hello@example.com" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300">Email</a>
-                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300">LinkedIn</a>
-                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300">Behance</a>
-                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300">Instagram</a>
+                        <a href="mailto:hello@example.com" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="emailLink">Email</a>
+                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="linkedInLink">LinkedIn</a>
+                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="behanceLink">Behance</a>
+                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="instagramLink">Instagram</a>
                     </div>
                 </div>
             </div>
@@ -305,7 +305,7 @@
 
     <!-- Footer -->
     <footer class="text-center text-sm md:text-base py-6 opacity-75">
-        <p>&copy; 2024 Shahab Fotouhian. All rights reserved.</p>
+        <p data-key="footerText">&copy; 2024 Shahab Fotouhian. All rights reserved.</p>
     </footer>
 
     <!-- JavaScript for dynamic content, theming, and interactions -->
@@ -445,31 +445,111 @@
                 thumbnail: "https://img.youtube.com/vi/a0xRb27LRKs/hqdefault.jpg"
             }
         ];
+        
+        // Data for translations
+        const translations = {
+            en: {
+                navHome: "Home",
+                navAbout: "About",
+                navSkills: "Skills",
+                navExpertise: "Expertise",
+                navProjects: "Projects",
+                navContact: "Contact",
+                homeTitle: "Hello, I'm Shahab.",
+                homeSubtitle: "A freelance Motion Designer & UI/UX Designer based in Berlin.",
+                getInTouch: "Get in Touch",
+                scrollHint: "Scroll down for more",
+                aboutTitle: "About Me",
+                aboutText: "I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.",
+                skillsTitle: "Skills",
+                skill1Title: "Visual Design & Concepting",
+                skill1Text: "Crafting compelling visual narratives and user experiences through creative design and thoughtful concept development.",
+                skill2Title: "Motion Graphics & 2D/3D Animation",
+                skill2Text: "Bringing static visuals to life with dynamic motion graphics and seamless animations for engaging digital content.",
+                skill3Title: "Video Production & Editing",
+                skill3Text: "Full-cycle video production, from shooting and lighting to post-production editing, color grading, and sound design.",
+                skill4Title: "Sound Design & Music Composition",
+                skill4Text: "Creating rich, immersive audio experiences and original musical scores to enhance the emotional impact of a project.",
+                skill5Title: "Graphic Design & Illustration",
+                skill5Text: "Developing custom illustrations, logos, and print materials that communicate brand identity and vision effectively.",
+                skill6Title: "Strategic Communications",
+                skill6Text: "Crafting compelling narratives and messaging that resonate with target audiences to achieve brand and business goals.",
+                expertiseTitle: "My Expertise",
+                projectsTitle: "Projects",
+                showMoreBtn: "Show More",
+                showLessBtn: "Show Less",
+                contactTitle: "Contact",
+                contactText: "Let's create something great together. Feel free to reach out for collaborations or inquiries.",
+                emailLink: "Email",
+                linkedInLink: "LinkedIn",
+                behanceLink: "Behance",
+                instagramLink: "Instagram",
+                footerText: "&copy; 2024 Shahab Fotouhian. All rights reserved.",
+            },
+            de: {
+                navHome: "Startseite",
+                navAbout: "Über mich",
+                navSkills: "Fähigkeiten",
+                navExpertise: "Expertise",
+                navProjects: "Projekte",
+                navContact: "Kontakt",
+                homeTitle: "Hallo, ich bin Shahab.",
+                homeSubtitle: "Ein freiberuflicher Motion Designer & UI/UX Designer aus Berlin.",
+                getInTouch: "Kontakt aufnehmen",
+                scrollHint: "Runterscrollen für mehr",
+                aboutTitle: "Über mich",
+                aboutText: "Ich bin darauf spezialisiert, fesselnde visuelle Geschichten durch Animation und Video zu erzählen. Mit meiner umfangreichen Erfahrung in Motion Graphics und einer soliden Grundlage in der Videoproduktion erwecke ich Konzepte mit Kreativität und technischer Präzision zum Leben.",
+                skillsTitle: "Fähigkeiten",
+                skill1Title: "Visuelles Design & Konzept",
+                skill1Text: "Gestaltung überzeugender visueller Erzählungen und Nutzererlebnisse durch kreatives Design und durchdachte Konzeptentwicklung.",
+                skill2Title: "Motion Graphics & 2D/3D Animation",
+                skill2Text: "Erwecken statischer Visuals zum Leben mit dynamischen Motion Graphics und nahtlosen Animationen für ansprechende digitale Inhalte.",
+                skill3Title: "Videoproduktion & Schnitt",
+                skill3Text: "Videoproduktion im gesamten Zyklus, von den Aufnahmen und der Beleuchtung bis zur Postproduktion, Farbkorrektur und Tongestaltung.",
+                skill4Title: "Sound Design & Musikkomposition",
+                skill4Text: "Schaffung reicher, immersiver Audioerlebnisse und originaler Musikstücke, um die emotionale Wirkung eines Projekts zu verstärken.",
+                skill5Title: "Grafikdesign & Illustration",
+                skill5Text: "Entwicklung maßgeschneiderter Illustrationen, Logos und Druckmaterialien, die die Markenidentität und Vision effektiv kommunizieren.",
+                skill6Title: "Strategische Kommunikation",
+                skill6Text: "Entwicklung überzeugender Narrative und Botschaften, die bei den Zielgruppen Anklang finden, um Marken- und Geschäftsziele zu erreichen.",
+                expertiseTitle: "Meine Expertise",
+                projectsTitle: "Projekte",
+                showMoreBtn: "Mehr anzeigen",
+                showLessBtn: "Weniger anzeigen",
+                contactTitle: "Kontakt",
+                contactText: "Lassen Sie uns gemeinsam etwas Großartiges schaffen. Zögern Sie nicht, mich für Kollaborationen oder Anfragen zu kontaktieren.",
+                emailLink: "E-Mail",
+                linkedInLink: "LinkedIn",
+                behanceLink: "Behance",
+                instagramLink: "Instagram",
+                footerText: "&copy; 2024 Shahab Fotouhian. Alle Rechte vorbehalten.",
+            }
+        };
 
         const expertiseData = [
             {
-                title: "Adobe After Effects",
-                description: "Advanced proficiency in motion graphics, visual effects, and 2D animation.",
+                title: { en: "Adobe After Effects", de: "Adobe After Effects" },
+                description: { en: "Advanced proficiency in motion graphics, visual effects, and 2D animation.", de: "Erweiterte Kenntnisse in Motion Graphics, visuellen Effekten und 2D-Animation." },
             },
             {
-                title: "Cinema 4D",
-                description: "Expertise in 3D modeling, texturing, lighting, and rendering for dynamic visuals.",
+                title: { en: "Cinema 4D", de: "Cinema 4D" },
+                description: { en: "Expertise in 3D modeling, texturing, lighting, and rendering for dynamic visuals.", de: "Expertise in 3D-Modellierung, Texturierung, Beleuchtung und Rendering für dynamische Visuals." },
             },
             {
-                title: "Figma & Adobe XD",
-                description: "Skilled in UI/UX design, prototyping, and creating interactive user experiences.",
+                title: { en: "Figma & Adobe XD", de: "Figma & Adobe XD" },
+                description: { en: "Skilled in UI/UX design, prototyping, and creating interactive user experiences.", de: "Versiert in UI/UX-Design, Prototyping und der Schaffung interaktiver Nutzererlebnisse." },
             },
             {
-                title: "Adobe Premiere Pro",
-                description: "Proficient in video editing, color grading, and audio post-production.",
+                title: { en: "Adobe Premiere Pro", de: "Adobe Premiere Pro" },
+                description: { en: "Proficient in video editing, color grading, and audio post-production.", de: "Kompetent in Videoschnitt, Farbkorrektur und Audio-Postproduktion." },
             },
             {
-                title: "DaVinci Resolve",
-                description: "In-depth knowledge of color correction, grading, and advanced video editing workflows.",
+                title: { en: "DaVinci Resolve", de: "DaVinci Resolve" },
+                description: { en: "In-depth knowledge of color correction, grading, and advanced video editing workflows.", de: "Umfassende Kenntnisse in Farbkorrektur, Grading und fortgeschrittenen Videobearbeitungs-Workflows." },
             },
             {
-                title: "Ableton Live",
-                description: "Competent in sound design, music composition, and audio synchronization for video.",
+                title: { en: "Ableton Live", de: "Ableton Live" },
+                description: { en: "Competent in sound design, music composition, and audio synchronization for video.", de: "Kompetent in Sound Design, Musikkomposition und Audiosynchronisation für Video." },
             }
         ];
 
@@ -572,25 +652,38 @@
             expertiseData.forEach(expertise => {
                 const expertiseCard = document.createElement('div');
                 expertiseCard.className = 'card p-8 rounded-3xl cursor-pointer transition-transform duration-300 transform hover:scale-105';
-                expertiseCard.setAttribute('onclick', `openInfoModal('${expertise.title}', '${expertise.description}')`);
+                expertiseCard.setAttribute('onclick', `openInfoModal('${expertise.title[currentLang]}', '${expertise.description[currentLang]}')`);
                 expertiseCard.innerHTML = `
-                    <h3 class="text-xl md:text-2xl font-bold mb-4">${expertise.title}</h3>
-                    <p class="text-base md:text-lg opacity-80">${expertise.description}</p>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">${expertise.title[currentLang]}</h3>
+                    <p class="text-base md:text-lg opacity-80">${expertise.description[currentLang]}</p>
                 `;
                 expertiseContainer.appendChild(expertiseCard);
             });
+        }
+        
+        // Function to update content based on current language
+        function updateContent() {
+            // Update the language toggle button text
+            langToggle.textContent = currentLang.toUpperCase();
+            
+            // Update all elements with a data-key attribute
+            const elementsToTranslate = document.querySelectorAll('[data-key]');
+            elementsToTranslate.forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    element.textContent = translations[currentLang][key];
+                }
+            });
+            
+            // Re-render the expertise cards with the new language
+            renderExpertise();
         }
 
         // Language toggle
         langToggle.addEventListener('click', () => {
             currentLang = currentLang === 'en' ? 'de' : 'en';
-            // Placeholder for actual text changes based on language
-            const newText = currentLang === 'en' ? 'EN' : 'DE';
-            langToggle.textContent = newText;
             document.querySelector('body').setAttribute('lang', currentLang);
-            // This is where you would replace all text content on the page
-            // to match the selected language from a data object.
-            // Example: document.getElementById('home-title').textContent = content[currentLang].homeTitle;
+            updateContent();
         });
 
         // Theme toggle
@@ -649,8 +742,8 @@
 
         // Initial render on page load
         window.onload = () => {
+            updateContent();
             renderProjects();
-            renderExpertise();
         };
     </script>
 </body>
