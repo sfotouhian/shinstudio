@@ -39,6 +39,18 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
+        /* Animation classes for scroll-based effects */
+        .animate-on-scroll {
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition-delay: 0.1s; /* Subtle delay for staggered effect */
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .animate-on-scroll.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Light mode variables */
         .light {
             --bg-color: #f7f7f7;
@@ -202,7 +214,7 @@
                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="skillsTitle">Skills</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
                     <!-- Visual Design & Concepting -->
-                    <div class="card p-8 rounded-3xl">
+                    <div class="card p-8 rounded-3xl animate-on-scroll">
                         <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
                             <!-- SVG for Visual Design -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14v16H5z"/></svg>
@@ -212,7 +224,7 @@
                     </div>
 
                     <!-- Motion Graphics & 2D/3D Animation -->
-                    <div class="card p-8 rounded-3xl">
+                    <div class="card p-8 rounded-3xl animate-on-scroll">
                         <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
                             <!-- SVG for Motion Graphics -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><path d="M10 12h4"/><path d="M12 7v5"/></svg>
@@ -222,7 +234,7 @@
                     </div>
                     
                     <!-- Video Production & Editing -->
-                    <div class="card p-8 rounded-3xl">
+                    <div class="card p-8 rounded-3xl animate-on-scroll">
                         <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
                             <!-- SVG for Video Production -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 22h2a2 2 0 002-2V4a2 2 0 00-2-2H6a2 2 0 00-2 2v16a2 2 0 002 2h2"/><path d="M10 22L4 16l6-6L4 4h16"/></svg>
@@ -232,7 +244,7 @@
                     </div>
 
                     <!-- Sound Design & Music Composition -->
-                    <div class="card p-8 rounded-3xl">
+                    <div class="card p-8 rounded-3xl animate-on-scroll">
                         <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
                             <!-- SVG for Sound Design -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><circle cx="12" cy="12" r="6"/><path d="M12 6a6 6 0 100 12 6 6 0 000-12z"/></svg>
@@ -242,7 +254,7 @@
                     </div>
 
                     <!-- Graphic Design & Illustration -->
-                    <div class="card p-8 rounded-3xl">
+                    <div class="card p-8 rounded-3xl animate-on-scroll">
                         <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
                             <!-- SVG for Graphic Design -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3H7a4 4 0 00-4 4v10a4 4 0 004 4h10a4 4 0 004-4V7a4 4 0 00-4-4z"/><circle cx="12" cy="12" r="3"/><path d="M17 7h.01"/></svg>
@@ -252,7 +264,7 @@
                     </div>
 
                     <!-- Strategic Communications -->
-                    <div class="card p-8 rounded-3xl">
+                    <div class="card p-8 rounded-3xl animate-on-scroll">
                         <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
                             <!-- SVG for Strategic Communications -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-4a2 2 0 01-2-2V4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M12 22h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M22 16h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M12 2h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/></svg>
@@ -614,13 +626,14 @@
             }, 300);
         }
 
-        // Render projects
+        // Render projects with animation classes
         function renderProjects() {
             projectsContainer.innerHTML = '';
             const projectsToShow = projectData.slice(0, visibleProjects);
             projectsToShow.forEach(project => {
                 const projectCard = document.createElement('div');
-                projectCard.className = 'card rounded-3xl overflow-hidden shadow-lg cursor-pointer transition-transform duration-300 transform hover:scale-105 group';
+                // Add the animate-on-scroll class to each card for the animation effect
+                projectCard.className = 'card rounded-3xl overflow-hidden shadow-lg cursor-pointer transition-transform duration-300 transform hover:scale-105 group animate-on-scroll';
                 projectCard.setAttribute('onclick', `openModal('${project.videoUrl}')`);
                 projectCard.innerHTML = `
                     <div class="relative w-full h-auto pb-[56.25%] overflow-hidden">
@@ -648,14 +661,18 @@
             } else {
                 showLessBtn.classList.add('hidden');
             }
+            
+            // Re-run the observer after rendering new cards
+            setupAnimations();
         }
 
-        // Render expertise cards
+        // Render expertise cards with animation classes
         function renderExpertise() {
             expertiseContainer.innerHTML = '';
             expertiseData.forEach(expertise => {
                 const expertiseCard = document.createElement('div');
-                expertiseCard.className = 'card p-8 rounded-3xl cursor-pointer transition-transform duration-300 transform hover:scale-105';
+                // Add the animate-on-scroll class to each card for the animation effect
+                expertiseCard.className = 'card p-8 rounded-3xl cursor-pointer transition-transform duration-300 transform hover:scale-105 animate-on-scroll';
                 expertiseCard.setAttribute('onclick', `openInfoModal('${expertise.title[currentLang]}', '${expertise.description[currentLang]}')`);
                 expertiseCard.innerHTML = `
                     <h3 class="text-xl md:text-2xl font-bold mb-4">${expertise.title[currentLang]}</h3>
@@ -663,6 +680,8 @@
                 `;
                 expertiseContainer.appendChild(expertiseCard);
             });
+            // Re-run the observer after rendering new cards
+            setupAnimations();
         }
         
         // Function to update content based on current language
@@ -682,6 +701,8 @@
             // Re-render the expertise cards with the new language
             renderExpertise();
         }
+
+        // --- Refactored Navigation Code ---
         
         // Function to set the active navigation link based on the section ID
         const setActiveSection = (sectionId) => {
@@ -693,20 +714,44 @@
             });
         };
 
-        // Reverting back to the IntersectionObserver to handle active nav links on scroll
-        let activeSectionId = 'home';
-        const observer = new IntersectionObserver(entries => {
-            const visibleSections = entries.filter(entry => entry.isIntersecting);
-            if (visibleSections.length > 0) {
-                // Find the section that is closest to the top of the viewport
-                const topMostSection = visibleSections.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-                setActiveSection(topMostSection.target.id);
-            }
-        }, { rootMargin: '-50% 0px -50% 0px' });
-
-        sections.forEach(section => {
-            observer.observe(section);
+        // IntersectionObserver to handle active nav links on scroll
+        const navObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    setActiveSection(sectionId);
+                }
+            });
+        }, {
+            // Options for the observer: trigger when the top of the section enters/leaves the viewport
+            rootMargin: '-50% 0px -50% 0px'
         });
+
+        // Add click event listeners for smooth scrolling and immediate feedback
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Prevent the default anchor link jump
+                e.preventDefault();
+                
+                // Get the target section ID from the href
+                const sectionId = link.getAttribute('href').substring(1);
+                
+                // Scroll smoothly to the target section
+                document.getElementById(sectionId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Immediately set the active class for a responsive feel
+                setActiveSection(sectionId);
+            });
+        });
+
+        // Start observing each section
+        sections.forEach(section => {
+            navObserver.observe(section);
+        });
+
+        // --- End of Refactored Navigation Code ---
 
         // Language toggle
         langToggle.addEventListener('click', () => {
@@ -741,10 +786,35 @@
             renderProjects();
         });
 
+        // Animation logic using IntersectionObserver
+        const animationObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                // Check if the element is intersecting the viewport
+                if (entry.isIntersecting) {
+                    // Add the 'in-view' class to trigger the animation
+                    entry.target.classList.add('in-view');
+                    // Stop observing once the animation has been triggered
+                    animationObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            // Options for the observer
+            threshold: 0.2 // Trigger when 20% of the element is visible
+        });
+
+        // Function to set up the observers for all animatable elements
+        const setupAnimations = () => {
+            // Get all elements with the 'animate-on-scroll' class
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            elements.forEach(el => animationObserver.observe(el));
+        }
+
         // Initial setup on page load
         window.onload = () => {
             updateContent();
             renderProjects();
+            // Start observing elements for animation
+            setupAnimations();
         };
     </script>
 </body>
