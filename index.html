@@ -15,7 +15,7 @@
         body {
             font-family: 'Inter', sans-serif;
             transition: background-color 0.5s, color 0.5s;
-            /* Add smooth scrolling behavior */
+            /* Keep smooth scrolling behavior */
             scroll-behavior: smooth;
         }
 
@@ -138,16 +138,17 @@
     <!-- Navigation Bar -->
     <nav class="fixed top-0 z-50 w-full p-4 md:p-6 bg-transparent">
         <div class="container mx-auto flex items-center justify-between">
+            <!-- Use a direct smooth scroll to home -->
             <a href="#home" class="text-3xl font-extrabold rounded-lg p-2 bg-[var(--nav-bg)] backdrop-blur-md transition-colors duration-500" style="color: var(--nav-text)">SF.</a>
             <div class="flex items-center space-x-4">
                 <!-- Desktop navigation links -->
                 <div class="hidden md:flex items-center space-x-6 rounded-full px-6 py-2 bg-[var(--nav-bg)] backdrop-blur-md transition-colors duration-500">
-                    <a href="#home" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('home')" style="color: var(--nav-text)" data-key="navHome">Home</a>
-                    <a href="#about" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('about')" style="color: var(--nav-text)" data-key="navAbout">About</a>
-                    <a href="#skills" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('skills')" style="color: var(--nav-text)" data-key="navSkills">Skills</a>
-                    <a href="#expertise" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('expertise')" style="color: var(--nav-text)" data-key="navExpertise">Expertise</a>
-                    <a href="#projects" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('projects')" style="color: var(--nav-text)" data-key="navProjects">Projects</a>
-                    <a href="#contact" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('contact')" style="color: var(--nav-text)" data-key="navContact">Contact</a>
+                    <a href="#home" class="nav-link relative font-medium transition-colors duration-500" style="color: var(--nav-text)" data-key="navHome">Home</a>
+                    <a href="#about" class="nav-link relative font-medium transition-colors duration-500" style="color: var(--nav-text)" data-key="navAbout">About</a>
+                    <a href="#skills" class="nav-link relative font-medium transition-colors duration-500" style="color: var(--nav-text)" data-key="navSkills">Skills</a>
+                    <a href="#expertise" class="nav-link relative font-medium transition-colors duration-500" style="color: var(--nav-text)" data-key="navExpertise">Expertise</a>
+                    <a href="#projects" class="nav-link relative font-medium transition-colors duration-500" style="color: var(--nav-text)" data-key="navProjects">Projects</a>
+                    <a href="#contact" class="nav-link relative font-medium transition-colors duration-500" style="color: var(--nav-text)" data-key="navContact">Contact</a>
                 </div>
                 <!-- Language and Theme toggles -->
                 <button id="lang-toggle" class="bg-[var(--nav-bg)] backdrop-blur-md text-sm md:text-base px-3 py-1 md:px-4 md:py-2 rounded-full font-semibold transition-colors duration-500" style="color: var(--nav-text)">EN</button>
@@ -565,6 +566,7 @@
         const modalTitle = document.getElementById('modal-title');
         const modalDescription = document.getElementById('modal-description');
         const heroBg = document.getElementById('hero-bg');
+        const navLinksParent = document.querySelector('nav .flex');
 
         // State variables
         let currentLang = 'en';
@@ -674,6 +676,29 @@
             // Re-render the expertise cards with the new language
             renderExpertise();
         }
+        
+        // Function to handle smooth scrolling for navigation links
+        const handleSmoothScroll = (e) => {
+            // Prevent the default anchor jump
+            e.preventDefault();
+
+            // Get the target section ID from the href attribute
+            const targetId = e.currentTarget.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+
+            if (targetSection) {
+                // Use window.scrollTo with smooth behavior
+                window.scrollTo({
+                    top: targetSection.offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        };
+
+        // Add the new smooth scroll handler to all navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', handleSmoothScroll);
+        });
 
         // Language toggle
         langToggle.addEventListener('click', () => {
