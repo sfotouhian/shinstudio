@@ -15,8 +15,8 @@
         body {
             font-family: 'Inter', sans-serif;
             transition: background-color 0.5s, color 0.5s;
-            /* Keep smooth scrolling behavior */
-            scroll-behavior: smooth;
+            /* No CSS smooth scrolling to avoid conflicts with JS */
+            scroll-behavior: auto;
         }
 
         /* Removed scroll-snap rules to fix jumpy behavior */
@@ -677,6 +677,16 @@
             renderExpertise();
         }
         
+        // Function to set the active navigation link based on the section ID
+        const setActiveSection = (sectionId) => {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        };
+
         // Function to handle smooth scrolling for navigation links
         const handleSmoothScroll = (e) => {
             // Prevent the default anchor jump
@@ -692,6 +702,12 @@
                     top: targetSection.offsetTop,
                     behavior: 'smooth'
                 });
+                
+                // Set the active link after the scroll animation is likely complete
+                // This prevents the link from jumping to the active state before the scroll finishes
+                setTimeout(() => {
+                    setActiveSection(targetId);
+                }, 500); // 500ms delay to match the scroll duration
             }
         };
 
@@ -731,34 +747,6 @@
         showLessBtn.addEventListener('click', () => {
             visibleProjects = 3;
             renderProjects();
-        });
-
-        // Active navigation link on scroll
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.5
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    setActiveSection(entry.target.id);
-                }
-            });
-        }, observerOptions);
-
-        const setActiveSection = (sectionId) => {
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${sectionId}`) {
-                    link.classList.add('active');
-                }
-            });
-        };
-
-        sections.forEach(section => {
-            observer.observe(section);
         });
 
         // Initial render on page load
