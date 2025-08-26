@@ -15,12 +15,18 @@
         body {
             font-family: 'Inter', sans-serif;
             transition: background-color 0.5s, color 0.5s;
-            /* No CSS smooth scrolling to avoid conflicts with JS */
-            scroll-behavior: auto;
+            /* Reverting back to CSS smooth scrolling */
+            scroll-behavior: smooth;
         }
 
-        /* Removed scroll-snap rules to fix jumpy behavior */
-        
+        /* Reverting back to custom scroll-snap for a smooth scrolling effect between sections */
+        .scroll-snap-y {
+            scroll-snap-type: y mandatory;
+        }
+        .snap-start {
+            scroll-snap-align: start;
+        }
+
         /* Custom styling for cards */
         .card {
             background: linear-gradient(145deg, var(--card-bg-start), var(--card-bg-end));
@@ -138,7 +144,7 @@
     <!-- Navigation Bar -->
     <nav class="fixed top-0 z-50 w-full p-4 md:p-6 bg-transparent">
         <div class="container mx-auto flex items-center justify-between">
-            <!-- Use a direct smooth scroll to home -->
+            <!-- Reverting back to a direct anchor link -->
             <a href="#home" class="text-3xl font-extrabold rounded-lg p-2 bg-[var(--nav-bg)] backdrop-blur-md transition-colors duration-500" style="color: var(--nav-text)">SF.</a>
             <div class="flex items-center space-x-4">
                 <!-- Desktop navigation links -->
@@ -161,9 +167,9 @@
     </nav>
 
     <!-- Main Content Sections -->
-    <main>
+    <main class="scroll-snap-y">
         <!-- Home Section: Hero banner with a video background and a welcome message -->
-        <section id="home" class="min-h-screen relative flex items-center justify-center text-center overflow-hidden p-4">
+        <section id="home" class="min-h-screen relative flex items-center justify-center text-center overflow-hidden p-4 snap-start">
             <div class="absolute inset-0 z-0">
                 <!-- Placeholder image for the hero section, changed dynamically with theme -->
                 <div id="hero-bg" class="w-full h-full bg-cover bg-center" style="background-image: url(https://placehold.co/1920x1080/1a1a1a/00a896?text=Hero+Video+Placeholder)"></div>
@@ -181,7 +187,7 @@
         </section>
 
         <!-- About Section: A brief introduction -->
-        <section id="about" class="min-h-screen flex items-center justify-center py-16 md:py-24">
+        <section id="about" class="min-h-screen flex items-center justify-center py-16 md:py-24 snap-start">
             <div class="container mx-auto px-4 md:px-6">
                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-8" data-key="aboutTitle">About Me</h2>
                 <div class="max-w-3xl mx-auto text-lg md:text-xl leading-relaxed text-center">
@@ -191,7 +197,7 @@
         </section>
 
         <!-- Skills Section: Lists key skills, updated based on the image -->
-        <section id="skills" class="min-h-screen flex items-center justify-center py-16 md:py-24">
+        <section id="skills" class="min-h-screen flex items-center justify-center py-16 md:py-24 snap-start">
             <div class="container mx-auto px-4 md:px-6">
                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="skillsTitle">Skills</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
@@ -259,7 +265,7 @@
         </section>
 
         <!-- Expertise Section: New section for specific areas of expertise -->
-        <section id="expertise" class="min-h-screen flex items-center justify-center py-16 md:py-24">
+        <section id="expertise" class="min-h-screen flex items-center justify-center py-16 md:py-24 snap-start">
             <div class="container mx-auto px-4 md:px-6">
                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="expertiseTitle">My Expertise</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12" id="expertise-container">
@@ -269,7 +275,7 @@
         </section>
 
         <!-- Projects Section: Portfolio grid with clickable cards -->
-        <section id="projects" class="min-h-screen flex items-center justify-center py-16 md:py-24">
+        <section id="projects" class="min-h-screen flex items-center justify-center py-16 md:py-24 snap-start">
             <div class="container mx-auto px-4 md:px-6">
                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="projectsTitle">Projects</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12" id="projects-container">
@@ -284,7 +290,7 @@
         </section>
 
         <!-- Contact Section: Contact form and social links -->
-        <section id="contact" class="min-h-screen flex items-center justify-center py-16 md:py-24">
+        <section id="contact" class="min-h-screen flex items-center justify-center py-16 md:py-24 snap-start">
             <div class="container mx-auto px-4 md:px-6">
                 <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="contactTitle">Contact</h2>
                 <div class="max-w-2xl mx-auto text-center">
@@ -687,33 +693,19 @@
             });
         };
 
-        // Function to handle smooth scrolling for navigation links
-        const handleSmoothScroll = (e) => {
-            // Prevent the default anchor jump
-            e.preventDefault();
-
-            // Get the target section ID from the href attribute
-            const targetId = e.currentTarget.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-
-            if (targetSection) {
-                // Use window.scrollTo with smooth behavior
-                window.scrollTo({
-                    top: targetSection.offsetTop,
-                    behavior: 'smooth'
-                });
-                
-                // Set the active link after the scroll animation is likely complete
-                // This prevents the link from jumping to the active state before the scroll finishes
-                setTimeout(() => {
-                    setActiveSection(targetId);
-                }, 500); // 500ms delay to match the scroll duration
+        // Reverting back to the IntersectionObserver to handle active nav links on scroll
+        let activeSectionId = 'home';
+        const observer = new IntersectionObserver(entries => {
+            const visibleSections = entries.filter(entry => entry.isIntersecting);
+            if (visibleSections.length > 0) {
+                // Find the section that is closest to the top of the viewport
+                const topMostSection = visibleSections.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+                setActiveSection(topMostSection.target.id);
             }
-        };
+        }, { rootMargin: '-50% 0px -50% 0px' });
 
-        // Add the new smooth scroll handler to all navigation links
-        navLinks.forEach(link => {
-            link.addEventListener('click', handleSmoothScroll);
+        sections.forEach(section => {
+            observer.observe(section);
         });
 
         // Language toggle
@@ -749,7 +741,7 @@
             renderProjects();
         });
 
-        // Initial render on page load
+        // Initial setup on page load
         window.onload = () => {
             updateContent();
             renderProjects();
