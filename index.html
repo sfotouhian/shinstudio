@@ -166,7 +166,8 @@
     <!-- Privacy Policy Modal -->
     <div id="privacy-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black bg-opacity-80 backdrop-blur-md" onclick="closePrivacyModal()"></div>
-        <div class="relative z-[101] w-full max-w-xl p-8 rounded-2xl shadow-2xl scale-95 opacity-0 transition-all duration-300 transform" style="background-color: var(--card-bg-start)">
+        <!-- Modal content with increased width -->
+        <div class="relative z-[101] w-full max-w-4xl lg:max-w-5xl p-8 rounded-2xl shadow-2xl scale-95 opacity-0 transition-all duration-300 transform" style="background-color: var(--card-bg-start)">
             <button onclick="closePrivacyModal()" class="absolute top-4 right-4 z-[102] text-[var(--nav-text)] text-3xl font-bold bg-[var(--nav-bg)] rounded-full w-10 h-10 flex items-center justify-center" aria-label="Close privacy policy">&times;</button>
             <h3 class="text-3xl font-bold mb-4" id="privacy-title"></h3>
             <div id="privacy-content" class="text-base leading-relaxed text-[var(--secondary-text-color)]"></div>
@@ -523,7 +524,7 @@
                 linkedInLink: "LinkedIn",
                 behanceLink: "Behance",
                 instagramLink: "Instagram",
-                footerText: "&copy; 2024 Shahab Fotouhian. All rights reserved.",
+                footerText: "&copy; 2025 Shahab Fotouhian. All rights reserved.",
                 legalNoticeLink: "Impressum (Legal Notice)",
                 legalTitle: "Impressum",
                 legalContent: `
@@ -534,79 +535,7 @@
                     <h4 class="font-bold mt-4">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:</h4>
                     <p>Shahab Fotouhian<br>Am Wiesengraben 7A<br>12557 Berlin</p>
                 `,
-                privacyPolicyLink: "Datenschutzerklärung",
-                privacyTitle: "Datenschutzerklärung",
-                privacyContent: `
-                    <h4 class="font-bold">1. Verantwortliche Stelle</h4>
-                    <p class="mt-2">Verantwortlich für die Datenverarbeitung auf dieser Website ist:<br>Shahab Fotouhian<br>Am Wiesengraben 7A<br>12557 Berlin<br>E-Mail: s.fotouhian@gmail.com</p>
-
-                    <h4 class="font-bold mt-4">2. Datenerfassung auf dieser Website</h4>
-                    <h5 class="font-semibold mt-2">Server-Logfiles</h5>
-                    <p class="mt-2">Der Provider der Seiten erhebt und speichert automatisch Informationen in sogenannten Server-Logfiles, die Ihr Browser automatisch an uns übermittelt. Dies sind:<br>- Browsertyp und Browserversion<br>- Verwendetes Betriebssystem<br>- Referrer URL<br>- Hostname des zugreifenden Rechners<br>- Uhrzeit der Serveranfrage<br>- IP-Adresse</p>
-                    <p class="mt-2">Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen. Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO, die die Verarbeitung zur Wahrung eines berechtigten Interesses erlaubt. Das berechtigte Interesse ist die Sicherstellung der technischen Funktionalität und die Optimierung der Website.</p>
-                    <h5 class="font-semibold mt-4">Kontaktformular</h5>
-                    <p class="mt-2">Wenn Sie mir per E-Mail oder Kontaktformular eine Anfrage zukommen lassen, werden Ihre Angaben (Name, E-Mail-Adresse und die Inhalte Ihrer Nachricht) zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei mir gespeichert. Diese Daten gebe ich nicht ohne Ihre Einwilligung weiter. Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit einem Vertrag in Verbindung steht oder zur Durchführung vorvertraglicher Maßnahmen erforderlich ist.</p>
-
-                    <h4 class="font-bold mt-4">3. Cookies und Dienste von Drittanbietern</h4>
-                    <h5 class="font-semibold mt-2">Cookies</h5>
-                    <p class="mt-2">Diese Website verwendet möglicherweise Cookies. Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert werden. Wir verwenden Cookies, um die Funktionalität unserer Website zu gewährleisten.</p>
-                    <h5 class="font-semibold mt-4">YouTube</h5>
-                    <p class="mt-2">Wir binden Videos der Plattform YouTube des Anbieters Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, in unsere Website ein. Dies geschieht in der Regel im erweiterten Datenschutzmodus. Sobald Sie eine Seite mit einem eingebundenen YouTube-Video besuchen, wird eine Verbindung zu den Servern von YouTube hergestellt. Dabei wird YouTube mitgeteilt, welche Seiten Sie besuchen. Wenn Sie in Ihrem YouTube-Konto eingeloggt sind, kann YouTube Ihr Surfverhalten direkt Ihrem persönlichen Profil zuordnen. Sie können dies verhindern, indem Sie sich vor dem Besuch unserer Website aus Ihrem YouTube-Konto ausloggen. Die Einbindung erfolgt im Interesse einer ansprechenden Darstellung unserer Online-Angebote. Dies stellt ein berechtigtes Interesse im Sinne von Art. 6 Abs. 1 lit. f DSGVO dar.</p>
-                    <p class="mt-2">Weitere Informationen zum Umgang mit Nutzerdaten finden Sie in der Datenschutzerklärung von YouTube unter: <a href="https://www.google.de/intl/de/policies/privacy" target="_blank" class="underline">https://www.google.de/intl/de/policies/privacy</a>.</p>
-
-                    <h4 class="font-bold mt-4">4. Ihre Rechte als betroffene Person</h4>
-                    <p class="mt-2">Sie haben jederzeit das Recht, unentgeltlich Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung zu erhalten. Sie haben außerdem das Recht, die Berichtigung, Sperrung oder Löschung dieser Daten zu verlangen. Hierzu sowie zu weiteren Fragen zum Thema Datenschutz können Sie sich jederzeit unter der im Impressum angegebenen Adresse an mich wenden.</p>
-                    <p class="mt-2">Sie haben das Recht, eine Beschwerde bei der zuständigen Aufsichtsbehörde einzureichen. Die zuständige Aufsichtsbehörde für den Datenschutz in Berlin ist:<br>Berliner Beauftragte für Datenschutz und Informationsfreiheit<br>Alt-Moabit 15<br>10559 Berlin<br>E-Mail: mailbox@datenschutz-berlin.de</p>
-                `
-            },
-            de: {
-                navHome: "Startseite",
-                navAbout: "Über mich",
-                navSkills: "Fähigkeiten",
-                navExpertise: "Expertise",
-                navProjects: "Projekte",
-                navContact: "Kontakt",
-                homeTitle: "Hallo, ich bin Shahab.",
-                homeSubtitle: "Ein Motion Graphics Designer & Digital Video Producer aus Berlin.",
-                getInTouch: "Kontakt aufnehmen",
-                scrollHint: "Runterscrollen für mehr",
-                aboutTitle: "Über mich",
-                aboutText: "Ich bin darauf spezialisiert, fesselnde visuelle Geschichten durch Animation und Video zu erzählen. Mit meiner umfangreichen Erfahrung in Motion Graphics und einer soliden Grundlage in der Videoproduktion erwecke ich Konzepte mit Kreativität und technischer Präzision zum Leben.",
-                skillsTitle: "Fähigkeiten",
-                skill1Title: "Visuelles Design & Konzept",
-                skill1Text: "Gestaltung überzeugender visueller Erzählungen und Nutzererlebnisse durch kreatives Design und durchdachte Konzeptentwicklung.",
-                skill2Title: "Motion Graphics & 2D/3D Animation",
-                skill2Text: "Erwecken statischer Visuals zum Leben mit dynamischen Motion Graphics und nahtlosen Animationen für ansprechende digitale Inhalte.",
-                skill3Title: "Videoproduktion & Schnitt",
-                skill3Text: "Full-cycle video production, from shooting and lighting to post-production editing, color grading, and sound design.",
-                skill4Title: "Sound Design & Musikkomposition",
-                skill4Text: "Schaffung reicher, immersiver Audioerlebnisse und originaler Musikstücke, um die emotionale Wirkung eines Projekts zu verstärken.",
-                skill5Title: "Grafikdesign & Illustration",
-                skill5Text: "Entwicklung maßgeschneiderter Illustrationen, Logos und Druckmaterialien, die die Markenidentität und Vision effektiv kommunizieren.",
-                skill6Title: "Strategische Kommunikation",
-                skill6Text: "Entwicklung überzeugender Narrative und Botschaften, die bei den Zielgruppen Anklang finden, um Marken- und Geschäftsziele zu erreichen.",
-                expertiseTitle: "Meine Expertise",
-                projectsTitle: "Projekte",
-                showMoreBtn: "Mehr anzeigen",
-                showLessBtn: "Weniger anzeigen",
-                contactTitle: "Kontakt",
-                contactText: "Lassen Sie uns gemeinsam etwas Großartiges schaffen. Zögern Sie nicht, mich für Kollaborationen oder Anfragen zu kontaktieren.",
-                emailLink: "E-Mail",
-                linkedInLink: "LinkedIn",
-                behanceLink: "Behance",
-                instagramLink: "Instagram",
-                footerText: "&copy; 2024 Shahab Fotouhian. Alle Rechte vorbehalten.",
-                legalNoticeLink: "Impressum",
-                legalTitle: "Impressum",
-                legalContent: `
-                    <h4 class="font-bold">Angaben gemäß § 5 DDG (ehemals TMG)</h4>
-                    <p class="mt-4">Shahab Fotouhian<br>Am Wiesengraben 7A<br>12557 Berlin<br>Deutschland</p>
-                    <h4 class="font-bold mt-4">Kontakt:</h4>
-                    <p>E-Mail: s.fotouhian@gmail.com</p>
-                    <h4 class="font-bold mt-4">Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:</h4>
-                    <p>Shahab Fotouhian<br>Am Wiesengraben 7A<br>12557 Berlin</p>
-                `,
-                privacyPolicyLink: "Datenschutzerklärung",
+                privacyPolicyLink: "Privacy Policy",
                 privacyTitle: "Datenschutzerklärung",
                 privacyContent: `
                     <h4 class="font-bold">1. Verantwortliche Stelle</h4>
