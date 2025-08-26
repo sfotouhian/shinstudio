@@ -1,483 +1,750 @@
 <!DOCTYPE html>
-<html lang="de" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ganzheitliches Coaching und Beratung - Ihr Weg zu mehr Balance</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Shahab Fotouhian - Portfolio</title>
+    <!-- Use the Inter font for a modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        /* Base styling for body and transitions */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #fcfcfc;
+            transition: background-color 0.5s, color 0.5s;
         }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.75);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
+
+        /* Custom scroll-snap for a smooth scrolling effect between sections */
+        .scroll-snap-y {
+            scroll-snap-type: y mandatory;
         }
-        .modal-content {
-            background-color: #EAE0D3;
-            padding: 2rem;
-            border-radius: 1.5rem;
-            max-width: 90%;
-            max-height: 90%;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        .snap-start {
+            scroll-snap-align: start;
         }
-        .modal-close-button {
+
+        /* Custom styling for cards */
+        .card {
+            background: linear-gradient(145deg, var(--card-bg-start), var(--card-bg-end));
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Light mode variables */
+        .light {
+            --bg-color: #f7f7f7;
+            --text-color: #333333;
+            --secondary-text-color: #555555;
+            --card-bg-start: #ffffff;
+            --card-bg-end: #f0f0f0;
+            --accent-color: #00a896;
+            --button-bg: #00a896;
+            --button-text: #ffffff;
+            --nav-bg: rgba(255, 255, 255, 0.3);
+            --nav-text: #333333;
+        }
+
+        /* Dark mode variables */
+        .dark {
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --secondary-text-color: #a0a0a0;
+            --card-bg-start: #2a2a2a;
+            --card-bg-end: #1f1f1f;
+            --accent-color: #00a896;
+            --button-bg: #00a896;
+            --button-text: #1a1a1a;
+            --nav-bg: rgba(0, 0, 0, 0.3);
+            --nav-text: #f0f0f0;
+        }
+
+        /* Apply variables */
+        body.light {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        body.dark {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Nav link underline effect */
+        .nav-link::after {
+            content: '';
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            cursor: pointer;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link.active::after {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        .nav-link:hover::after {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        /* Hero video placeholder overlay */
+        .hero-overlay {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Utility classes */
+        .text-accent {
+            color: var(--accent-color);
+        }
+        .bg-accent {
+            background-color: var(--accent-color);
         }
     </style>
 </head>
-<body class="text-stone-800" style="background-color: #F4EFE6;">
-
-    <!-- Header Section -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="#" class="text-2xl font-bold text-stone-900 tracking-tight">Silke Paul I Coaching</a>
-            <div class="hidden md:flex items-center space-x-6 text-stone-600 font-medium">
-                <a href="#about" class="hover:text-stone-700 transition-colors">Über mich</a>
-                <a href="#services" class="hover:text-stone-700 transition-colors">Angebote</a>
-                <a href="#programs" class="hover:text-stone-700 transition-colors">Programme & Preise</a>
-                <a href="#philosophy" class="hover:text-stone-700 transition-colors">Philosophie</a>
-                <a href="#contact" class="hover:text-stone-700 transition-colors">Kontakt</a>
+<body class="bg-[#1a1a1a] text-[#f0f0f0] transition-all duration-500 dark">
+    <!-- Video Modal - Initially hidden to display videos -->
+    <!-- The classes 'fixed inset-0 flex items-center justify-center' ensure the modal is always centered on the screen -->
+    <div id="video-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <!-- Backdrop to close the modal -->
+        <div class="absolute inset-0 bg-black bg-opacity-80 backdrop-blur-md" onclick="closeModal()"></div>
+        <div class="relative z-[101] w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl scale-95 opacity-0 transition-all duration-300 transform">
+            <!-- Close button for the modal -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-[102] text-white text-3xl font-bold bg-black/50 rounded-full w-10 h-10 flex items-center justify-center" aria-label="Close video player">&times;</button>
+            <div class="relative" style="padding-top: 56.25%;">
+                <!-- YouTube player iframe -->
+                <iframe id="youtube-player" class="absolute top-0 left-0 w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-            <button class="md:hidden text-stone-600 hover:text-stone-700 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-            </button>
-        </nav>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="relative py-24 md:py-32 rounded-b-[40px] shadow-lg flex items-center justify-center text-center text-white" style="background-color: #EAE0D3; background-image: url('https://images.pexels.com/photos/6724315/pexels-photo-6724315.jpeg'); background-size: cover; background-position: center;">
-        <div class="absolute inset-0 bg-black opacity-40 rounded-b-[40px] backdrop-blur-lg"></div>
-        <div class="relative z-10 container mx-auto px-4">
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
-                Ihr Weg zu Klarheit und Balance
-            </h1>
-            <p class="text-lg sm:text-xl font-light max-w-2xl mx-auto mb-8">
-                Gelassenheit, Gesundheit und innere Stärke – im Alltag wie im Beruf.
-            </p>
-            <a href="#services" style="background-color: #4B6574;" class="text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:bg-stone-800 transition-transform transform hover:scale-105">
-                Meine Angebote entdecken
-            </a>
         </div>
-    </section>
+    </div>
 
-    <!-- About Me Section -->
-    <section id="about" class="py-20 md:py-32">
-        <div class="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
-            <div class="order-2 md:order-1 text-center md:text-left">
-                <h2 class="text-3xl sm:text-4xl font-bold text-stone-900 mb-6">Über mich</h2>
-                <p class="text-stone-600 mb-4 leading-relaxed">
-                    Als ausgebildete Coach, Trainerin und Wechseljahreberaterin unterstütze ich Sie auf Ihrem persönlichen und beruflichen Weg. Ich nehme eine ganzheitliche Perspektive ein und begleite Sie in allen Lebensbereichen. Mein Ziel ist es, Ihnen die Werkzeuge an die Hand zu geben, um Ihr Selbstvertrauen zu stärken, Ihre eigenen Lösungen zu finden und ein erfülltes Leben zu gestalten.
-                </p>
-                <p class="text-stone-600 mb-4 leading-relaxed">
-                    Mit über 20 Jahren Erfahrung als Gleichstellungsexpertin in Hochschulen und Forschungseinrichtungen bringe ich fundiertes Wissen und praktische Erfahrung in meine Arbeit ein. Meine Expertise biete ich auch Unternehmen an, die sich und ihre Mitarbeitenden zu Gleichstellungsthemen weiterbilden möchten.
-                </p>
-                <button id="about-me-button" style="background-color: #4B6574; color: #ffffff;" class="px-6 py-2 rounded-full font-semibold hover:bg-stone-400 transition-colors mt-6">
-                    Mein Werdegang & Weiterbildungen
+    <!-- Info Modal - New modal for expertise cards -->
+    <div id="info-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <!-- Backdrop to close the modal -->
+        <div class="absolute inset-0 bg-black bg-opacity-80 backdrop-blur-md" onclick="closeInfoModal()"></div>
+        <div class="relative z-[101] w-full max-w-2xl p-8 rounded-2xl shadow-2xl scale-95 opacity-0 transition-all duration-300 transform" style="background-color: var(--card-bg-start)">
+            <!-- Close button -->
+            <button onclick="closeInfoModal()" class="absolute top-4 right-4 z-[102] text-[var(--nav-text)] text-3xl font-bold bg-[var(--nav-bg)] rounded-full w-10 h-10 flex items-center justify-center" aria-label="Close information pop-up">&times;</button>
+            <h3 id="modal-title" class="text-3xl font-bold mb-4"></h3>
+            <p id="modal-description" class="text-lg leading-relaxed text-[var(--secondary-text-color)]"></p>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 z-50 w-full p-4 md:p-6 bg-transparent">
+        <div class="container mx-auto flex items-center justify-between">
+            <a href="#home" class="text-3xl font-extrabold rounded-lg p-2 bg-[var(--nav-bg)] backdrop-blur-md transition-colors duration-500" style="color: var(--nav-text)">SF.</a>
+            <div class="flex items-center space-x-4">
+                <!-- Desktop navigation links -->
+                <div class="hidden md:flex items-center space-x-6 rounded-full px-6 py-2 bg-[var(--nav-bg)] backdrop-blur-md transition-colors duration-500">
+                    <a href="#home" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('home')" style="color: var(--nav-text)" data-key="navHome">Home</a>
+                    <a href="#about" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('about')" style="color: var(--nav-text)" data-key="navAbout">About</a>
+                    <a href="#skills" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('skills')" style="color: var(--nav-text)" data-key="navSkills">Skills</a>
+                    <a href="#expertise" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('expertise')" style="color: var(--nav-text)" data-key="navExpertise">Expertise</a>
+                    <a href="#projects" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('projects')" style="color: var(--nav-text)" data-key="navProjects">Projects</a>
+                    <a href="#contact" class="nav-link relative font-medium transition-colors duration-500" onclick="setActiveSection('contact')" style="color: var(--nav-text)" data-key="navContact">Contact</a>
+                </div>
+                <!-- Language and Theme toggles -->
+                <button id="lang-toggle" class="bg-[var(--nav-bg)] backdrop-blur-md text-sm md:text-base px-3 py-1 md:px-4 md:py-2 rounded-full font-semibold transition-colors duration-500" style="color: var(--nav-text)">EN</button>
+                <button id="theme-toggle" class="text-xl md:text-2xl bg-[var(--nav-bg)] backdrop-blur-md p-2 rounded-full transition-colors duration-500" style="color: var(--nav-text)">
+                    <!-- Sun icon for light mode (default) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                 </button>
             </div>
-            <div class="order-1 md:order-2 flex justify-center">
-                <img src="https://i.postimg.cc/d3LBVpWP/Xing-2-1.jpg" alt="Silke Paul" class="rounded-full shadow-2xl w-96 h-96 object-cover">
-            </div>
         </div>
-    </section>
+    </nav>
 
-    <!-- Services Section -->
-    <section id="services" class="py-20 md:py-32" style="background-color: #EAE0D3;">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl sm:text-4xl font-bold text-stone-900 mb-4">Meine Angebote für Sie</h2>
-            <p class="text-stone-600 max-w-3xl mx-auto">
-                Ich biete maßgeschneiderte Unterstützung in den folgenden Bereichen, um Ihre individuellen Bedürfnisse zu erfüllen, Ihr Wohlbefinden zu fördern und Wissen zu vermitteln.
-            </p>
-            <p class="text-stone-600 max-w-3xl mx-auto mb-12">
-                Alle Angebote können auch online durchgeführt werden.
-            </p>
-            <div class="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8">
-                <!-- Service Card 1 -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                    <div class="mb-6 w-48 h-48 rounded-full overflow-hidden mx-auto bg-stone-200 flex items-center justify-center">
-                        <img src="https://images.pexels.com/photos/4065895/pexels-photo-4065895.jpeg" alt="Karriere-Coaching" class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-2xl font-bold text-stone-900 mb-4">Laufbahn- & Karrierecoaching</h3>
-                    <p class="text-base text-stone-600">
-                        Entwickeln Sie Ihre berufliche Vision, finden Sie Klarheit über Ihre Ziele und planen Sie die nächsten Schritte, um Ihre Karriere mit Freude und Erfolg zu gestalten. Auch online verfügbar.
-                    </p>
-                </div>
-                <!-- Service Card 2 -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                    <div class="mb-6 w-48 h-48 rounded-full overflow-hidden mx-auto bg-stone-200 flex items-center justify-center">
-                        <img src="https://images.pexels.com/photos/3822621/pexels-photo-3822621.jpeg" alt="Work-Life-Balance Coaching" class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-2xl font-bold text-stone-900 mb-4">Life-Coaching & Work-Life-Balance</h3>
-                    <p class="text-base text-stone-600">
-                        Finden Sie die perfekte Balance zwischen Beruf und Privatleben. Ich unterstütze Sie dabei, Zeit für sich selbst zu schaffen und Vereinbarkeit aktiv zu leben. Auch online verfügbar.
-                    </p>
-                </div>
-                <!-- Service Card 3 -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                    <div class="mb-6 w-48 h-48 rounded-full overflow-hidden mx-auto bg-stone-200 flex items-center justify-center">
-                        <img src="https://images.pexels.com/photos/6550953/pexels-photo-6550953.jpeg" alt="Wechseljahreberatung" class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-2xl font-bold text-stone-900 mb-4">Wechseljahreberatung</h3>
-                    <p class="text-base text-stone-600">
-                        Kompetente und empathische Begleitung speziell für die Themen der Wechseljahre. Ich unterstütze Sie dabei, diese Phase mit Stärke und Balance zu durchleben. Auch online verfügbar.
-                    </p>
-                </div>
-                <!-- Service Card 4 -->
-                <div id="trainings" class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                    <div class="mb-6 w-48 h-48 rounded-full overflow-hidden mx-auto bg-stone-200 flex items-center justify-center">
-                        <img src="https://images.pexels.com/photos/796602/pexels-photo-796602.jpeg" alt="Vorträge und Trainings" class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-2xl font-bold text-stone-900 mb-4">Vorträge & Trainings</h3>
-                    <p class="text-base text-stone-600">
-                        Maßgeschneiderte Vorträge und Workshops zu Gleichstellungsthemen, sexualisierte Diskriminierung und die Wechseljahre im Beruf für Unternehmen und Organisationen. Auch online verfügbar.
-                    </p>
+    <!-- Main Content Sections -->
+    <main class="scroll-snap-y">
+        <!-- Home Section: Hero banner with a video background and a welcome message -->
+        <section id="home" class="snap-start min-h-screen relative flex items-center justify-center text-center overflow-hidden p-4">
+            <div class="absolute inset-0 z-0">
+                <!-- Placeholder image for the hero section, changed dynamically with theme -->
+                <div id="hero-bg" class="w-full h-full bg-cover bg-center" style="background-image: url(https://placehold.co/1920x1080/1a1a1a/00a896?text=Hero+Video+Placeholder)"></div>
+            </div>
+            <div class="relative z-10 p-6 md:p-12 bg-black bg-opacity-40 backdrop-blur-sm rounded-3xl max-w-2xl transform transition-all duration-500">
+                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight text-white" data-key="homeTitle">Hello, I'm Shahab.</h1>
+                <p class="mt-4 text-xl md:text-2xl font-light text-gray-200" data-key="homeSubtitle">A freelance Motion Designer & UI/UX Designer based in Berlin.</p>
+                <a href="#contact" class="mt-8 inline-block text-lg md:text-xl font-semibold px-8 py-4 rounded-full transition-all duration-300 transform bg-accent text-button-text hover:scale-105" style="background-color: var(--button-bg); color: var(--button-text);" data-key="getInTouch">Get in Touch</a>
+            </div>
+            <!-- Scroll hint icon -->
+            <div class="absolute bottom-8 text-center text-sm md:text-base font-light opacity-75 animate-bounce">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                <span class="scroll-hint" data-key="scrollHint">Scroll down for more</span>
+            </div>
+        </section>
+
+        <!-- About Section: A brief introduction -->
+        <section id="about" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-8" data-key="aboutTitle">About Me</h2>
+                <div class="max-w-3xl mx-auto text-lg md:text-xl leading-relaxed text-center">
+                    <p data-key="aboutText">I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Programs and Pricing Section -->
-    <section id="programs" class="py-20 md:py-32">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl sm:text-4xl font-bold text-stone-900 mb-4">Programme und Preise</h2>
-            <p class="text-stone-600 max-w-3xl mx-auto mb-12">
-                Jedes Coaching ist so einzigartig wie Sie. Hier finden Sie einen Überblick über meine Angebote.
-            </p>
-            <div class="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8">
-                <!-- Program Card 1 -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center">
-                    <h3 class="text-2xl font-bold text-stone-900 mb-2">Einzelcoaching-Sitzung</h3>
-                    <p class="text-base text-stone-600 mb-4 text-center">Eine flexible Sitzung, um gezielt ein bestimmtes Thema anzugehen.</p>
-                    <div class="text-4xl font-bold text-stone-700 my-4">€150</div>
-                    <p class="text-sm text-stone-500 mb-6">pro 60 Minuten</p>
-                    <a href="mailto:ihre.email@example.com" style="background-color: #4B6574;" class="text-white px-8 py-3 rounded-full font-semibold hover:bg-stone-600 transition-colors">Jetzt buchen</a>
-                </div>
-                <!-- Program Card 2 -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center">
-                    <h3 class="text-2xl font-bold text-stone-900 mb-2">3-Monats-Paket "Wachstum"</h3>
-                    <p class="text-base text-stone-600 mb-4 text-center">Ein intensives Programm für nachhaltige persönliche Entwicklung.</p>
-                    <div class="text-4xl font-bold text-stone-700 my-4">€800</div>
-                    <p class="text-sm text-stone-500 mb-6">6 Sitzungen à 60 Min.</p>
-                    <button id="growth-more-info" style="background-color: #4B6574;" class="text-white px-8 py-3 rounded-full font-semibold hover:bg-stone-600 transition-colors">Mehr erfahren</button>
-                </div>
-                <!-- Program Card 3 -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center">
-                    <h3 class="text-2xl font-bold text-stone-900 mb-2">"Wechseljahre"-Spezial</h3>
-                    <p class="text-base text-stone-600 mb-4 text-center">Ganzheitliche Beratung und Unterstützung in den Wechseljahren.</p>
-                    <div class="text-4xl font-bold text-stone-700 my-4">€420</div>
-                    <p class="text-sm text-stone-500 mb-6">3 Sitzungen à 60 Min.</p>
-                    <button id="menopause-more-info" style="background-color: #4B6574;" class="text-white px-8 py-3 rounded-full font-semibold hover:bg-stone-600 transition-colors">Mehr erfahren</button>
-                </div>
-                <!-- Program Card 4 -->
-                <div class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
-                    <h3 class="text-2xl font-bold text-stone-900 mb-4">Vorträge & Trainings</h3>
-                    <p class="text-base text-stone-600 mb-4 text-center">Individuelle Angebote für Ihre Organisation zu Gleichstellung, Diversität und den Wechseljahren.</p>
-                    <div class="text-4xl font-bold text-stone-700 my-4">Preis auf Anfrage</div>
-                    <p class="text-sm text-stone-500 mb-6 invisible">Platzhalter für Abstand</p>
-                    <a href="mailto:ihre.email@example.com" style="background-color: #4B6574;" class="text-white px-8 py-3 rounded-full font-semibold hover:bg-stone-600 transition-colors">Kontakt aufnehmen</a>
+        <!-- Skills Section: Lists key skills, updated based on the image -->
+        <section id="skills" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="skillsTitle">Skills</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+                    <!-- Visual Design & Concepting -->
+                    <div class="card p-8 rounded-3xl">
+                        <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
+                            <!-- SVG for Visual Design -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14v16H5z"/></svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill1Title">Visual Design & Concepting</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill1Text">Crafting compelling visual narratives and user experiences through creative design and thoughtful concept development.</p>
+                    </div>
+
+                    <!-- Motion Graphics & 2D/3D Animation -->
+                    <div class="card p-8 rounded-3xl">
+                        <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
+                            <!-- SVG for Motion Graphics -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><path d="M10 12h4"/><path d="M12 7v5"/></svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill2Title">Motion Graphics & 2D/3D Animation</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill2Text">Bringing static visuals to life with dynamic motion graphics and seamless animations for engaging digital content.</p>
+                    </div>
+                    
+                    <!-- Video Production & Editing -->
+                    <div class="card p-8 rounded-3xl">
+                        <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
+                            <!-- SVG for Video Production -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 22h2a2 2 0 002-2V4a2 2 0 00-2-2H6a2 2 0 00-2 2v16a2 2 0 002 2h2"/><path d="M10 22L4 16l6-6L4 4h16"/></svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill3Title">Video Production & Editing</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill3Text">Full-cycle video production, from shooting and lighting to post-production editing, color grading, and sound design.</p>
+                    </div>
+
+                    <!-- Sound Design & Music Composition -->
+                    <div class="card p-8 rounded-3xl">
+                        <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
+                            <!-- SVG for Sound Design -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><circle cx="12" cy="12" r="6"/><path d="M12 6a6 6 0 100 12 6 6 0 000-12z"/></svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill4Title">Sound Design & Music Composition</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill4Text">Creating rich, immersive audio experiences and original musical scores to enhance the emotional impact of a project.</p>
+                    </div>
+
+                    <!-- Graphic Design & Illustration -->
+                    <div class="card p-8 rounded-3xl">
+                        <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
+                            <!-- SVG for Graphic Design -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3H7a4 4 0 00-4 4v10a4 4 0 004 4h10a4 4 0 004-4V7a4 4 0 00-4-4z"/><circle cx="12" cy="12" r="3"/><path d="M17 7h.01"/></svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill5Title">Graphic Design & Illustration</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill5Text">Developing custom illustrations, logos, and print materials that communicate brand identity and vision effectively.</p>
+                    </div>
+
+                    <!-- Strategic Communications -->
+                    <div class="card p-8 rounded-3xl">
+                        <div class="w-16 h-16 mx-auto mb-6 p-3 rounded-full bg-accent/20 flex items-center justify-center">
+                            <!-- SVG for Strategic Communications -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-4a2 2 0 01-2-2V4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M12 22h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M22 16h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/><path d="M12 2h-4a2 2 0 01-2-2v-4a2 2 0 012-2h4a2 2 0 012 2v4a2 2 0 01-2 2z"/></svg>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-center" data-key="skill6Title">Strategic Communications</h3>
+                        <p class="text-base md:text-lg opacity-80 text-center" data-key="skill6Text">Crafting compelling narratives and messaging that resonate with target audiences to achieve brand and business goals.</p>
+                    </div>
                 </div>
             </div>
-            <p class="text-stone-600 text-sm mt-8">
-                Alle Preise verstehen sich zzgl. der gesetzlichen Mehrwertsteuer. Für individuelle Programme oder Paketpreise nehmen Sie bitte Kontakt auf.
-            </p>
-        </div>
-    </section>
+        </section>
 
-    <!-- Philosophy Section -->
-    <section id="philosophy" class="py-20 md:py-32" style="background-color: #EAE0D3;">
-        <div class="container mx-auto px-4 text-center md:text-left">
-            <h2 class="text-3xl sm:text-4xl font-bold text-stone-900 mb-6">Meine ganzheitliche Philosophie</h2>
-            <p class="text-stone-600 leading-relaxed mb-4">
-                Ich biete mehr als nur Beratung – ich biete einen Raum für persönliches Wachstum, innere Ruhe und Entfaltung. Mein Ansatz ist ganzheitlich, systemisch und lösungsorientiert.
-            </p>
-            <p class="text-stone-600 leading-relaxed mb-4">
-                Das bedeutet, wir betrachten nicht nur einzelne Anzeichen, sondern das Gesamtsystem, in dem Sie sich bewegen. Als Gleichstellungsexpertin liegt mir die Chancengleichheit besonders am Herzen. In meiner Arbeit berücksichtige ich die gesellschaftlichen und strukturellen Rahmenbedingungen, die Ihr Leben und Ihre Entscheidungen beeinflussen.
-            </p>
-            <p class="text-stone-600 leading-relaxed">
-                Gemeinsam nutzen wir Ihre innere Weisheit, um Wege zu finden, die zu Ihnen passen und Sie stärken.
-            </p>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="relative py-20 md:py-32 rounded-t-[40px] shadow-lg flex items-center justify-center text-center text-white" style="background-color: #EAE0D3; background-image: url('https://images.pexels.com/photos/2575830/pexels-photo-2575830.jpeg'); background-size: cover; background-position: center;">
-        <div class="absolute inset-0 bg-black opacity-40 rounded-t-[40px] backdrop-blur-lg"></div>
-        <div class="relative z-10 container mx-auto px-4">
-            <h2 class="text-3xl sm:text-4xl font-bold mb-4">Bereit für den ersten Schritt?</h2>
-            <p class="text-lg sm:text-xl font-light max-w-2xl mx-auto mb-8">
-                Vereinbaren Sie jetzt Ihr kostenloses und unverbindliches Erstgespräch.
-            </p>
-            <a href="mailto:ihre.email@example.com" style="background-color: #4B6574;" class="text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:bg-stone-600 transition-transform transform hover:scale-105">
-                Kostenloses Erstgespräch vereinbaren
-            </a>
-            <div class="text-sm mt-8">
-                <p>Oder rufen Sie an: +49 123 4567890</p>
+        <!-- Expertise Section: New section for specific areas of expertise -->
+        <section id="expertise" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="expertiseTitle">My Expertise</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12" id="expertise-container">
+                    <!-- Expertise cards will be dynamically added here -->
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Projects Section: Portfolio grid with clickable cards -->
+        <section id="projects" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="projectsTitle">Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12" id="projects-container">
+                    <!-- Project cards will be dynamically added here -->
+                </div>
+                <!-- Show More/Less buttons -->
+                <div class="mt-12 text-center">
+                    <button id="show-more-btn" class="bg-accent px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hidden" style="color: var(--button-text)" data-key="showMoreBtn">Show More</button>
+                    <button id="show-less-btn" class="bg-gray-700 px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 hidden" style="color: white; margin-left: 1rem;" data-key="showLessBtn">Show Less</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section: Contact form and social links -->
+        <section id="contact" class="snap-start min-h-screen flex items-center justify-center py-16 md:py-24">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="contactTitle">Contact</h2>
+                <div class="max-w-2xl mx-auto text-center">
+                    <p class="text-lg md:text-xl leading-relaxed opacity-80" data-key="contactText">Let's create something great together. Feel free to reach out for collaborations or inquiries.</p>
+                    <div class="mt-8 flex justify-center space-x-6">
+                        <a href="mailto:hello@example.com" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="emailLink">Email</a>
+                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="linkedInLink">LinkedIn</a>
+                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="behanceLink">Behance</a>
+                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="instagramLink">Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Footer -->
-    <footer class="text-stone-400 py-12" style="background-color: #4B6574;">
-        <div class="container mx-auto px-4 text-center md:flex md:justify-between items-center">
-            <p>&copy; 2023 Ihr Coaching. Alle Rechte vorbehalten.</p>
-            <div class="mt-4 md:mt-0 flex flex-wrap justify-center space-x-4">
-                <a href="#" id="impressum-link" class="hover:text-white transition-colors">Impressum</a>
-                <a href="#" id="datenschutz-link" class="hover:text-white transition-colors">Datenschutz</a>
-                <a href="#" class="hover:text-white transition-colors" aria-label="Instagram">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.5" y1="6.5" y2="6.5"/></svg>
-                </a>
-                <a href="#" class="hover:text-white transition-colors" aria-label="LinkedIn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-                </a>
-            </div>
-        </div>
+    <footer class="text-center text-sm md:text-base py-6 opacity-75">
+        <p data-key="footerText">&copy; 2024 Shahab Fotouhian. All rights reserved.</p>
     </footer>
 
-    <!-- Modals -->
-    <div id="about-me-modal" class="modal-overlay hidden">
-        <div class="modal-content text-left">
-            <button class="modal-close-button text-stone-400 hover:text-stone-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <h3 class="text-3xl font-bold text-stone-900 mb-4">Über mich: Mein Werdegang & Weiterbildungen</h3>
-            <div class="mb-6">
-                <h4 class="text-2xl font-bold text-stone-800 mb-2">Berufserfahrung</h4>
-                <p class="text-stone-600">
-                    Über 20 Jahre als Gleichstellungsexpertin in verschiedenen wissenschaftlichen Einrichtungen, darunter renommierte deutsche Hochschulen und ein großer Forschungsverbund.
-                </p>
-            </div>
-            <div class="mb-6">
-                <h4 class="text-2xl font-bold text-stone-800 mb-2">Weiterbildungen</h4>
-                <ul class="list-disc list-inside text-stone-600 mt-2">
-                    <li>Wechseljahreberaterin (09/2024 – 02/2025)</li>
-                    <li>Women's Holistic Health Coach Teacher Training Course (02/2025)</li>
-                    <li>Train the Trainer - Online (08/2024)</li>
-                    <li>Modulprogramm Diversity (10/2022 – 01/2023)</li>
-                    <li>Online-Coaching im digitalen Zeitalter (03/2022)</li>
-                    <li>Laufbahn- und Karrierecoaching (01/2022)</li>
-                    <li>Train the Trainer & Train the Trainer advanced (2017/2018)</li>
-                    <li>MiniMax-Interventionen und Visualisierung (03/2015)</li>
-                    <li>Moderationstechniken (10/2012 – 12/2012)</li>
-                    <li>Qualifizierung zur Coach (FH) plus Aufbaumodul Coaching von Teams und Gruppen (2010 – 2012)</li>
-                    <li>Entwicklungsprogramm für Führungskräfte (2008 – 2013)</li>
-                    <li>Mediation (06/2005)</li>
-                    <li>Selbsterfahrung und Beratungskompetenz (01/1999 – 11/1999)</li>
-                </ul>
-            </div>
-            <div class="mb-6">
-                <h4 class="text-2xl font-bold text-stone-800 mb-2">Ehrenamt und Engagement (Auswahl)</h4>
-                <ul class="list-disc list-inside text-stone-600">
-                    <li>Beiratsmitglied MeMentUM Mentoring-Programm, Universitätsmedizin Mainz (seit 2016)</li>
-                    <li>Mitglied Ortsvorstand Pro Familia Mainz (2016–2021)</li>
-                    <li>Mentorin bei MentorMe Deutschland (2022–2023)</li>
-                    <li>Ehrenamtliche Mitarbeit im Frauenhaus Mainz (1998–1999)</li>
-                    <li>Mitarbeit in der Fachschaft Pädagogik (1997 – 2000)</li>
-                </ul>
-            </div>
-            <div class="mb-6">
-                <h4 class="text-2xl font-bold text-stone-800 mb-2">Ausbildung</h4>
-                <div class="mb-2">
-                    <p><span class="font-bold">Magister-Studium Soziologie, JGU Mainz (berufsbegleitend)</span> (10/2000 – 10/2006)</p>
-                    <p class="text-sm text-stone-600">Magisterarbeit: „Option Elternschaft? Gesellschaftliche Rahmenbedingungen und individuelle Entscheidungsprozesse“</p>
-                </div>
-                <div class="mb-2">
-                    <p><span class="font-bold">Diplom-Pädagogik, JGU Mainz</span> (10/1995 – 09/2000)</p>
-                    <p class="text-sm text-stone-600">Diplomarbeit: „Häusliche Gewalt gegen Frauen in Paarbeziehungen“</p>
-                </div>
-            </div>
-            <div>
-                <h4 class="text-2xl font-bold text-stone-800 mb-2">Praktika</h4>
-                <p class="text-stone-600">Bereiche Jugendhilfe / Kita / Hilfen für Alleinerziehende / Frauenhaus (1994–2000)</p>
-            </div>
-        </div>
-    </div>
-    <div id="growth-modal" class="modal-overlay hidden">
-        <div class="modal-content text-left">
-            <button class="modal-close-button text-stone-400 hover:text-stone-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <h3 class="text-3xl font-bold text-stone-900 mb-4">Das "Wachstum" 3-Monats-Paket</h3>
-            <p class="text-stone-600 mb-4">
-                Dieses intensive Programm ist für Sie, wenn Sie nachhaltige und tiefgreifende Veränderungen in Ihrem Leben anstreben. In 6 individuellen Sitzungen arbeiten wir gemeinsam an Ihren persönlichen und beruflichen Zielen. Wir entwickeln Strategien, um alte Muster zu durchbrechen, neue Perspektiven zu gewinnen und Ihr volles Potenzial zu entfalten.
-            </p>
-            <p class="text-stone-600 mb-4">
-                **Inhalte:**
-            </p>
-            <ul class="list-disc list-inside text-stone-600">
-                <li>6 individuelle 60-minütige Coaching-Sitzungen</li>
-                <li>Fokus auf ganzheitliche persönliche und berufliche Entwicklung</li>
-                <li>Werkzeuge und Übungen für den Alltag</li>
-                <li>Kontinuierliche Begleitung und Unterstützung</li>
-            </ul>
-        </div>
-    </div>
-    <div id="menopause-modal" class="modal-overlay hidden">
-        <div class="modal-content text-left">
-            <button class="modal-close-button text-stone-400 hover:text-stone-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <h3 class="text-3xl font-bold text-stone-900 mb-4">Das "Wechseljahre"-Spezial</h3>
-            <p class="text-stone-600 mb-4">
-                Dieses spezielle Paket bietet Ihnen kompetente und empathische Begleitung durch die Phase der Wechseljahre. Wir arbeiten daran, die Herausforderungen dieser Zeit zu meistern und die damit verbundenen Veränderungen positiv zu nutzen. Ziel ist es, gestärkt und in Balance aus dieser Phase hervorzugehen.
-            </p>
-            <p class="text-stone-600 mb-4">
-                **Inhalte:**
-            </p>
-            <ul class="list-disc list-inside text-stone-600">
-                <li>3 individuelle 60-minütige Beratungssitzungen</li>
-                <li>Fokus auf körperliche und emotionale Balance</li>
-                <li>Strategien zur Bewältigung von Symptomen</li>
-                <li>Stärkung des Selbstwertgefühls in dieser neuen Lebensphase</li>
-            </ul>
-        </div>
-    </div>
-    <div id="impressum-modal" class="modal-overlay hidden">
-        <div class="modal-content text-left">
-            <button class="modal-close-button text-stone-400 hover:text-stone-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <h3 class="text-3xl font-bold text-stone-900 mb-4">Impressum</h3>
-            <p class="text-stone-600 mb-4">
-                <strong>Angaben gemäß § 5 TMG:</strong><br>
-                [Ihr Name/Name des Unternehmens]<br>
-                [Ihre Straße und Hausnummer]<br>
-                [Ihre Postleitzahl und Stadt]<br>
-                <br>
-                <strong>Kontakt:</strong><br>
-                Telefon: [Ihre Telefonnummer]<br>
-                E-Mail: [Ihre E-Mail-Adresse]<br>
-                <br>
-                <strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</strong><br>
-                [Ihr Name]<br>
-                [Ihre Straße und Hausnummer]<br>
-                [Ihre Postleitzahl und Stadt]
-            </p>
-        </div>
-    </div>
-    <div id="datenschutz-modal" class="modal-overlay hidden">
-        <div class="modal-content text-left">
-            <button class="modal-close-button text-stone-400 hover:text-stone-600 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <h3 class="text-3xl font-bold text-stone-900 mb-4">Datenschutzerklärung</h3>
-            <p class="text-stone-600 mb-4">
-                <strong>1. Datenschutz auf einen Blick</strong>
-                <br>
-                Ihre Daten werden vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften behandelt. Wir weisen darauf hin, dass die Datenübertragung im Internet (z. B. bei der Kommunikation per E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich.
-                <br>
-                <br>
-                <strong>2. Datenerfassung auf dieser Website</strong>
-                <br>
-                Die Verarbeitung der Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO. Wir erheben und verarbeiten personenbezogene Daten nur, soweit dies für die Begründung, inhaltliche Ausgestaltung oder Änderung des Rechtsverhältnisses erforderlich ist.
-                <br>
-                <br>
-                <strong>3. Ihre Rechte als betroffene Person</strong>
-                <br>
-                Sie haben das Recht, Auskunft über Ihre gespeicherten Daten zu erhalten, sowie das Recht auf Berichtigung, Sperrung oder Löschung dieser Daten. Für weitere Fragen wenden Sie sich an die im Impressum angegebene Adresse.
-            </p>
-        </div>
-    </div>
-    
+    <!-- JavaScript for dynamic content, theming, and interactions -->
     <script>
-        // Get references to all necessary elements
-        const aboutMeBtn = document.getElementById('about-me-button');
-        const growthInfoBtn = document.getElementById('growth-more-info');
-        const menopauseInfoBtn = document.getElementById('menopause-more-info');
-        const impressumLink = document.getElementById('impressum-link');
-        const datenschutzLink = document.getElementById('datenschutz-link');
+        // Data for projects and expertise cards
+        const projectData = [
+            {
+                title: "Premium showreel",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/O8RsvUra8JE?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/O8RsvUra8JE/hqdefault.jpg"
+            },
+            {
+                title: "Business cartoon showreel",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/AAKkb9oXCss?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/AAKkb9oXCss/hqdefault.jpg"
+            },
+            {
+                title: "B&W showreel",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/y4LTPeOgeS0?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/y4LTPeOgeS0/hqdefault.jpg"
+            },
+            {
+                title: "Catification",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/wI8QYzj-phk?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/wI8QYzj-phk/hqdefault.jpg"
+            },
+            {
+                title: "Cyberpunk glimpse",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/lOnX6pUKkbA?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/lOnX6pUKkbA/hqdefault.jpg"
+            },
+            {
+                title: "Finally free",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/wJIEdg1CGns?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/wJIEdg1CGns/hqdefault.jpg"
+            },
+            {
+                title: "Stadt Bochum",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/nq-nnNSeQbo?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/nq-nnNSeQbo/hqdefault.jpg"
+            },
+            {
+                title: "Stadtbauprojekt",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/rrMwJjRxb9E?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/rrMwJjRxb9E/hqdefault.jpg"
+            },
+            {
+                title: "Explainer video",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/j-AUGz2xvLU?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/j-AUGz2xvLU/hqdefault.jpg"
+            },
+            {
+                title: "Covivio",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/3K6otI9MAko?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/3K6otI9MAko/hqdefault.jpg"
+            },
+            {
+                title: "Organeers",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/xWCdD5Cz3Q8?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/xWCdD5Cz3Q8/hqdefault.jpg"
+            },
+            {
+                title: "Ärzte zum Migränetagebuch",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/dmPcSstXA4I?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/dmPcSstXA4I/hqdefault.jpg"
+            },
+            {
+                title: "Patienten zum Migränetagebuch",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/3HvT7U71cpA?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/3HvT7U71cpA/hqdefault.jpg"
+            },
+            {
+                title: "Meditation",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/brM7I-4KY0g?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/brM7I-4KY0g/hqdefault.jpg"
+            },
+            {
+                title: "ADAC",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/UPBK_LGcslQ?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/UPBK_LGcslQ/hqdefault.jpg"
+            },
+            {
+                title: "WOBCOM",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/7o9G9ZfWRw4?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/7o9G9ZfWRw4/hqdefault.jpg"
+            },
+            {
+                title: "Bierentdecker",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/Kzz9EvZynwc?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/Kzz9EvZynwc/hqdefault.jpg"
+            },
+            {
+                title: "Tag der Meditation",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/7aokYsmPVkg?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/7aokYsmPVkg/hqdefault.jpg"
+            },
+            {
+                title: "Die drückende Hitze",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/pCm0wXebzMk?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/pCm0wXebzMk/hqdefault.jpg"
+            },
+            {
+                title: "DEU-PA",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/yn_64XKkw6c?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/yn_64XKkw6c/hqdefault.jpg"
+            },
+            {
+                title: "Der Camping Butler",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/gddztaVql3Q?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/gddztaVql3Q/hqdefault.jpg"
+            },
+            {
+                title: "Sleeperoo",
+                description: "",
+                videoUrl: "https://www.youtube.com/embed/a0xRb27LRKs?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                thumbnail: "https://img.youtube.com/vi/a0xRb27LRKs/hqdefault.jpg"
+            }
+        ];
         
-        const aboutMeModal = document.getElementById('about-me-modal');
-        const growthModal = document.getElementById('growth-modal');
-        const menopauseModal = document.getElementById('menopause-modal');
-        const impressumModal = document.getElementById('impressum-modal');
-        const datenschutzModal = document.getElementById('datenschutz-modal');
-        
-        // Function to show a modal
-        function showModal(modal) {
-            modal.style.display = 'flex';
-        }
-        
-        // Function to hide a modal
-        function hideModal(modal) {
-            modal.style.display = 'none';
+        // Data for translations
+        const translations = {
+            en: {
+                navHome: "Home",
+                navAbout: "About",
+                navSkills: "Skills",
+                navExpertise: "Expertise",
+                navProjects: "Projects",
+                navContact: "Contact",
+                homeTitle: "Hello, I'm Shahab.",
+                homeSubtitle: "A freelance Motion Designer & UI/UX Designer based in Berlin.",
+                getInTouch: "Get in Touch",
+                scrollHint: "Scroll down for more",
+                aboutTitle: "About Me",
+                aboutText: "I specialize in creating compelling visual stories through animation and video. With extensive experience in motion graphics and a strong foundation in video production, I bring concepts to life with creativity and technical precision.",
+                skillsTitle: "Skills",
+                skill1Title: "Visual Design & Concepting",
+                skill1Text: "Crafting compelling visual narratives and user experiences through creative design and thoughtful concept development.",
+                skill2Title: "Motion Graphics & 2D/3D Animation",
+                skill2Text: "Bringing static visuals to life with dynamic motion graphics and seamless animations for engaging digital content.",
+                skill3Title: "Video Production & Editing",
+                skill3Text: "Full-cycle video production, from shooting and lighting to post-production editing, color grading, and sound design.",
+                skill4Title: "Sound Design & Music Composition",
+                skill4Text: "Creating rich, immersive audio experiences and original musical scores to enhance the emotional impact of a project.",
+                skill5Title: "Graphic Design & Illustration",
+                skill5Text: "Developing custom illustrations, logos, and print materials that communicate brand identity and vision effectively.",
+                skill6Title: "Strategic Communications",
+                skill6Text: "Crafting compelling narratives and messaging that resonate with target audiences to achieve brand and business goals.",
+                expertiseTitle: "My Expertise",
+                projectsTitle: "Projects",
+                showMoreBtn: "Show More",
+                showLessBtn: "Show Less",
+                contactTitle: "Contact",
+                contactText: "Let's create something great together. Feel free to reach out for collaborations or inquiries.",
+                emailLink: "Email",
+                linkedInLink: "LinkedIn",
+                behanceLink: "Behance",
+                instagramLink: "Instagram",
+                footerText: "&copy; 2024 Shahab Fotouhian. All rights reserved.",
+            },
+            de: {
+                navHome: "Startseite",
+                navAbout: "Über mich",
+                navSkills: "Fähigkeiten",
+                navExpertise: "Expertise",
+                navProjects: "Projekte",
+                navContact: "Kontakt",
+                homeTitle: "Hallo, ich bin Shahab.",
+                homeSubtitle: "Ein freiberuflicher Motion Designer & UI/UX Designer aus Berlin.",
+                getInTouch: "Kontakt aufnehmen",
+                scrollHint: "Runterscrollen für mehr",
+                aboutTitle: "Über mich",
+                aboutText: "Ich bin darauf spezialisiert, fesselnde visuelle Geschichten durch Animation und Video zu erzählen. Mit meiner umfangreichen Erfahrung in Motion Graphics und einer soliden Grundlage in der Videoproduktion erwecke ich Konzepte mit Kreativität und technischer Präzision zum Leben.",
+                skillsTitle: "Fähigkeiten",
+                skill1Title: "Visuelles Design & Konzept",
+                skill1Text: "Gestaltung überzeugender visueller Erzählungen und Nutzererlebnisse durch kreatives Design und durchdachte Konzeptentwicklung.",
+                skill2Title: "Motion Graphics & 2D/3D Animation",
+                skill2Text: "Erwecken statischer Visuals zum Leben mit dynamischen Motion Graphics und nahtlosen Animationen für ansprechende digitale Inhalte.",
+                skill3Title: "Videoproduktion & Schnitt",
+                skill3Text: "Videoproduktion im gesamten Zyklus, von den Aufnahmen und der Beleuchtung bis zur Postproduktion, Farbkorrektur und Tongestaltung.",
+                skill4Title: "Sound Design & Musikkomposition",
+                skill4Text: "Schaffung reicher, immersiver Audioerlebnisse und originaler Musikstücke, um die emotionale Wirkung eines Projekts zu verstärken.",
+                skill5Title: "Grafikdesign & Illustration",
+                skill5Text: "Entwicklung maßgeschneiderter Illustrationen, Logos und Druckmaterialien, die die Markenidentität und Vision effektiv kommunizieren.",
+                skill6Title: "Strategische Kommunikation",
+                skill6Text: "Entwicklung überzeugender Narrative und Botschaften, die bei den Zielgruppen Anklang finden, um Marken- und Geschäftsziele zu erreichen.",
+                expertiseTitle: "Meine Expertise",
+                projectsTitle: "Projekte",
+                showMoreBtn: "Mehr anzeigen",
+                showLessBtn: "Weniger anzeigen",
+                contactTitle: "Kontakt",
+                contactText: "Lassen Sie uns gemeinsam etwas Großartiges schaffen. Zögern Sie nicht, mich für Kollaborationen oder Anfragen zu kontaktieren.",
+                emailLink: "E-Mail",
+                linkedInLink: "LinkedIn",
+                behanceLink: "Behance",
+                instagramLink: "Instagram",
+                footerText: "&copy; 2024 Shahab Fotouhian. Alle Rechte vorbehalten.",
+            }
+        };
+
+        const expertiseData = [
+            {
+                title: { en: "Adobe After Effects", de: "Adobe After Effects" },
+                description: { en: "Advanced proficiency in motion graphics, visual effects, and 2D animation.", de: "Erweiterte Kenntnisse in Motion Graphics, visuellen Effekten und 2D-Animation." },
+            },
+            {
+                title: { en: "Cinema 4D", de: "Cinema 4D" },
+                description: { en: "Expertise in 3D modeling, texturing, lighting, and rendering for dynamic visuals.", de: "Expertise in 3D-Modellierung, Texturierung, Beleuchtung und Rendering für dynamische Visuals." },
+            },
+            {
+                title: { en: "Figma & Adobe XD", de: "Figma & Adobe XD" },
+                description: { en: "Skilled in UI/UX design, prototyping, and creating interactive user experiences.", de: "Versiert in UI/UX-Design, Prototyping und der Schaffung interaktiver Nutzererlebnisse." },
+            },
+            {
+                title: { en: "Adobe Premiere Pro", de: "Adobe Premiere Pro" },
+                description: { en: "Proficient in video editing, color grading, and audio post-production.", de: "Kompetent in Videoschnitt, Farbkorrektur und Audio-Postproduktion." },
+            },
+            {
+                title: { en: "DaVinci Resolve", de: "DaVinci Resolve" },
+                description: { en: "In-depth knowledge of color correction, grading, and advanced video editing workflows.", de: "Umfassende Kenntnisse in Farbkorrektur, Grading und fortgeschrittenen Videobearbeitungs-Workflows." },
+            },
+            {
+                title: { en: "Ableton Live", de: "Ableton Live" },
+                description: { en: "Competent in sound design, music composition, and audio synchronization for video.", de: "Kompetent in Sound Design, Musikkomposition und Audiosynchronisation für Video." },
+            }
+        ];
+
+        // DOM elements
+        const body = document.body;
+        const themeToggle = document.getElementById('theme-toggle');
+        const langToggle = document.getElementById('lang-toggle');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('main section');
+        const projectsContainer = document.getElementById('projects-container');
+        const expertiseContainer = document.getElementById('expertise-container');
+        const showMoreBtn = document.getElementById('show-more-btn');
+        const showLessBtn = document.getElementById('show-less-btn');
+        const videoModal = document.getElementById('video-modal');
+        const youtubePlayer = document.getElementById('youtube-player');
+        const infoModal = document.getElementById('info-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const heroBg = document.getElementById('hero-bg');
+
+        // State variables
+        let currentLang = 'en';
+        let visibleProjects = 3;
+
+        // Function to open the video modal
+        function openModal(videoUrl) {
+            youtubePlayer.src = videoUrl;
+            videoModal.classList.remove('hidden');
+            setTimeout(() => {
+                videoModal.querySelector('div:last-child').classList.remove('scale-95', 'opacity-0');
+            }, 10);
         }
 
-        // Add event listeners for the modal buttons and links
-        aboutMeBtn.addEventListener('click', () => showModal(aboutMeModal));
-        growthInfoBtn.addEventListener('click', () => showModal(growthModal));
-        menopauseInfoBtn.addEventListener('click', () => showModal(menopauseModal));
-        impressumLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showModal(impressumModal);
-        });
-        datenschutzLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showModal(datenschutzModal);
-        });
+        // Function to close the video modal
+        function closeModal() {
+            videoModal.querySelector('div:last-child').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                videoModal.classList.add('hidden');
+                youtubePlayer.src = ''; // Stop the video
+            }, 300);
+        }
+
+        // Function to open the info modal
+        function openInfoModal(title, description) {
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            infoModal.classList.remove('hidden');
+            setTimeout(() => {
+                infoModal.querySelector('div:last-child').classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+
+        // Function to close the info modal
+        function closeInfoModal() {
+            infoModal.querySelector('div:last-child').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                infoModal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Render projects
+        function renderProjects() {
+            projectsContainer.innerHTML = '';
+            const projectsToShow = projectData.slice(0, visibleProjects);
+            projectsToShow.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'card rounded-3xl overflow-hidden shadow-lg cursor-pointer transition-transform duration-300 transform hover:scale-105 group';
+                projectCard.setAttribute('onclick', `openModal('${project.videoUrl}')`);
+                projectCard.innerHTML = `
+                    <div class="relative w-full h-auto pb-[56.25%] overflow-hidden">
+                        <img src="${project.thumbnail}" alt="${project.title} Thumbnail" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl md:text-2xl font-bold mb-2">${project.title}</h3>
+                    </div>
+                `;
+                projectsContainer.appendChild(projectCard);
+            });
+
+            // Toggle "Show More/Less" buttons
+            if (projectData.length > visibleProjects) {
+                showMoreBtn.classList.remove('hidden');
+            } else {
+                showMoreBtn.classList.add('hidden');
+            }
+
+            if (visibleProjects > 3) {
+                showLessBtn.classList.remove('hidden');
+            } else {
+                showLessBtn.classList.add('hidden');
+            }
+        }
+
+        // Render expertise cards
+        function renderExpertise() {
+            expertiseContainer.innerHTML = '';
+            expertiseData.forEach(expertise => {
+                const expertiseCard = document.createElement('div');
+                expertiseCard.className = 'card p-8 rounded-3xl cursor-pointer transition-transform duration-300 transform hover:scale-105';
+                expertiseCard.setAttribute('onclick', `openInfoModal('${expertise.title[currentLang]}', '${expertise.description[currentLang]}')`);
+                expertiseCard.innerHTML = `
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">${expertise.title[currentLang]}</h3>
+                    <p class="text-base md:text-lg opacity-80">${expertise.description[currentLang]}</p>
+                `;
+                expertiseContainer.appendChild(expertiseCard);
+            });
+        }
         
-        // Add event listeners for the close buttons inside the modals
-        aboutMeModal.querySelector('.modal-close-button').addEventListener('click', () => hideModal(aboutMeModal));
-        growthModal.querySelector('.modal-close-button').addEventListener('click', () => hideModal(growthModal));
-        menopauseModal.querySelector('.modal-close-button').addEventListener('click', () => hideModal(menopauseModal));
-        impressumModal.querySelector('.modal-close-button').addEventListener('click', () => hideModal(impressumModal));
-        datenschutzModal.querySelector('.modal-close-button').addEventListener('click', () => hideModal(datenschutzModal));
-        
-        // Add event listeners for clicking outside the modal content to close it
-        aboutMeModal.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-overlay')) {
-                hideModal(aboutMeModal);
+        // Function to update content based on current language
+        function updateContent() {
+            // Update the language toggle button text
+            langToggle.textContent = currentLang.toUpperCase();
+            
+            // Update all elements with a data-key attribute
+            const elementsToTranslate = document.querySelectorAll('[data-key]');
+            elementsToTranslate.forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    element.textContent = translations[currentLang][key];
+                }
+            });
+            
+            // Re-render the expertise cards with the new language
+            renderExpertise();
+        }
+
+        // Language toggle
+        langToggle.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'de' : 'en';
+            document.querySelector('body').setAttribute('lang', currentLang);
+            updateContent();
+        });
+
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                heroBg.style.backgroundImage = 'url(https://placehold.co/1920x1080/f7f7f7/00a896?text=Hero+Video+Placeholder)';
+                themeToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>`;
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                heroBg.style.backgroundImage = 'url(https://placehold.co/1920x1080/1a1a1a/00a896?text=Hero+Video+Placeholder)';
+                themeToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
             }
         });
-        growthModal.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-overlay')) {
-                hideModal(growthModal);
-            }
+
+        // Show More/Less buttons
+        showMoreBtn.addEventListener('click', () => {
+            visibleProjects = projectData.length;
+            renderProjects();
         });
-        menopauseModal.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-overlay')) {
-                hideModal(menopauseModal);
-            }
+
+        showLessBtn.addEventListener('click', () => {
+            visibleProjects = 3;
+            renderProjects();
         });
-        impressumModal.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-overlay')) {
-                hideModal(impressumModal);
-            }
+
+        // Active navigation link on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    setActiveSection(entry.target.id);
+                }
+            });
+        }, observerOptions);
+
+        const setActiveSection = (sectionId) => {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        };
+
+        sections.forEach(section => {
+            observer.observe(section);
         });
-        datenschutzModal.addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-overlay')) {
-                hideModal(datenschutzModal);
-            }
-        });
+
+        // Initial render on page load
+        window.onload = () => {
+            updateContent();
+            renderProjects();
+        };
     </script>
-
 </body>
 </html>
