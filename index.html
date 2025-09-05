@@ -204,20 +204,15 @@
     <!-- Main Content Sections -->
     <main class="scroll-snap-y">
         <!-- Home Section: Hero banner with a video background and a welcome message -->
-        <section id="home" class="min-h-screen relative flex items-center justify-center text-center overflow-hidden p-4 snap-start">
+        <section id="home" class="min-h-screen relative flex items-end justify-center text-center overflow-hidden p-4 snap-start">
             <div class="absolute inset-0 z-0">
                 <!-- Placeholder image for the hero section, changed dynamically with theme -->
                 <div id="hero-bg" class="w-full h-full bg-cover bg-center" style="background-image: url(https://i.postimg.cc/c4SnxWtV/Dark-BG-home.png)"></div>
             </div>
-            <div class="relative z-10 p-6 md:p-12 bg-black bg-opacity-40 backdrop-blur-sm rounded-3xl max-w-2xl transform transition-all duration-500">
+            <div class="relative z-10 p-6 md:p-8 bg-black bg-opacity-40 backdrop-blur-sm rounded-3xl max-w-4xl transform transition-all duration-500 mb-20">
                 <h1 class="text-5xl md:text-7xl font-extrabold leading-tight text-white" data-key="homeTitle">Hello, I'm Shahab.</h1>
                 <p class="mt-4 text-xl md:text-2xl font-light text-gray-200" data-key="homeSubtitle">A Motion Graphics Designer & Digital Video Producer based in Berlin.</p>
                 <a href="#contact" class="mt-8 inline-block text-lg md:text-xl font-semibold px-8 py-4 rounded-full transition-all duration-300 transform bg-accent text-button-text hover:scale-105" style="background-color: var(--button-bg); color: var(--button-text);" data-key="getInTouch">Get in Touch</a>
-            </div>
-            <!-- Scroll hint icon -->
-            <div class="absolute bottom-8 text-center text-sm md:text-base font-light opacity-75 animate-bounce">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto mb-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-                <span class="scroll-hint" data-key="scrollHint">Scroll down for more</span>
             </div>
         </section>
 
@@ -498,7 +493,7 @@
                 navProjects: "Projects",
                 navContact: "Contact",
                 homeTitle: "Hello, I'm Shahab.",
-                homeSubtitle: "A Motion Graphics Designer & Digital Video Producer based in Berlin.",
+                homeSubtitle: "A Motion Graphics Designer &<br>Digital Video Producer<br>based in Berlin.",
                 getInTouch: "Get in Touch",
                 scrollHint: "Scroll down for more",
                 aboutTitle: "About Me",
@@ -570,7 +565,7 @@
                 navProjects: "Projekte",
                 navContact: "Kontakt",
                 homeTitle: "Hallo, ich bin Shahab.",
-                homeSubtitle: "Ein Motion Graphics Designer & Digital Video Producer aus Berlin.",
+                homeSubtitle: "Ein Motion Graphics Designer &<br>Digital Video Producer<br>aus Berlin.",
                 getInTouch: "Kontakt aufnehmen",
                 scrollHint: "Für mehr nach unten scrollen",
                 aboutTitle: "Über mich",
@@ -879,7 +874,7 @@
                     // Fix for HTML entities not rendering in the footer
                     // We use innerHTML for this specific case to correctly parse the '&copy;' entity.
                     // For all other cases, textContent is safer.
-                    if(key === 'footerText' || key === 'legalContent' || key === 'privacyContent') {
+                    if(key === 'footerText' || key === 'legalContent' || key === 'privacyContent' || key === 'homeSubtitle') {
                          element.innerHTML = translations[currentLang][key];
                     } else {
                         element.textContent = translations[currentLang][key];
@@ -1014,6 +1009,7 @@
     </script>
 </body>
 </html>
+
 
 
 
