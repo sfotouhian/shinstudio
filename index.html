@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,7 +63,7 @@
             --button-text: #ffffff;
             --nav-bg: rgba(255, 255, 255, 0.3);
             --nav-text: #333333;
-            --footer-bg: #f3f4f6; /* Light Grey */
+            --footer-bg: #e5e7eb; /* Darker Light Grey */
         }
 
         /* Dark mode variables */
@@ -78,7 +78,7 @@
             --button-text: #1a1a1a;
             --nav-bg: rgba(0, 0, 0, 0.3);
             --nav-text: #f0f0f0;
-            --footer-bg: #000000; /* Black */
+            --footer-bg: #111111; /* Darker background for footer */
         }
 
         /* Apply variables */
@@ -127,7 +127,7 @@
         }
     </style>
 </head>
-<body class="bg-[#1a1a1a] text-[#f0f0f0] transition-all duration-500 dark">
+<body class="bg-[#f7f7f7] text-[#333333] transition-all duration-500 light">
     <!-- Video Modal - Initially hidden to display videos -->
     <!-- The classes 'fixed inset-0 flex items-center justify-center' ensure the modal is always centered on the screen -->
     <div id="video-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
@@ -194,8 +194,8 @@
                 <!-- Language and Theme toggles -->
                 <button id="lang-toggle" class="bg-[var(--nav-bg)] backdrop-blur-md text-sm md:text-base px-3 py-1 md:px-4 md:py-2 rounded-full font-semibold transition-colors duration-500" style="color: var(--nav-text)">EN</button>
                 <button id="theme-toggle" class="text-xl md:text-2xl bg-[var(--nav-bg)] backdrop-blur-md p-2 rounded-full transition-colors duration-500" style="color: var(--nav-text)">
-                    <!-- Sun icon for light mode (default) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    <!-- Moon icon for dark mode -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
                 </button>
             </div>
         </div>
@@ -207,7 +207,7 @@
         <section id="home" class="min-h-screen relative flex items-end justify-center text-center overflow-hidden p-4 snap-start">
             <div class="absolute inset-0 z-0">
                 <!-- Placeholder image for the hero section, changed dynamically with theme -->
-                <div id="hero-bg" class="w-full h-full bg-cover bg-center" style="background-image: url(https://i.postimg.cc/c4SnxWtV/Dark-BG-home.png)"></div>
+                <div id="hero-bg" class="w-full h-full bg-cover bg-center" style="background-image: url(https://i.postimg.cc/XYcS4ztK/code-Light-BG-home.png)"></div>
             </div>
             <div class="relative z-10 p-6 md:p-8 bg-black bg-opacity-40 backdrop-blur-sm rounded-3xl max-w-4xl transform transition-all duration-500 mb-20">
                 <h1 class="text-5xl md:text-7xl font-extrabold leading-tight text-white" data-key="homeTitle">Hello, I'm Shahab.</h1>
@@ -725,7 +725,7 @@
         const privacyContent = document.getElementById('privacy-content');
 
         // State variables
-        let currentLang = 'en';
+        let currentLang = 'de';
         let visibleProjects = 3;
 
         // Function to open the video modal
@@ -949,12 +949,12 @@
             if (body.classList.contains('dark')) {
                 body.classList.remove('dark');
                 body.classList.add('light');
-                heroBg.style.backgroundImage = 'url(https://i.postimg.cc/qBnKHqqs/Light-BG-home.png)';
+                heroBg.style.backgroundImage = 'url(https://i.postimg.cc/XYcS4ztK/code-Light-BG-home.png)';
                 themeToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>`;
             } else {
                 body.classList.remove('light');
                 body.classList.add('dark');
-                heroBg.style.backgroundImage = 'url(https://i.postimg.cc/c4SnxWtV/Dark-BG-home.png)';
+                heroBg.style.backgroundImage = 'url(https://i.postimg.cc/PqXGxMkg/code-Dark-BG-home.png)';
                 themeToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>`;
             }
         });
@@ -1009,6 +1009,9 @@
     </script>
 </body>
 </html>
+
+
+
 
 
 
