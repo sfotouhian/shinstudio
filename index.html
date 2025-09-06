@@ -137,8 +137,8 @@
             <!-- Close button for the modal -->
             <button onclick="closeModal()" class="absolute top-4 right-4 z-[102] text-white text-3xl font-bold bg-black/50 rounded-full w-10 h-10 flex items-center justify-center" aria-label="Close video player">&times;</button>
             <div class="relative" style="padding-top: 56.25%;">
-                <!-- YouTube player iframe -->
-                <iframe id="youtube-player" class="absolute top-0 left-0 w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <!-- YouTube player will be inserted here -->
+                <div id="youtube-player" class="absolute top-0 left-0 w-full h-full"></div>
             </div>
         </div>
     </div>
@@ -345,6 +345,9 @@
         <p data-key="footerText"></p>
     </footer>
 
+    <!-- YouTube IFrame API Script -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
     <!-- JavaScript for dynamic content, theming, and interactions -->
     <script>
         // Data for projects and expertise cards
@@ -352,133 +355,133 @@
             {
                 title: "Premium showreel",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/O8RsvUra8JE?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "O8RsvUra8JE",
                 thumbnail: "https://img.youtube.com/vi/O8RsvUra8JE/hqdefault.jpg"
             },
             {
                 title: "Business cartoon showreel",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/AAKkb9oXCss?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "AAKkb9oXCss",
                 thumbnail: "https://img.youtube.com/vi/AAKkb9oXCss/hqdefault.jpg"
             },
             {
                 title: "B&W showreel",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/y4LTPeOgeS0?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "y4LTPeOgeS0",
                 thumbnail: "https://img.youtube.com/vi/y4LTPeOgeS0/hqdefault.jpg"
             },
             {
                 title: "Catification",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/wI8QYzj-phk?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "wI8QYzj-phk",
                 thumbnail: "https://img.youtube.com/vi/wI8QYzj-phk/hqdefault.jpg"
             },
             {
                 title: "Cyberpunk glimpse",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/lOnX6pUKkbA?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "lOnX6pUKkbA",
                 thumbnail: "https://img.youtube.com/vi/lOnX6pUKkbA/hqdefault.jpg"
             },
             {
                 title: "Finally free",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/wJIEdg1CGns?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "wJIEdg1CGns",
                 thumbnail: "https://img.youtube.com/vi/wJIEdg1CGns/hqdefault.jpg"
             },
             {
                 title: "Stadt Bochum",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/nq-nnNSeQbo?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "nq-nnNSeQbo",
                 thumbnail: "https://img.youtube.com/vi/nq-nnNSeQbo/hqdefault.jpg"
             },
             {
                 title: "Stadtbauprojekt",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/rrMwJjRxb9E?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "rrMwJjRxb9E",
                 thumbnail: "https://img.youtube.com/vi/rrMwJjRxb9E/hqdefault.jpg"
             },
             {
                 title: "Explainer video",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/j-AUGz2xvLU?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "j-AUGz2xvLU",
                 thumbnail: "https://img.youtube.com/vi/j-AUGz2xvLU/hqdefault.jpg"
             },
             {
                 title: "Covivio",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/3K6otI9MAko?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "3K6otI9MAko",
                 thumbnail: "https://img.youtube.com/vi/3K6otI9MAko/hqdefault.jpg"
             },
             {
                 title: "Organeers",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/xWCdD5Cz3Q8?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "xWCdD5Cz3Q8",
                 thumbnail: "https://img.youtube.com/vi/xWCdD5Cz3Q8/hqdefault.jpg"
             },
             {
                 title: "Ärzte zum Migränetagebuch",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/dmPcSstXA4I?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "dmPcSstXA4I",
                 thumbnail: "https://img.youtube.com/vi/dmPcSstXA4I/hqdefault.jpg"
             },
             {
                 title: "Patienten zum Migränetagebuch",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/3HvT7U71cpA?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "3HvT7U71cpA",
                 thumbnail: "https://img.youtube.com/vi/3HvT7U71cpA/hqdefault.jpg"
             },
             {
                 title: "Meditation",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/brM7I-4KY0g?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "brM7I-4KY0g",
                 thumbnail: "https://img.youtube.com/vi/brM7I-4KY0g/hqdefault.jpg"
             },
             {
                 title: "ADAC",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/UPBK_LGcslQ?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "UPBK_LGcslQ",
                 thumbnail: "https://img.youtube.com/vi/UPBK_LGcslQ/hqdefault.jpg"
             },
             {
                 title: "WOBCOM",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/7o9G9ZfWRw4?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "7o9G9ZfWRw4",
                 thumbnail: "https://img.youtube.com/vi/7o9G9ZfWRw4/hqdefault.jpg"
             },
             {
                 title: "Bierentdecker",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/Kzz9EvZynwc?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "Kzz9EvZynwc",
                 thumbnail: "https://img.youtube.com/vi/Kzz9EvZynwc/hqdefault.jpg"
             },
             {
                 title: "Tag der Meditation",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/7aokYsmPVkg?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "7aokYsmPVkg",
                 thumbnail: "https://img.youtube.com/vi/7aokYsmPVkg/hqdefault.jpg"
             },
             {
                 title: "Die drückende Hitze",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/pCm0wXebzMk?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "pCm0wXebzMk",
                 thumbnail: "https://img.youtube.com/vi/pCm0wXebzMk/hqdefault.jpg"
             },
             {
                 title: "DEU-PA",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/yn_64XKkw6c?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "yn_64XKkw6c",
                 thumbnail: "https://img.youtube.com/vi/yn_64XKkw6c/hqdefault.jpg"
             },
             {
                 title: "Der Camping Butler",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/gddztaVql3Q?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "gddztaVql3Q",
                 thumbnail: "https://img.youtube.com/vi/gddztaVql3Q/hqdefault.jpg"
             },
             {
                 title: "Sleeperoo",
                 description: "",
-                videoUrl: "https://www.youtube.com/embed/a0xRb27LRKs?autoplay=1&rel=0&showinfo=0&vq=hd1080",
+                videoId: "a0xRb27LRKs",
                 thumbnail: "https://img.youtube.com/vi/a0xRb27LRKs/hqdefault.jpg"
             }
         ];
@@ -727,22 +730,59 @@
         // State variables
         let currentLang = 'de';
         let visibleProjects = 3;
+        let player; // YouTube player instance
+
+        // The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            event.target.setPlaybackQuality('hd1080');
+        }
+
+        // The API will call this function when the player's state changes.
+        function onPlayerStateChange(event) {
+            // When a new video is loaded via loadVideoById and starts buffering, set the quality.
+            if (event.data === YT.PlayerState.BUFFERING) {
+                event.target.setPlaybackQuality('hd1080');
+            }
+        }
 
         // Function to open the video modal
-        function openModal(videoUrl) {
-            youtubePlayer.src = videoUrl;
+        function openModal(videoId) {
             videoModal.classList.remove('hidden');
             setTimeout(() => {
                 videoModal.querySelector('div:last-child').classList.remove('scale-95', 'opacity-0');
             }, 10);
+
+            if (player && typeof player.loadVideoById === 'function') {
+                player.loadVideoById(videoId);
+            } else {
+                player = new YT.Player('youtube-player', {
+                    height: '100%',
+                    width: '100%',
+                    videoId: videoId,
+                    playerVars: {
+                        'autoplay': 1,
+                        'rel': 0,
+                        'showinfo': 0,
+                        'controls': 1,
+                        'modestbranding': 1,
+                        'iv_load_policy': 3
+                    },
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+            }
         }
 
         // Function to close the video modal
         function closeModal() {
             videoModal.querySelector('div:last-child').classList.add('scale-95', 'opacity-0');
+            if(player && typeof player.stopVideo === 'function') {
+                player.stopVideo();
+            }
             setTimeout(() => {
                 videoModal.classList.add('hidden');
-                youtubePlayer.src = ''; // Stop the video
             }, 300);
         }
 
@@ -808,7 +848,7 @@
                 const projectCard = document.createElement('div');
                 // Add the animate-on-scroll class to each card for the animation effect
                 projectCard.className = 'card rounded-3xl overflow-hidden shadow-lg cursor-pointer transition-transform duration-300 transform hover:scale-105 group animate-on-scroll';
-                projectCard.setAttribute('onclick', `openModal('${project.videoUrl}')`);
+                projectCard.setAttribute('onclick', `openModal('${project.videoId}')`);
                 projectCard.innerHTML = `
                     <div class="relative w-full h-auto pb-[56.25%] overflow-hidden">
                         <img src="${project.thumbnail}" alt="${project.title} Thumbnail" class="absolute inset-0 w-full h-full object-cover">
@@ -1009,6 +1049,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
