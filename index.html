@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shahab Fotouhian - Portfolio</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2215%22 fill=%22%2300a896%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2250%22 font-family=%22Inter%22 font-weight=%22800%22 fill=%22white%22>SF</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2215%22 fill=%22%2300a896%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2260%22 font-family=%22Inter%22 font-weight=%22800%22 fill=%22white%22>SF.</text></svg>">
     <!-- Use the Inter font for a modern look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,6 +51,48 @@
             opacity: 1;
             transform: translateY(0);
         }
+        
+        /* Form styling */
+        .form-input {
+            background-color: var(--card-bg-end);
+            border: 1px solid var(--card-bg-start);
+            color: var(--text-color);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.3);
+        }
+
+        /* Custom invalid style for form fields */
+        .form-input.invalid {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.3);
+        }
+
+        /* Keyframes for the flashing animation */
+        @keyframes flash {
+            0% {
+                border-color: var(--accent-color);
+                box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.3);
+            }
+            50% {
+                border-color: var(--card-bg-start);
+                box-shadow: none;
+            }
+            100% {
+                border-color: var(--accent-color);
+                box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.3);
+            }
+        }
+
+        /* Class to apply the flashing animation */
+        .form-input.invalid-flash {
+            animation: flash 0.5s 2; /* Flash twice */
+        }
+
 
         /* Light mode variables */
         .light {
@@ -321,17 +363,53 @@
         </section>
 
         <!-- Contact Section: Contact form and social links -->
-        <section id="contact" class="flex items-center justify-center py-32 md:py-48 snap-start">
+        <section id="contact" class="flex items-center justify-center py-24 md:py-32 snap-start">
             <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-4xl md:text-5xl font-bold text-center mb-12" data-key="contactTitle">Contact</h2>
+                <h2 class="text-4xl md:text-5xl font-bold text-center mb-8" data-key="contactTitle">Contact</h2>
                 <div class="max-w-2xl mx-auto text-center">
-                    <p class="text-lg md:text-xl leading-relaxed opacity-80" data-key="contactText">Let's create something great together. Feel free to reach out for collaborations or inquiries.</p>
-                    <div class="mt-8 flex justify-center space-x-6">
-                        <a href="mailto:s.fotouhian@gmail.com" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="emailLink">Email</a>
-                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="linkedInLink">LinkedIn</a>
-                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="behanceLink">Behance</a>
-                        <a href="#" class="text-lg md:text-xl font-semibold hover:text-accent transition-colors duration-300" data-key="instagramLink">Instagram</a>
-                    </div>
+                    <p class="text-lg md:text-xl leading-relaxed opacity-80 mb-12" data-key="contactText">Let's create something great together. Feel free to reach out for collaborations or inquiries.</p>
+                    
+                    <form id="contact-form" class="space-y-6 text-left" novalidate>
+                        <!-- IMPORTANT: Replace with your Access Key from web3forms.com -->
+                        <input type="hidden" name="access_key" value="4f978d5f-01e1-4305-a0f0-d72277376dbf">
+                        
+                        <!-- Name Inputs -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="first-name" class="block text-sm font-medium mb-2" data-key="contactFormFirstName"></label>
+                                <input type="text" name="first_name" id="first-name" required class="form-input w-full p-3 rounded-lg" data-placeholder-key="contactFormPlaceholderFirstName">
+                            </div>
+                            <div>
+                                <label for="last-name" class="block text-sm font-medium mb-2" data-key="contactFormLastName"></label>
+                                <input type="text" name="last_name" id="last-name" required class="form-input w-full p-3 rounded-lg" data-placeholder-key="contactFormPlaceholderLastName">
+                            </div>
+                        </div>
+                        
+                        <!-- Email and Phone Inputs -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label for="email" class="block text-sm font-medium mb-2" data-key="contactFormEmail"></label>
+                                <input type="email" name="email" id="email" required class="form-input w-full p-3 rounded-lg" data-placeholder-key="contactFormPlaceholderEmail">
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium mb-2" data-key="contactFormPhone"></label>
+                                <input type="tel" name="phone" id="phone" class="form-input w-full p-3 rounded-lg" data-placeholder-key="contactFormPlaceholderPhone">
+                            </div>
+                        </div>
+                        
+                        <!-- Message Textarea -->
+                        <div>
+                            <label for="message" class="block text-sm font-medium mb-2" data-key="contactFormMessage"></label>
+                            <textarea name="message" id="message" rows="5" required class="form-input w-full p-3 rounded-lg" data-placeholder-key="contactFormPlaceholderMessage"></textarea>
+                            <p class="text-xs text-left mt-2 opacity-60" data-key="contactFormMandatoryNote"></p>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit" class="text-lg font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105" style="background-color: var(--button-bg); color: var(--button-text);" data-key="contactFormSend">Send Message</button>
+                        </div>
+                    </form>
+                    <div id="form-result" class="mt-6"></div>
                 </div>
             </div>
         </section>
@@ -339,6 +417,17 @@
 
     <!-- Footer -->
     <footer class="text-center text-sm md:text-base py-6 opacity-75 flex flex-col items-center transition-colors duration-500" style="background-color: var(--footer-bg);">
+        <div class="flex space-x-6 mb-4">
+             <a href="mailto:s.fotouhian@gmail.com" class="hover:text-accent transition-colors duration-300" aria-label="Email">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </a>
+            <a href="#" class="hover:text-accent transition-colors duration-300" aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" class="hover:text-accent transition-colors duration-300" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+        </div>
         <div class="flex space-x-4 mb-2">
             <button id="legal-notice-btn" class="text-sm font-light hover:underline" data-key="legalNoticeLink"></button>
             <button id="privacy-policy-btn" class="text-sm font-light hover:underline" data-key="privacyPolicyLink"></button>
@@ -521,10 +610,21 @@
                 showLessBtn: "Show Less",
                 contactTitle: "Contact",
                 contactText: "Let's create something great together. Feel free to reach out for collaborations or inquiries.",
-                emailLink: "Email",
-                linkedInLink: "LinkedIn",
-                behanceLink: "Behance",
-                instagramLink: "Instagram",
+                contactFormFirstName: "First Name: <span class='text-red-500'>*</span>",
+                contactFormLastName: "Last Name: <span class='text-red-500'>*</span>",
+                contactFormEmail: "Email: <span class='text-red-500'>*</span>",
+                contactFormPhone: "Phone Number:",
+                contactFormMessage: "Message: <span class='text-red-500'>*</span>",
+                contactFormSend: "Send Message",
+                contactFormPlaceholderFirstName: "John",
+                contactFormPlaceholderLastName: "Doe",
+                contactFormPlaceholderEmail: "john.doe@example.com",
+                contactFormPlaceholderPhone: "+49 123 4567890",
+                contactFormPlaceholderMessage: "Enter your message here...",
+                contactFormMandatoryNote: "Fields with * are mandatory.",
+                formSuccessTitle: "Success!",
+                formSuccessText: "Your message has been sent successfully. I will get back to you shortly.",
+                formErrorText: "Oops! Something went wrong. Please try again later.",
                 footerText: "&copy; 2025 Shahab Fotouhian. All rights reserved.",
                 legalNoticeLink: "Legal Notice",
                 legalTitle: "Legal Notice",
@@ -593,10 +693,21 @@
                 showLessBtn: "Weniger anzeigen",
                 contactTitle: "Kontakt",
                 contactText: "Lassen Sie uns gemeinsam etwas Großartiges schaffen. Zögern Sie nicht, mich für Kooperationen oder Anfragen zu kontaktieren.",
-                emailLink: "E-Mail",
-                linkedInLink: "LinkedIn",
-                behanceLink: "Behance",
-                instagramLink: "Instagram",
+                contactFormFirstName: "Vorname: <span class='text-red-500'>*</span>",
+                contactFormLastName: "Nachname: <span class='text-red-500'>*</span>",
+                contactFormEmail: "E-Mail: <span class='text-red-500'>*</span>",
+                contactFormPhone: "Telefonnummer:",
+                contactFormMessage: "Nachricht: <span class='text-red-500'>*</span>",
+                contactFormSend: "Nachricht senden",
+                contactFormPlaceholderFirstName: "Max",
+                contactFormPlaceholderLastName: "Mustermann",
+                contactFormPlaceholderEmail: "max.mustermann@example.com",
+                contactFormPlaceholderPhone: "+49 123 4567890",
+                contactFormPlaceholderMessage: "Geben Sie hier Ihre Nachricht ein...",
+                contactFormMandatoryNote: "Felder mit * sind Pflichtfelder.",
+                formSuccessTitle: "Erfolg!",
+                formSuccessText: "Ihre Nachricht wurde erfolgreich gesendet. Ich werde mich in Kürze bei Ihnen melden.",
+                formErrorText: "Hoppla! Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut.",
                 footerText: "&copy; 2025 Shahab Fotouhian. Alle Rechte vorbehalten.",
                 legalNoticeLink: "Impressum",
                 legalTitle: "Impressum",
@@ -625,7 +736,7 @@
                     <h5 class="font-semibold mt-2">Cookies</h5>
                     <p class="mt-2">Diese Website verwendet möglicherweise Cookies. Cookies sind kleine Textdateien, die auf Ihrem Endgerät gespeichert werden. Wir verwenden Cookies, um die Funktionalität unserer Website zu gewährleisten.</p>
                     <h5 class="font-semibold mt-4">YouTube</h5>
-                    <p class="mt-2">Wir binden Videos der Plattform YouTube des Anbieters Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, in unsere Website ein. Dies geschieht in der Regel im erweiterten Datenschutzmodus. Sobald Sie eine Seite mit einem eingebundenen YouTube-Video besuchen, wird eine Verbindung zu den Servern von YouTube hergestellt. Dabei wird YouTube mitgeteilt, welche Seiten Sie besuchen. Wenn Sie in Ihrem YouTube-Konto eingeloggt sind, kann YouTube Ihr Surfverhalten direkt Ihrem persönlichen Profil zuordnen. Sie können dies verhindern, indem Sie sich vor dem Besuch unserer Website aus Ihrem YouTube-Konto ausloggen. Die Einbindung erfolgt im Interesse einer ansprechenden Darstellung unserer Online-Angebote. Dies stellt ein berechtigtes Interesse im Sinne von Art. 6 Abs. 1 lit. f DSGVO dar.</p>
+                    <p class="mt-2">Wir binden Videos der Plattform YouTube des Anbieters Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, in unsere Website ein. Dies geschieht in der Regel im erweiterten Datenschutzmodus. Sobald Sie eine Seite mit einem eingebundenen YouTube-Video besuchen, wird eine Verbindung zu den Servern von YouTube hergestellt. Dabei wird YouTube mitgeteilt, welche Seiten Sie besuchen. Wenn Sie in Ihrem YouTube-Konto eingeloggt sind, kann YouTube Ihr Surfverhalten direkt Ihrem persönlichen Profil zuordnen. Sie können dies verhindern, indem Sie sich vor dem Besuch unserer Website aus Ihrem YouTube-Konto ausloggen. Die Einbindung erfolgt im Interesse einer ansprechenden Darstellung unserer Online-Angebote. Dies stellt ein berechtiges Interesse im Sinne von Art. 6 Abs. 1 lit. f DSGVO dar.</p>
                     <p class="mt-2">Weitere Informationen zum Umgang mit Nutzerdaten finden Sie in der Datenschutzerklärung von YouTube unter: <a href="https://www.google.de/intl/de/policies/privacy" target="_blank" class="underline">https://www.google.de/intl/de/policies/privacy</a>.</p>
 
                     <h4 class="font-bold mt-4">4. Ihre Rechte als betroffene Person</h4>
@@ -900,14 +1011,20 @@
             elementsToTranslate.forEach(element => {
                 const key = element.getAttribute('data-key');
                 if (translations[currentLang] && translations[currentLang][key]) {
-                    // Fix for HTML entities not rendering in the footer
-                    // We use innerHTML for this specific case to correctly parse the '&copy;' entity.
-                    // For all other cases, textContent is safer.
-                    if(key === 'footerText' || key === 'legalContent' || key === 'privacyContent' || key === 'homeSubtitle') {
+                    const htmlKeys = ['footerText', 'legalContent', 'privacyContent', 'homeSubtitle', 'contactFormFirstName', 'contactFormLastName', 'contactFormEmail', 'contactFormMessage'];
+                    if(htmlKeys.includes(key)) {
                          element.innerHTML = translations[currentLang][key];
                     } else {
                         element.textContent = translations[currentLang][key];
                     }
+                }
+            });
+
+            const elementsToTranslatePlaceholder = document.querySelectorAll('[data-placeholder-key]');
+            elementsToTranslatePlaceholder.forEach(element => {
+                const key = element.getAttribute('data-placeholder-key');
+                if (translations[currentLang] && translations[currentLang][key]) {
+                    element.setAttribute('placeholder', translations[currentLang][key]);
                 }
             });
             
@@ -1005,6 +1122,89 @@
         // Privacy policy button listener
         privacyPolicyBtn.addEventListener('click', openPrivacyModal);
 
+        // --- Contact Form Logic ---
+        const form = document.getElementById('contact-form');
+        const result = document.getElementById('form-result');
+        const requiredFields = form.querySelectorAll('[required]');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Custom Validation
+            let isValid = true;
+            
+            // Reset any existing invalid styles
+            requiredFields.forEach(field => {
+                field.classList.remove('invalid', 'invalid-flash');
+            });
+
+            requiredFields.forEach(field => {
+                if (field.value.trim() === '') {
+                    isValid = false;
+                    field.classList.add('invalid-flash');
+                    field.addEventListener('animationend', () => {
+                        field.classList.remove('invalid-flash');
+                        field.classList.add('invalid');
+                    }, { once: true });
+                }
+            });
+
+            if (!isValid) {
+                return; // Stop the submission if form is not valid
+            }
+
+            const formData = new FormData(form);
+            const object = {};
+            formData.forEach((value, key) => {
+                object[key] = value;
+            });
+            const json = JSON.stringify(object);
+            result.innerHTML = "Please wait...";
+
+            fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: json
+                })
+                .then(async (response) => {
+                    let json = await response.json();
+                    if (response.status == 200) {
+                        result.innerHTML = `
+                            <div class="p-4 rounded-lg bg-green-100 text-green-800">
+                                <h4 class="font-bold">${translations[currentLang].formSuccessTitle}</h4>
+                                <p>${translations[currentLang].formSuccessText}</p>
+                            </div>
+                        `;
+                    } else {
+                        console.log(response);
+                        result.innerHTML = `<div class="p-4 rounded-lg bg-red-100 text-red-800">${translations[currentLang].formErrorText}</div>`;
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                    result.innerHTML = `<div class="p-4 rounded-lg bg-red-100 text-red-800">${translations[currentLang].formErrorText}</div>`;
+                })
+                .then(function() {
+                    form.reset();
+                    // Clear invalid states after successful submission
+                    requiredFields.forEach(field => field.classList.remove('invalid'));
+                    setTimeout(() => {
+                        result.innerHTML = '';
+                    }, 5000);
+                });
+        });
+        
+        // Remove invalid state when user starts typing
+        requiredFields.forEach(field => {
+            field.addEventListener('input', () => {
+                field.classList.remove('invalid', 'invalid-flash');
+            });
+        });
+
+
         // Animation logic using IntersectionObserver
         const animationObserver = new IntersectionObserver(entries => {
             entries.forEach(entry => {
@@ -1038,13 +1238,4 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
 
