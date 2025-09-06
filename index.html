@@ -263,8 +263,8 @@
                 <div id="hero-bg" class="w-full h-full bg-cover bg-center" style="background-image: url(https://i.postimg.cc/XYcS4ztK/code-Light-BG-home.png)"></div>
             </div>
             <div class="relative z-10 p-6 md:p-8 bg-black bg-opacity-40 backdrop-blur-sm rounded-3xl max-w-4xl transform transition-all duration-500 mb-20">
-                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight text-white" data-key="homeTitle">Hello, I'm Shahab.</h1>
-                <p class="mt-4 text-xl md:text-2xl font-light text-gray-200" data-key="homeSubtitle">A Motion Graphics Designer & Digital Video Producer based in Berlin.</p>
+                <h1 class="text-4xl md:text-5xl font-extrabold leading-tight text-white" data-key="homeTitle"></h1>
+                <p class="mt-4 text-xl md:text-2xl font-light text-gray-200" data-key="homeSubtitle"></p>
                 <a href="#contact" class="mt-8 inline-block text-lg md:text-xl font-semibold px-8 py-4 rounded-full transition-all duration-300 transform bg-accent text-button-text hover:scale-105" style="background-color: var(--button-bg); color: var(--button-text);" data-key="getInTouch">Get in Touch</a>
             </div>
         </section>
@@ -600,8 +600,8 @@
                 navExpertise: "Expertise",
                 navProjects: "Projects",
                 navContact: "Contact",
-                homeTitle: "Hello, I'm Shahab.",
-                homeSubtitle: "A Motion Graphics Designer &<br>Digital Video Producer<br>based in Berlin.",
+                homeTitle: "Welcome to my page, my name is Shahab Fotouhian.",
+                homeSubtitle: "Motion Graphics Designer &<br>Digital Video Producer<br>based in Berlin.",
                 getInTouch: "Get in Touch",
                 scrollHint: "Scroll down for more",
                 aboutTitle: "About Me",
@@ -682,8 +682,8 @@
                 navExpertise: "Expertise",
                 navProjects: "Projekte",
                 navContact: "Kontakt",
-                homeTitle: "Hallo, ich bin Shahab.",
-                homeSubtitle: "Ein Motion Graphics Designer &<br>Digital Video Producer<br>aus Berlin.",
+                homeTitle: "Willkommen auf meiner Seite, mein Name ist Shahab Fotouhian.",
+                homeSubtitle: "Motion Graphics Designer &<br>Digital Video Producer<br>aus Berlin.",
                 getInTouch: "Kontakt aufnehmen",
                 scrollHint: "Für mehr nach unten scrollen",
                 aboutTitle: "Über mich",
@@ -1179,10 +1179,10 @@
                         elementToAnimate.classList.remove('invalid-flash');
                         elementToAnimate.classList.add('invalid');
 
-                        // Set a timeout to remove the static highlight after 2 seconds
+                        // Set a timeout to remove the static highlight
                         setTimeout(() => {
                             elementToAnimate.classList.remove('invalid');
-                        }, 2000); 
+                        }, 2000); // Highlight stays for 2 seconds after flashing
                     };
 
                     elementToAnimate.addEventListener('animationend', handleAnimationEnd, { once: true });
@@ -1285,5 +1285,4 @@
     </script>
 </body>
 </html>
-
 
