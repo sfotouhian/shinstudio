@@ -745,27 +745,8 @@
                     'controls': 1,
                     'modestbranding': 1,
                     'iv_load_policy': 3
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
                 }
             });
-        }
-
-        // The API will call this function when the video player is ready.
-        function onPlayerReady(event) {
-            // The player is initialized and ready to receive commands.
-            // We're now forcing the quality suggestion the moment the player is active.
-            event.target.setPlaybackQuality('hd1080');
-        }
-        
-        // The API will call this function when the player's state changes.
-        // This acts as a backup to ensure quality is set.
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-                event.target.setPlaybackQuality('hd1080');
-            }
         }
 
         // Function to open the video modal
@@ -775,13 +756,10 @@
                 videoModal.querySelector('div:last-child').classList.remove('scale-95', 'opacity-0');
             }, 10);
 
-            // Now, we load the video into the existing player instance
-            // with a direct suggestion for the quality.
+            // Load the video into the existing player instance.
+            // YouTube will now automatically determine the best quality.
             if (player && typeof player.loadVideoById === 'function') {
-                player.loadVideoById({
-                    'videoId': videoId,
-                    'suggestedQuality': 'hd1080'
-                });
+                player.loadVideoById(videoId);
             }
         }
 
@@ -1059,6 +1037,7 @@
     </script>
 </body>
 </html>
+
 
 
 
