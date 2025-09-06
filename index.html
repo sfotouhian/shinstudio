@@ -715,10 +715,10 @@
                 contactFormSend: "Nachricht senden",
                 contactFormPlaceholderFirstName: "Max",
                 contactFormPlaceholderLastName: "Mustermann",
-                contactFormPlaceholderEmail: "max.mustermann@example.com",
+                contactFormPlaceholderEmail: "max.mustermann@beispiel.de",
                 contactFormPlaceholderPhone: "+49 123 4567890",
                 contactFormPlaceholderMessage: "Geben Sie hier Ihre Nachricht ein...",
-                contactFormConsent: "Ich stimme der <button type=\"button\" onclick=\"openPrivacyModal()\" class=\"underline hover:text-accent\">Datenschutzerklärung</button> zu.",
+                contactFormConsent: "Ich stimme der <button type=\"button\" onclick=\"openPrivacyModal()\" class=\"underline hover:text-accent\">datenschutzerklärung</button> zu.",
                 formSuccessText: "Nachricht erfolgreich gesendet!",
                 formErrorText: "Hoppla! Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut.",
                 footerText: "&copy; 2025 Shahab Fotouhian. Alle Rechte vorbehalten.",
@@ -1178,6 +1178,11 @@
                     const handleAnimationEnd = () => {
                         elementToAnimate.classList.remove('invalid-flash');
                         elementToAnimate.classList.add('invalid');
+
+                        // Set a timeout to remove the static highlight after 2 seconds
+                        setTimeout(() => {
+                            elementToAnimate.classList.remove('invalid');
+                        }, 2000); 
                     };
 
                     elementToAnimate.addEventListener('animationend', handleAnimationEnd, { once: true });
@@ -1280,4 +1285,5 @@
     </script>
 </body>
 </html>
+
 
